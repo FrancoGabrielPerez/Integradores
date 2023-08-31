@@ -83,9 +83,9 @@ public class PopulateDB {
         List<Iterable<CSVRecord>> records = new ArrayList<>(); 
     
         for (int i = 0; i < archs.length; i++) {
-            Path currentWorkingDir = Paths.get("").toAbsolutePath();
-            System.out.println(currentWorkingDir.normalize().toString());
-            String DatasetPath = currentWorkingDir.normalize().toString() + "\\src\\main\\java\\datasets\\" + archs[i] +".csv";
+            // Path currentWorkingDir = Paths.get("").toAbsolutePath();
+            // System.out.println(currentWorkingDir.normalize().toString());
+            // String DatasetPath = currentWorkingDir.normalize().toString() + "\\src\\main\\java\\datasets\\" + archs[i] +".csv";
             String Path = "integrador1\\src\\main\\java\\datasets\\" + archs[i] +".csv";
             System.out.println("PATH: " + Path);
             in = new FileReader(Path);
