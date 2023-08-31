@@ -1,0 +1,14 @@
+dao\MySQLClienteDAO.class
+entidades\FacturaProducto.class
+dao\SystemDAO.class
+factory\MySQLDAOFactory.class
+populateDB\PopulateDB.class
+Main.class
+factory\DAOFactory.class
+dao\MySQLProductoDAO.class
+dao\MySQLFacturaDAO.class
+entidades\Producto.class
+populateDB\TablesCreator.class
+dao\MySQLFacturaProductoDAO.class
+entidades\Cliente.class
+entidades\Factura.class
