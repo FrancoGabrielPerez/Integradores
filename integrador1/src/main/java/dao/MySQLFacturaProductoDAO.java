@@ -41,12 +41,5 @@ public class MySQLFacturaProductoDAO implements SystemDAO<FacturaProducto> {
     public List<FacturaProducto> selectList() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'selectList'");
-    }
-
-    @Override
-    public boolean createTable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTable'");
-    }
-    
+    }    
 }

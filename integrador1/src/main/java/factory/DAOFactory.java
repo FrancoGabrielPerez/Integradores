@@ -8,10 +8,10 @@ import entidades.Producto;
 
 public abstract class DAOFactory {
 
-	// List of DAO types supported by the factory, string should be lowercase.
-	public static final String MYSQL_JDBC = "mysql";
-	public static final String DERBY_JDBC = "derby";
-	public static final String JPA_HIBERNATE = "hibertnate";
+	// List of DAO types supported by the factory
+	public static final int MYSQL_JDBC = 1;
+	public static final int DERBY_JDBC = 2;
+	public static final int JPA_HIBERNATE = 3;
 
 	public abstract SystemDAO<Factura> getFacturaDAO();
 	public abstract SystemDAO<FacturaProducto> getFacturaProductoDAO();
@@ -22,8 +22,8 @@ public abstract class DAOFactory {
 	private static DAOFactory instanceDerby = null;
 	private static DAOFactory instanceHibernate = null;
 	
-	public static DAOFactory getDAOFactory(String whichFactory) {
-		switch (whichFactory.toLowerCase()) {
+	public static DAOFactory getDAOFactory(int whichFactory) {
+		switch (whichFactory) {
 			case MYSQL_JDBC : {
 				if (instanceMySQL == null) {
 					instanceMySQL = new MySQLDAOFactory();

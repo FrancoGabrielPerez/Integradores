@@ -1,13 +1,18 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import dto.InformeProdMasRecaudacion;
 import entidades.Producto;
 
 public class MySQLProductoDAO implements SystemDAO<Producto> {
 
-    private Connection conn ;    
+    private Connection conn;
 
     public MySQLProductoDAO(Connection conn) {
         this.conn = conn;
@@ -41,12 +46,35 @@ public class MySQLProductoDAO implements SystemDAO<Producto> {
     public List<Producto> selectList() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'selectList'");
+    }  
+
+    public List<InformeProdMasRecaudacion> selectClientesConMasFacturacion() {
+        String selectProdMasRecaudacion = "SELECT p.nombre, p.valor, SUM(fp.cantidad * p.valor) AS total_recaudado " +
+                                        "FROM producto p " +
+                                        "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
+                                        "GROUP BY p.idProducto, p.valor" +
+                                        "ORDER BY total_recaudado DESC" +
+                                        "LIMIT 1;";
+        PreparedStatement ps = null;
+        List<InformeProdMasRecaudacion> informe = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement(selectProdMasRecaudacion);
+            ResultSet rs = ps.executeQuery(selectProdMasRecaudacion);
+            while (rs.next()) {
+                InformeProdMasRecaudacion detail = new InformeProdMasRecaudacion(rs.getString(0), rs.getInt(1), rs.getFloat(2));
+                informe.add(detail);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {                                
+            try {
+                ps.close();
+                conn.commit();       
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return informe;
     }
 
-    @Override
-    public boolean createTable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTable'");
-    }
-    
 }
