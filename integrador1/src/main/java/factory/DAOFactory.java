@@ -1,5 +1,7 @@
 package factory;
 
+import java.sql.Connection;
+
 import dao.SystemDAO;
 import entidades.Cliente;
 import entidades.Factura;
@@ -16,7 +18,8 @@ public abstract class DAOFactory {
 	public abstract SystemDAO<Factura> getFacturaDAO();
 	public abstract SystemDAO<FacturaProducto> getFacturaProductoDAO();
 	public abstract SystemDAO<Producto> getProductoDAO();
-	public abstract SystemDAO<Cliente> getClienteDAO(); 
+	public abstract SystemDAO<Cliente> getClienteDAO();
+	public abstract void closeConnection();
 	
 	private static DAOFactory instanceMySQL = null;
 	private static DAOFactory instanceDerby = null;

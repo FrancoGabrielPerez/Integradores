@@ -38,11 +38,18 @@ public class DBHelper {
         try {           
             conn = DriverManager.getConnection(uri, "root", "");
             conn.setAutoCommit(false);
-            createTables();
-            populateDB();
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void closeConnection() {
+        if (conn != null){
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
