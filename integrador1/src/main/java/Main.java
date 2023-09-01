@@ -6,6 +6,7 @@ import dao.SystemDAO;
 import entidades.Cliente;
 import entidades.Factura;
 import factory.DAOFactory;
+import helper.DBHelper;
 
 public class Main {
      public static void main(String[] args) throws Exception {
