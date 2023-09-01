@@ -50,7 +50,6 @@ public class MySQLClienteDAO implements SystemDAO<Cliente>{
 
    
     public List<InformeClienteMasFacturacion> selectClientesConMasFacturacion() {
-        //consultar si hayq ue abrir conexion en cada metodo
         String selectClientesConMasFacturacion = "SELECT c.nombre, c.email, SUM(p.valor * fp.cantidad) AS total_facturado " +
             "FROM Cliente c " +
             "JOIN factura ON c.idCliente = factura.idCliente " +
