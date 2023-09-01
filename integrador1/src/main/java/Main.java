@@ -6,14 +6,12 @@ import dao.SystemDAO;
 import entidades.Cliente;
 import entidades.Factura;
 import factory.DAOFactory;
-import populateDB.PopulateDB;
 
 public class Main {
      public static void main(String[] args) throws Exception {
 
-          PopulateDB pdb = new PopulateDB();
-          pdb.populateDataBase();
-         
+          DBHelper dbHelper = new DBHelper();
+          
           DAOFactory systemFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL_JDBC);
 
           /* SystemDAO<Factura> factura = systemFactory.getFacturaDAO();

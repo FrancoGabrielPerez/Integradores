@@ -16,7 +16,7 @@ import entidades.Producto;
 
 public class MySQLDAOFactory extends DAOFactory {
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String DBURL = "jdbc:mysql://localhost:3306/tp1_integrador";
+    public static final String uri = "jdbc:mysql://localhost:3306/tp1_integrador";
     public static Connection conn;
     
     public static Connection createConnection() {   
@@ -29,20 +29,11 @@ public class MySQLDAOFactory extends DAOFactory {
             System.exit(1);
         }
 
-        String uri = DBURL;
-
         try {
             conn = DriverManager.getConnection(uri, "root", "");
             conn.setAutoCommit(false); 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null)
-                    return conn;                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return conn;
     }
@@ -66,7 +57,5 @@ public class MySQLDAOFactory extends DAOFactory {
     public SystemDAO<Cliente> getClienteDAO() {
         return new MySQLClienteDAO(createConnection());
     }     
-
-    
    
 }

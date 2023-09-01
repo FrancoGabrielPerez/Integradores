@@ -1,16 +1,13 @@
-package populateDB;
+
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -21,12 +18,13 @@ import entidades.Factura;
 import entidades.FacturaProducto;
 import entidades.Producto;
 
-public class PopulateDB {
+public class DBHelper {
+
+    private Connection conn = null;
     
-    public void populateDataBase() throws Exception {
-        List<Iterable<CSVRecord>> records = this.getData();
-        
+    public DBHelper() {
         String driver = "com.mysql.cj.jdbc.Driver";
+        String uri = "jdbc:mysql://localhost:3306/integrador1";
         
         try {
             Class.forName(driver).getDeclaredConstructor().newInstance();
@@ -36,67 +34,81 @@ public class PopulateDB {
                     System.exit(1);
                 }
         
-        String uri = "jdbc:mysql://localhost:3306/integrador1";//consultar si va harcodeado o se crea la db con CREATE DATABASE IF NOT EXISTS tp1_integrador;
-        
-        try {
-            Connection conn = DriverManager.getConnection(uri, "root", "");
+        try {           
+            conn = DriverManager.getConnection(uri, "root", "");
             conn.setAutoCommit(false);
-            TablesCreator tb = new TablesCreator(conn);
-            tb.createTables();
-            int i = 0;
-            while (i < records.size()) {
-                if (i == 0) {
-                    for(CSVRecord row : records.get(i)) {
-                        Cliente client = new Cliente(Integer.parseInt(row.get(0)), row.get(1), row.get(2));
-                        insertClient(client, conn);
-                    }
-                }
-                if (i == 1) {
-                    for(CSVRecord row : records.get(i)) {
-                        Factura bill = new Factura(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)));
-                        insertBill(bill, conn);
-                    }
-                }
-                if (i == 2) {
-                    for(CSVRecord row : records.get(i)) {
-                        FacturaProducto bill = new FacturaProducto(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)));
-                        insertFacturaProducto(bill, conn);
-                    }
-                }
-                if (i == 3) {
-                    for(CSVRecord row : records.get(i)) {
-                        Producto product = new Producto(Integer.parseInt(row.get(0)), row.get(1), Float.parseFloat(row.get(2)));
-                        insertProducto(product, conn);
-                    }
-                }
-                i++;
-            }
+            createTables();
+            populateDB();
             conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createTables() throws SQLException {
+        String tableCliente = "CREATE TABLE IF NOT EXISTS Cliente(" +
+            "idCliente INT NOT NULL, " +
+            "nombre VARCHAR(500), " +
+            "email VARCHAR(500), " +
+            "CONSTRAINT Cliente_pk PRIMARY KEY (idCliente))";
+        this.conn.prepareStatement(tableCliente).execute();
+        this.conn.commit();
+
+        String tableProducto = "CREATE TABLE IF NOT EXISTS Producto(" +
+            "idProducto INT NOT NULL, " + 
+            "nombre VARCHAR(45), " +
+            "valor FLOAT, " +
+            "CONSTRAINT Producto_pk PRIMARY KEY (idProducto));" ;
+        this.conn.prepareStatement(tableProducto).execute();
+        this.conn.commit();
+
+        String tableFactura_Producto = "CREATE TABLE IF NOT EXISTS Factura_Producto(" +
+            "idFactura INT NOT NULL, " + 
+            "idProducto INT NOT NULL, " +
+            "cantidad INT NOT NULL);" ;
+        this.conn.prepareStatement(tableFactura_Producto).execute();
+        this.conn.commit();
+        
+        String tableFactura = "CREATE TABLE IF NOT EXISTS Factura(" +
+            "idFactura INT NOT NULL, " + 
+            "idCliente INT, " +
+            "CONSTRAINT Factura_pk PRIMARY KEY (idFactura), " +
+            "CONSTRAINT FOREIGN KEY (idCLiente) REFERENCES Cliente (idCliente));" ;
+        this.conn.prepareStatement(tableFactura).execute();
+        this.conn.commit();     
+    }
+
+    public void populateDB() throws Exception {
+        try {
+            for(CSVRecord row : getData("clientes.csv")) {
+                Cliente client = new Cliente(Integer.parseInt(row.get(0)), row.get(1), row.get(2));
+                insertClient(client, conn);
+            }
+            for(CSVRecord row : getData("facturas.csv")) {
+                Factura bill = new Factura(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)));
+                insertBill(bill, conn);
+            }
+            for(CSVRecord row : getData("facturas-productos.csv")) {
+                FacturaProducto item = new FacturaProducto(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)));
+                insertFacturaProducto(item, conn);
+            }
+            for(CSVRecord row : getData("productos.csv")) {
+                Producto product = new Producto(Integer.parseInt(row.get(0)), row.get(1), Float.parseFloat(row.get(2)));
+                insertProducto(product, conn);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }       
     
-    private List<Iterable<CSVRecord>> getData() throws Exception {
-        Reader in;
-        String[] archs = { "clientes", "facturas", "facturas-productos", "productos"};
-        List<Iterable<CSVRecord>> records = new ArrayList<>(); 
-    
-        for (int i = 0; i < archs.length; i++) {
-            // Path currentWorkingDir = Paths.get("").toAbsolutePath();
-            // System.out.println(currentWorkingDir.normalize().toString());
-            // String DatasetPath = currentWorkingDir.normalize().toString() + "\\src\\main\\java\\datasets\\" + archs[i] +".csv";
-            //testing commit
-            String Path = "integrador1\\src\\main\\java\\datasets\\" + archs[i] +".csv";
-            System.out.println("PATH: " + Path);
-            in = new FileReader(Path);
-            String[] header = {};
-            CSVParser csvParser = CSVFormat.EXCEL.builder().setHeader(header).build().parse(in);
-            
-            Iterable<CSVRecord> record = csvParser;
-            records.add(record);
-        }
-        return records;
+    private Iterable<CSVRecord> getData(String archivo) throws IOException {
+        String path = "integrador1\\src\\main\\resources\\" + archivo;
+        Reader in = new FileReader(path);
+        String[] header = {};
+        CSVParser csvParser = CSVFormat.EXCEL.builder().setHeader(header).build().parse(in);
+        
+        Iterable<CSVRecord> record = csvParser;
+        return record;
     }
 
     private int insertClient(Cliente client, Connection conn) throws Exception {
