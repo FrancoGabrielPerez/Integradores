@@ -66,7 +66,5 @@ public class MySQLDAOFactory extends DAOFactory {
     public SystemDAO<Cliente> getClienteDAO() {
         return new MySQLClienteDAO(createConnection());
     }     
-
-    
    
 }

@@ -14,26 +14,26 @@ public class Main {
           PopulateDB pdb = new PopulateDB();
           pdb.populateDataBase();
          
-          DAOFactory systemFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL_JDBC);
-
+          /* DAOFactory systemFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL_JDBC);
+ */
           /* SystemDAO<Factura> factura = systemFactory.getFacturaDAO();
 
           List<Factura> nomina = factura.selectList();
           System.out.println(nomina.toString()); */
 
-          System.out.println();
+          /* System.out.println();
           MySQLClienteDAO cliente = (MySQLClienteDAO) systemFactory.getClienteDAO();
           List<Cliente> clientesConMasFacturacion = cliente.selectClientesConMasFacturacion();
           System.out.println(clientesConMasFacturacion);
 
         
 
-          String productoConMasRecaudacion = "SELECT p.idProducto, p.valor, SUM(fp.cantidad * p.valor) AS total_recaudado " +
+          String productoConMasRecaudacion = "SELECT p.nombre, p.valor, SUM(fp.cantidad * p.valor) AS total_recaudado " +
                     "FROM producto p " +
                     "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
                     "GROUP BY p.idProducto, p.valor" +
                     "ORDER BY total_recaudado DESC" +
-                    "LIMIT 1;";
+                    "LIMIT 1;"; */
 
      }
 }

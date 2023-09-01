@@ -7,7 +7,6 @@ import entidades.FacturaProducto;
 import entidades.Producto;
 
 public abstract class DAOFactory {
-
     public static final int MYSQL_JDBC = 1;
     public static final int DERBY_JDBC = 2;
     public static final int JPA_HIBERNATE = 3;
@@ -32,8 +31,7 @@ public abstract class DAOFactory {
             case DERBY_JDBC: return null; //no implementado
             case JPA_HIBERNATE: return null;
             default: return null;
-        }     
-        
+        }           
     }
 }
 
