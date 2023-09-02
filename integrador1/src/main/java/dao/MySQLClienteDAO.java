@@ -56,14 +56,24 @@ public class MySQLClienteDAO implements SystemDAO<Cliente>{
             "JOIN factura_producto fp ON factura.idFactura = fp.idFactura " +
             "JOIN producto p ON fp.idProducto = p.idProducto " +
             "GROUP BY c.idCliente, c.nombre, c.email " +
-            "ORDER BY SUM(p.valor * fp.cantidad) DESC; "; 
+            "ORDER BY SUM(p.valor * fp.cantidad) DESC " +
+            "LIMIT 1;"; 
         PreparedStatement ps = null;
         List<InformeClienteMasFacturacion> informe = new ArrayList<>();
         try {
             ps = conn.prepareStatement(selectClientesConMasFacturacion);
+            //implement toString() of rs each row in a new line
+            // ResultSet rss = ps.executeQuery(selectClientesConMasFacturacion);
+            // {
+            //     StringBuilder stringBuilder = new StringBuilder();
+            //     while (rss.next()) {
+            //         stringBuilder.append("nombre: ").append(rss.getString(1)).append(", email: ").append(rss.getString(2)).append(", total_facturado: ").append(rss.getFloat(3)).append("\n");
+            //     }
+            //     System.out.println(stringBuilder.toString());
+            // }
             ResultSet rs = ps.executeQuery(selectClientesConMasFacturacion);
             while (rs.next()) {
-                InformeClienteMasFacturacion detail = new InformeClienteMasFacturacion(rs.getString(0), rs.getString(1), rs.getFloat(2));
+                InformeClienteMasFacturacion detail = new InformeClienteMasFacturacion(rs.getString(1), rs.getString(2), rs.getFloat(3));
                 informe.add(detail);
             }
         } catch (SQLException e) {
@@ -75,7 +85,7 @@ public class MySQLClienteDAO implements SystemDAO<Cliente>{
             } catch (SQLException e) {
                 e.printStackTrace();
             }                
-        }    
+        }
         return informe;
     }  
     

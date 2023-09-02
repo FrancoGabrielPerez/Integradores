@@ -12,10 +12,11 @@ import helper.DBHelper;
 public class Main {
      public static void main(String[] args) throws Exception {
 
-          DBHelper dbHelper = new DBHelper();
-          dbHelper.createTables();
-          dbHelper.populateDB();
-          dbHelper.closeConnection();
+          // DBHelper dbHelper = new DBHelper();
+          // dbHelper.dropTables();
+          // dbHelper.createTables();
+          // dbHelper.populateDB();
+          // dbHelper.closeConnection();
           
           DAOFactory systemFactory = DAOFactory.getDAOFactory(DAOFactory.MYSQL_JDBC);
 
