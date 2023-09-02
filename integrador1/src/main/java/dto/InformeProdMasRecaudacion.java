@@ -5,6 +5,10 @@ public class InformeProdMasRecaudacion {
     private int cantidad;
     private Float recaudacion;
 
+    public InformeProdMasRecaudacion() {
+        super();
+    }
+
     public InformeProdMasRecaudacion(String nombre, int cantidad, Float recaudacion) {
         this.nombre = nombre;
         this.cantidad = cantidad;
@@ -25,7 +29,6 @@ public class InformeProdMasRecaudacion {
 
     @Override
     public String toString() {
-        return "InformeProdMasRecaudacion [nombre=" + nombre + ", cantidad=" + cantidad + ", recaudacion=" + recaudacion
-                + "]";
+        return "Producto con mas recaudacion: nombre = " + nombre + ", cantidad vendida = " + cantidad + ", recaudacion = $" + recaudacion;
     }    
 }

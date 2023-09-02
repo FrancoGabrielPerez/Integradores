@@ -56,8 +56,7 @@ public class MySQLClienteDAO implements SystemDAO<Cliente>{
             "JOIN factura_producto fp ON factura.idFactura = fp.idFactura " +
             "JOIN producto p ON fp.idProducto = p.idProducto " +
             "GROUP BY c.idCliente, c.nombre, c.email " +
-            "ORDER BY SUM(p.valor * fp.cantidad) DESC " +
-            "LIMIT 1;"; 
+            "ORDER BY SUM(p.valor * fp.cantidad) DESC; "; 
         PreparedStatement ps = null;
         List<InformeClienteMasFacturacion> informe = new ArrayList<>();
         try {

@@ -48,7 +48,7 @@ public class MySQLProductoDAO implements SystemDAO<Producto> {
         throw new UnsupportedOperationException("Unimplemented method 'selectList'");
     }  
 
-    public List<InformeProdMasRecaudacion> selectProductoConMasRecaudacion() {
+    public InformeProdMasRecaudacion selectProductoConMasRecaudacion() {
         String selectProdMasRecaudacion = "SELECT p.nombre, p.valor, SUM(fp.cantidad * p.valor) AS total_recaudado " +
                                         "FROM producto p " +
                                         "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
@@ -56,13 +56,12 @@ public class MySQLProductoDAO implements SystemDAO<Producto> {
                                         "ORDER BY total_recaudado DESC " +
                                         "LIMIT 1;";
         PreparedStatement ps = null;
-        List<InformeProdMasRecaudacion> informe = new ArrayList<>();
+        InformeProdMasRecaudacion informe = new InformeProdMasRecaudacion();
         try {
             ps = conn.prepareStatement(selectProdMasRecaudacion);
             ResultSet rs = ps.executeQuery(selectProdMasRecaudacion);
             while (rs.next()) {
-                InformeProdMasRecaudacion detail = new InformeProdMasRecaudacion(rs.getString(1), rs.getInt(2), rs.getFloat(3));
-                informe.add(detail);
+                informe = new InformeProdMasRecaudacion(rs.getString(1), rs.getInt(2), rs.getFloat(3));
             }
         } catch (SQLException e) {
             e.printStackTrace();

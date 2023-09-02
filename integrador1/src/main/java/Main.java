@@ -23,9 +23,13 @@ public class Main {
           System.out.println();
           MySQLClienteDAO cliente = (MySQLClienteDAO) systemFactory.getClienteDAO();
           List<InformeClienteMasFacturacion> clientesConMasFacturacion = cliente.selectClientesConMasFacturacion();
-          System.out.println(clientesConMasFacturacion);
+          System.out.println("Lista de clientes con mas facturacion: ");
+          for (InformeClienteMasFacturacion clienteMF : clientesConMasFacturacion) {
+               System.out.println(clienteMF);
+          }
+          System.out.println();
           MySQLProductoDAO producto = (MySQLProductoDAO) systemFactory.getProductoDAO();
-          List<InformeProdMasRecaudacion> ProductoConMasRecaudacion = producto.selectProductoConMasRecaudacion();
+          InformeProdMasRecaudacion ProductoConMasRecaudacion = producto.selectProductoConMasRecaudacion();
           System.out.println(ProductoConMasRecaudacion);
           systemFactory.closeConnection();
      }

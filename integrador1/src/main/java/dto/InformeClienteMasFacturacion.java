@@ -3,7 +3,11 @@ package dto;
 public class InformeClienteMasFacturacion {
     private String nombre;
     private String email;
-    private Float facturacion;
+    private Float facturacion;    
+
+    public InformeClienteMasFacturacion() {
+        super();
+    }
 
     public InformeClienteMasFacturacion(String nombre, String email, Float facturacion) {
         this.nombre = nombre;
@@ -25,6 +29,6 @@ public class InformeClienteMasFacturacion {
 
     @Override
     public String toString() {
-        return "informeCliente [nombre=" + nombre + ", email=" + email + ", facturacion=" + facturacion + "]";
+        return "Cliente: nombre = " + nombre + ", email = " + email + ", facturacion = $ " + facturacion;
     }    
 }
