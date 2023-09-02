@@ -61,7 +61,7 @@ public class MySQLProductoDAO implements SystemDAO<Producto> {
             ps = conn.prepareStatement(selectProdMasRecaudacion);
             ResultSet rs = ps.executeQuery(selectProdMasRecaudacion);
             while (rs.next()) {
-                InformeProdMasRecaudacion detail = new InformeProdMasRecaudacion(rs.getString(0), rs.getInt(1), rs.getFloat(2));
+                InformeProdMasRecaudacion detail = new InformeProdMasRecaudacion(rs.getString(1), rs.getInt(2), rs.getFloat(3));
                 informe.add(detail);
             }
         } catch (SQLException e) {
