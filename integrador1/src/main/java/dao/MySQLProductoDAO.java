@@ -4,13 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import dto.InformeProdMasRecaudacion;
 import entidades.Producto;
 
-public class MySQLProductoDAO implements SystemDAO<Producto> {
+public class MySQLProductoDAO implements ProductoDAO {
 
     private Connection conn;
 

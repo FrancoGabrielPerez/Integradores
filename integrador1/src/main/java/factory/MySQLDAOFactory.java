@@ -8,16 +8,28 @@ import dao.MySQLClienteDAO;
 import dao.MySQLFacturaDAO;
 import dao.MySQLFacturaProductoDAO;
 import dao.MySQLProductoDAO;
-import dao.SystemDAO;
-import entidades.Cliente;
-import entidades.Factura;
-import entidades.FacturaProducto;
-import entidades.Producto;
+import dao.ProductoDAO;
+import dao.ClienteDAO;
+import dao.FacturaDAO;
+import dao.FacturaProductoDAO;
 
 public class MySQLDAOFactory extends DAOFactory {
+    
+    private static MySQLDAOFactory instance = null;
+
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String uri = "jdbc:mysql://localhost:3306/integrador1";
     public static Connection conn;
+
+    private MySQLDAOFactory() {
+    }
+
+    public static synchronized MySQLDAOFactory getInstance() {
+        if (instance == null) {
+            instance = new MySQLDAOFactory();
+        }
+        return instance;
+    }
 
     public static Connection createConnection() { 
         if (conn != null) {
@@ -51,22 +63,22 @@ public class MySQLDAOFactory extends DAOFactory {
     }
 
     @Override
-    public SystemDAO<Factura> getFacturaDAO() {
+    public FacturaDAO getFacturaDAO() {
         return new MySQLFacturaDAO(createConnection());
     }
 
     @Override
-    public SystemDAO<FacturaProducto> getFacturaProductoDAO() {
+    public FacturaProductoDAO getFacturaProductoDAO() {
         return new MySQLFacturaProductoDAO(createConnection());
     }
 
     @Override
-    public SystemDAO<Producto> getProductoDAO() {
+    public ProductoDAO getProductoDAO() {
         return new MySQLProductoDAO(createConnection());
     }
 
     @Override
-    public SystemDAO<Cliente> getClienteDAO() {
+    public ClienteDAO getClienteDAO() {
         return new MySQLClienteDAO(createConnection());
     }     
    

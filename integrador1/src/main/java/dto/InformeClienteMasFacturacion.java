@@ -29,6 +29,6 @@ public class InformeClienteMasFacturacion {
 
     @Override
     public String toString() {
-        return "Cliente: nombre = " + nombre + ", email = " + email + ", facturacion = $ " + facturacion;
+        return "Cliente: nombre = " + nombre + ", Email = " + email + ", Facturacion = $ " + facturacion;
     }    
 }

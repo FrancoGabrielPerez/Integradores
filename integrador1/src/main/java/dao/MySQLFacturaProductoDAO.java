@@ -5,7 +5,7 @@ import java.util.List;
 
 import entidades.FacturaProducto;
 
-public class MySQLFacturaProductoDAO implements SystemDAO<FacturaProducto> {
+public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
 
     private Connection conn;    
 

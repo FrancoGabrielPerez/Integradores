@@ -10,7 +10,7 @@ import java.util.List;
 import dto.InformeClienteMasFacturacion;
 import entidades.Cliente;
 
-public class MySQLClienteDAO implements SystemDAO<Cliente>{
+public class MySQLClienteDAO implements ClienteDAO{
 
     private Connection conn;    
 
@@ -61,15 +61,6 @@ public class MySQLClienteDAO implements SystemDAO<Cliente>{
         List<InformeClienteMasFacturacion> informe = new ArrayList<>();
         try {
             ps = conn.prepareStatement(selectClientesConMasFacturacion);
-            //implement toString() of rs each row in a new line
-            // ResultSet rss = ps.executeQuery(selectClientesConMasFacturacion);
-            // {
-            //     StringBuilder stringBuilder = new StringBuilder();
-            //     while (rss.next()) {
-            //         stringBuilder.append("nombre: ").append(rss.getString(1)).append(", email: ").append(rss.getString(2)).append(", total_facturado: ").append(rss.getFloat(3)).append("\n");
-            //     }
-            //     System.out.println(stringBuilder.toString());
-            // }
             ResultSet rs = ps.executeQuery(selectClientesConMasFacturacion);
             while (rs.next()) {
                 InformeClienteMasFacturacion detail = new InformeClienteMasFacturacion(rs.getString(1), rs.getString(2), rs.getFloat(3));
