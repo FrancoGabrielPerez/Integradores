@@ -29,6 +29,6 @@ public class InformeProdMasRecaudacion {
 
     @Override
     public String toString() {
-        return "Producto con mas recaudacion: nombre = " + nombre + ", cantidad vendida = " + cantidad + ", recaudacion = $" + recaudacion;
+        return "Producto con mas recaudacion: nombre = " + nombre + ", cantidad vendida = " + cantidad + ", recaudacion = $ " + recaudacion;
     }    
 }

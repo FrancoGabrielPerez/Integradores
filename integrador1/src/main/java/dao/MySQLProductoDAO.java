@@ -60,7 +60,7 @@ public class MySQLProductoDAO implements ProductoDAO {
             ps = conn.prepareStatement(selectProdMasRecaudacion);
             ResultSet rs = ps.executeQuery(selectProdMasRecaudacion);
             while (rs.next()) {
-                informe = new InformeProdMasRecaudacion(rs.getString(1), rs.getInt(2), rs.getFloat(3));
+               informe = new InformeProdMasRecaudacion(rs.getString(1), rs.getInt(2), rs.getFloat(3));
             }
         } catch (SQLException e) {
             e.printStackTrace();

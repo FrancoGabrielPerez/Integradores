@@ -22,8 +22,8 @@ public class Main {
           System.out.println("////////////////////////////////////////////");
           System.out.println();
           ProductoDAO producto = systemFactory.getProductoDAO();
-          InformeProdMasRecaudacion ProductoConMasRecaudacion = producto.selectProductoConMasRecaudacion();
-          System.out.println(ProductoConMasRecaudacion);
+          InformeProdMasRecaudacion productoConMasRecaudacion = producto.selectProductoConMasRecaudacion();
+          System.out.println(productoConMasRecaudacion);
           ClienteDAO cliente = systemFactory.getClienteDAO();
           List<InformeClienteMasFacturacion> clientesConMasFacturacion = cliente.selectClientesConMasFacturacion();
           System.out.println();
