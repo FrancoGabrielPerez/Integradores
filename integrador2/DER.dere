@@ -1,0 +1,20 @@
+<DERExt>
+ <Entity y="-147" name="CARRERA" isAssociative="0" subtype="0" width="55" x="267">
+  <Simple pk="1" cant2="0" mult="0" cant1="20" name="id" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="nombre" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+ </Entity>
+ <Entity y="-144" name="ESTUDIANTE" isAssociative="0" subtype="0" width="70" x="-211">
+  <Simple pk="1" cant2="0" mult="0" cant1="20" name="id" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="libreta_universitaria" sk="1" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="dni" sk="1" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="1" cant1="20" name="nombres" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="1" cant1="20" name="apellidos" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="edad" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="genero" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="ciudad_residencia" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+ </Entity>
+ <RBinary firstWeak="0" name1="CARRERA" onUpdate0="restrict" rolename="" max0="N" onUpdate1="restrict" y="-124" x="72" min1="0" dep="0" match1="simple" name0="ESTUDIANTE" max1="N" min0="1" onDelete1="restrict" match0="simple" width="55" onDelete0="restrict" name="INSCRIPTO">
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="antiguedad" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+  <Simple pk="0" cant2="0" mult="0" cant1="20" name="graduado" sk="0" type="integer" cant3="2" null="0" optionSQL="1" parent=""/>
+ </RBinary>
+</DERExt>
