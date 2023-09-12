@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>arqui</groupId>
-  <artifactId>integrador1</artifactId>
+  <artifactId>integrador2</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>integrador1</name>
+  <name>integrador2</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,22 +17,18 @@
   </properties>
 
   <dependencies>
-
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.32</version>
-        </dependency>
-        
+        </dependency>        
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.6.15.Final</version>
-        </dependency>
-
-		
+        </dependency>		
   </dependencies>
 
   <build>
