@@ -14,7 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(indexes = @Index(columnList = "dni, libreta"))
+@Table(indexes ={
+	@Index(name = "idx_dni", columnList = "dni"),
+	@Index(name = "idx_libreta", columnList = "libreta")
+})
 public class Estudiante{
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

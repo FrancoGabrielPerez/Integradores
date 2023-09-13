@@ -17,11 +17,10 @@ public class Estudiante_Carrera {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; */
 	@ManyToOne
-    @JoinColumn(name = "id")
+    @Id
 	private Estudiante estudiante;
 	@ManyToOne
-    
-    @JoinColumn(name = "id")
+    @Id
 	private Carrera carrera;
     @Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
