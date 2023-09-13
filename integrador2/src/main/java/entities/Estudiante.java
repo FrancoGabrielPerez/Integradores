@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -8,13 +9,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(indexes = @Index(columnList = "dni, libreta"))
 public class Estudiante{
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Integer id;
     @Column(name="nombre")
     private String nombre;
     @Column(name="apellido")
@@ -28,8 +32,8 @@ public class Estudiante{
     @Column(name="libreta")
 	private Integer libreta;
 	@Column(name="carrera")
-	@ManyToMany(mappedBy = "estudiantes", fetch = FetchType.LAZY)
-	private List<Carrera> carreras;
+	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
+	private List<Estudiante_Carrera> carreras;
 
     public Estudiante(){
         super();
@@ -42,7 +46,7 @@ public class Estudiante{
 		this.genero = genero;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -78,8 +82,12 @@ public class Estudiante{
 		this.genero = genero;
 	}
 
+	public List<Estudiante_Carrera> getCarreras() {
+		return new LinkedList<>(carreras);
+	}
+
 	@Override
-	public String toString() {
+	public String toString() { //TODO sacar ids
 		return "Estudiante [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", ciudad_residencia="
 				+ ciudad_residencia + ", genero=" + genero + "]";
 	}
