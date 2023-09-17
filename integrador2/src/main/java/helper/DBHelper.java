@@ -25,6 +25,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import repositories.CarreraRepositoryImpl;
 import repositories.EstudianteRepositoryImpl;
+import repositories.EstudianteCarreraRepositoryImpl;
 
 
 import java.nio.file.Path;
@@ -34,11 +35,13 @@ public class DBHelper {
     private EntityManager em;
     private CarreraRepositoryImpl carreraRepo;
     private EstudianteRepositoryImpl estudianteRepo;
+    private EstudianteCarreraRepositoryImpl estudianteCarreraRepo;
 
     public DBHelper(EntityManager em) {
         this.em = em;
         this.carreraRepo = new CarreraRepositoryImpl(em);
         this.estudianteRepo = new EstudianteRepositoryImpl(em);
+        this.estudianteCarreraRepo = new EstudianteCarreraRepositoryImpl(em);
     }    
     
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
@@ -70,15 +73,11 @@ public class DBHelper {
         for(CSVRecord row : getData("estudiantes_carreras.csv")) {
             Estudiante_Carrera estudianteCarrera = new Estudiante_Carrera((Estudiante) em.find(Estudiante.class, Integer.parseInt(row.get(0))), 
                         (Carrera) em.find(Carrera.class, Integer.parseInt(row.get(1))), 
-                        (Timestamp) new Timestamp(row.get(2)), 
-                        (boolean) row.get(3));
-            estudianteRepo.save(estudianteCarrera);
+                        (Timestamp) Timestamp.valueOf(row.get(2)), 
+                        (boolean) Boolean.parseBoolean(row.get(3)));
+            estudianteCarreraRepo.save(estudianteCarrera);
         }
         System.out.println("Relacion Estudantes-Carrera insertadas");
         em.getTransaction().commit();
-    }       
-    
-
-    
-   
+    }        
 }
