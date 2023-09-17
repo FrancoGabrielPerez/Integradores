@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.swing.text.html.parser.Entity;
 
@@ -19,6 +20,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import entities.Carrera;
 import entities.Estudiante;
+import entities.Estudiante_Carrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import repositories.CarreraRepositoryImpl;
@@ -40,8 +42,8 @@ public class DBHelper {
     }    
     
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
-        Path currentWorkingDir = Paths.get("").toAbsolutePath();
-		System.out.println(currentWorkingDir.normalize().toString());
+        // Path currentWorkingDir = Paths.get("").toAbsolutePath();
+		// System.out.println(currentWorkingDir.normalize().toString());
         String path = "src\\main\\resources\\" + archivo;
         Reader in = new FileReader(path);
         String[] header = {};
@@ -65,6 +67,14 @@ public class DBHelper {
             estudianteRepo.save(estudiante);
         }
         System.out.println("Estudiantes insertados");
+        for(CSVRecord row : getData("estudiantes_carreras.csv")) {
+            Estudiante_Carrera estudianteCarrera = new Estudiante_Carrera((Estudiante) em.find(Estudiante.class, Integer.parseInt(row.get(0))), 
+                        (Carrera) em.find(Carrera.class, Integer.parseInt(row.get(1))), 
+                        (Timestamp) new Timestamp(row.get(2)), 
+                        (boolean) row.get(3));
+            estudianteRepo.save(estudianteCarrera);
+        }
+        System.out.println("Relacion Estudantes-Carrera insertadas");
         em.getTransaction().commit();
     }       
     

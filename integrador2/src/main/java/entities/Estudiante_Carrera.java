@@ -25,17 +25,21 @@ public class Estudiante_Carrera {
     @Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
     @Column(name = "esta_graduado")
-	private Boolean graduado;
+	private boolean graduado;	
 
 	public Estudiante_Carrera(){
 		super();
 	}
 
-	public Estudiante_Carrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion) {
+	public Estudiante_Carrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion, boolean esGraduado) {
 		this.estudiante = estudiante;
 		this.carrera = carrera;
         this.fechaInscripcion = fechaInscripcion;
-        this.graduado = false;
+        this.graduado = esGraduado;
+	}
+
+	public Estudiante_Carrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion) {
+		this(estudiante, carrera, fechaInscripcion, false);
 	}
 
 	public Integer getId_estudiante() {
