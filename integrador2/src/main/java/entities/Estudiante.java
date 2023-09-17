@@ -42,11 +42,29 @@ public class Estudiante{
         super();
     }
 
-    public Estudiante(String nombre, String apellido, String ciudad_residencia, String genero) {
+    public Estudiante(String nombre, String apellido, String ciudad_residencia, String genero, Integer dni, Integer libreta) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.ciudad_residencia = ciudad_residencia;
 		this.genero = genero;
+		this.dni = dni;
+		this.libreta = libreta;
+	}
+
+	public Integer getDni() {
+		return dni;
+	}
+
+	public void setDni(Integer dni) {
+		this.dni = dni;
+	}
+
+	public Integer getLibreta() {
+		return libreta;
+	}
+
+	public void setLibreta(Integer libreta) {
+		this.libreta = libreta;
 	}
 
 	public Integer getId() {

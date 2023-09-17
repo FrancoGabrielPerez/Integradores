@@ -14,8 +14,12 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 
 	@Override
 	public Estudiante save(Estudiante entity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'save'");
+		if (entity.getId() == null) {
+            em.persist(entity);
+        } else {
+            entity = em.merge(entity);
+        }
+		return entity;
 	}
 
 	@Override
