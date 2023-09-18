@@ -1,7 +1,9 @@
 package entities;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,15 +19,17 @@ public class Carrera {
     private Integer id;
     @Column
     private String nombre;
-    @OneToMany(mappedBy = "carrera")
-    private List<Estudiante_Carrera> estudiantes;
-   
+	@OneToMany(mappedBy = "carrera")
+    private Set<Estudiante_Carrera> estudiantes;
+
 	public Carrera() {
         super();
+		this.estudiantes = new HashSet<>();
 	}
 
 	public Carrera(String nombre) {
 		this.nombre = nombre;
+		this.estudiantes = new HashSet<>();
 	}
 
 	public Integer getId() {
@@ -42,6 +46,10 @@ public class Carrera {
 
 	public List<Estudiante_Carrera> getEstudiantes() {
 		return new LinkedList<>(estudiantes);
+	}
+
+	public void setEstudiantes(Estudiante_Carrera estudiante) {
+		this.estudiantes.add(estudiante);
 	}
 	
 	@Override

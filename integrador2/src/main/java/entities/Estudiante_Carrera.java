@@ -13,19 +13,27 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Estudiante_Carrera {
-	/* @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; */
-	@ManyToOne
-    @Id
-	private Estudiante estudiante;
-	@ManyToOne
-    @Id
-	private Carrera carrera;
+    private Long id;
+	// @ManyToOne
+    // @Id
+	// private Estudiante estudiante;
+	// @ManyToOne
+    // @Id
+	// private Carrera carrera;
     @Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
     @Column(name = "esta_graduado")
 	private boolean graduado;	
+
+	@ManyToOne
+    @JoinColumn(name = "estudiante_id")
+    private Estudiante estudiante;
+
+    @ManyToOne
+    @JoinColumn(name = "carrera_id")
+    private Carrera carrera;
 
 	public Estudiante_Carrera(){
 		super();

@@ -1,7 +1,9 @@
 package entities;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,10 +16,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(indexes ={
-	@Index(name = "idx_dni", columnList = "dni"),
-	@Index(name = "idx_libreta", columnList = "libreta")
-})
+// @Table(indexes ={
+// 	@Index(name = "idx_dni", columnList = "dni"),
+// 	@Index(name = "idx_libreta", columnList = "libreta")
+// })
 public class Estudiante{
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,6 +28,8 @@ public class Estudiante{
     private String nombre;
     @Column(name="apellido")
     private String apellido;
+	@Column(name="edad")
+	private int edad;
     @Column(name="ciudad_residencia")
     private String ciudad_residencia;
     @Column(name="genero")
@@ -36,19 +40,30 @@ public class Estudiante{
 	private Integer libreta;
 	@Column(name="carrera")
 	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
-	private List<Estudiante_Carrera> carreras;
+    private Set<Estudiante_Carrera> carreras;
 
     public Estudiante(){
         super();
+		this.carreras = new HashSet<>();
     }
 
-    public Estudiante(String nombre, String apellido, String ciudad_residencia, String genero, Integer dni, Integer libreta) {
+    public Estudiante(String nombre, String apellido, int edad, String ciudad_residencia, String genero, Integer dni, Integer libreta) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.ciudad_residencia = ciudad_residencia;
 		this.genero = genero;
 		this.dni = dni;
 		this.libreta = libreta;
+		this.edad = edad;
+		this.carreras = new HashSet<>();
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
 	}
 
 	public Integer getDni() {
@@ -105,6 +120,10 @@ public class Estudiante{
 
 	public List<Estudiante_Carrera> getCarreras() {
 		return new LinkedList<>(carreras);
+	}
+
+	public void setCarreras(Estudiante_Carrera carrera) {
+		this.carreras.add(carrera);
 	}
 
 	@Override
