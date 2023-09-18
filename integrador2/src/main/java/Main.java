@@ -14,12 +14,12 @@ public class Main {
     public static void main (String[] args) {
         ConnectionFactory conn = new ConnectionFactory();
         EntityManager em = conn.createConnection();
-        DBHelper helper = new DBHelper(em);
-        try {
-            helper.populateDB();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // DBHelper helper = new DBHelper(em);
+        // try {
+        //     helper.populateDB();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
 
         em.getTransaction().begin();
 
@@ -43,13 +43,13 @@ public class Main {
         carrRepo.save(carrera);
 
         // Crear una inscripción
-        Estudiante_Carrera inscripcion = new Estudiante_Carrera(estudiante, carrera, Timestamp.valueOf("2023-10-08 12:00:00"), false);
+        Estudiante_Carrera inscripcion = new Estudiante_Carrera(null, carrera, Timestamp.valueOf("1965-10-08 12:00:00"), false);
         estCarrRepo.save(inscripcion);
         System.out.println(inscripcion.getAntiguedad());
 
         // Establecer las relaciones        
-        estudiante.setCarreras(inscripcion);
-        carrera.setEstudiantes(inscripcion);
+        // estudiante.setCarreras(inscripcion);
+        // carrera.setEstudiantes(inscripcion);
 
         
 
