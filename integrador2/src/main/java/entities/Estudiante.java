@@ -40,7 +40,7 @@ public class Estudiante{
 	private Integer libreta;
 	@Column(name="carrera")
 	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
-    private Set<Estudiante_Carrera> carreras;
+    private Set<EstudianteCarrera> carreras;
 
     public Estudiante(){
         super();
@@ -118,11 +118,11 @@ public class Estudiante{
 		this.genero = genero;
 	}
 
-	public List<Estudiante_Carrera> getCarreras() {
+	public List<EstudianteCarrera> getCarreras() {
 		return new LinkedList<>(carreras);
 	}
 
-	public void setCarreras(Estudiante_Carrera carrera) {
+	public void setCarreras(EstudianteCarrera carrera) {
 		this.carreras.add(carrera);
 	}
 

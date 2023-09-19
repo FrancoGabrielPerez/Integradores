@@ -5,23 +5,12 @@ import java.util.Calendar;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Estudiante_Carrera {
-	// @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // private Long id;
-	// @ManyToOne
-    // @Id
-	// private Estudiante estudiante;
-	// @ManyToOne
-    // @Id
-	// private Carrera carrera;
+public class EstudianteCarrera {
     @Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
     @Column(name = "esta_graduado")
@@ -37,11 +26,11 @@ public class Estudiante_Carrera {
     @JoinColumn(name = "carrera_id")
     private Carrera carrera;
 
-	public Estudiante_Carrera(){
+	public EstudianteCarrera(){
 		super();
 	}
 
-	public Estudiante_Carrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion, boolean esGraduado) {
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion, boolean esGraduado) {
 		this.estudiante = estudiante;
 		this.carrera = carrera;
         this.fechaInscripcion = fechaInscripcion;
@@ -50,7 +39,7 @@ public class Estudiante_Carrera {
         // carrera.setEstudiantes(this);
 	}
 
-	public Estudiante_Carrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion) {
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion) {
 		this(estudiante, carrera, fechaInscripcion, false);
 	}
 

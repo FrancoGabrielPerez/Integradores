@@ -3,7 +3,7 @@ import java.sql.Timestamp;
 
 import entities.Carrera;
 import entities.Estudiante;
-import entities.Estudiante_Carrera;
+import entities.EstudianteCarrera;
 import helper.DBHelper;
 import jakarta.persistence.EntityManager;
 import repositories.CarreraRepositoryImpl;
@@ -43,7 +43,7 @@ public class Main {
         carrRepo.save(carrera);
 
         // Crear una inscripción
-        Estudiante_Carrera inscripcion = new Estudiante_Carrera(null, carrera, Timestamp.valueOf("1965-10-08 12:00:00"), false);
+        EstudianteCarrera inscripcion = new EstudianteCarrera(null, carrera, Timestamp.valueOf("1965-10-08 12:00:00"), false);
         estCarrRepo.save(inscripcion);
         System.out.println(inscripcion.getAntiguedad());
 

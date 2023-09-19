@@ -20,7 +20,7 @@ public class Carrera {
     @Column
     private String nombre;
 	@OneToMany(mappedBy = "carrera")
-    private Set<Estudiante_Carrera> estudiantes;
+    private Set<EstudianteCarrera> estudiantes;
 
 	public Carrera() {
         super();
@@ -44,11 +44,11 @@ public class Carrera {
 		this.nombre = nombre;
 	}
 
-	public List<Estudiante_Carrera> getEstudiantes() {
+	public List<EstudianteCarrera> getEstudiantes() {
 		return new LinkedList<>(estudiantes);
 	}
 
-	public void setEstudiantes(Estudiante_Carrera estudiante) {
+	public void setEstudiantes(EstudianteCarrera estudiante) {
 		this.estudiantes.add(estudiante);
 	}
 	

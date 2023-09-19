@@ -11,7 +11,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import entities.Carrera;
 import entities.Estudiante;
-import entities.Estudiante_Carrera;
+import entities.EstudianteCarrera;
 import jakarta.persistence.EntityManager;
 import repositories.CarreraRepositoryImpl;
 import repositories.EstudianteRepositoryImpl;
@@ -57,7 +57,7 @@ public class DBHelper {
         }
         System.out.println("Estudiantes insertados");
         for(CSVRecord row : getData("estudiantes_carreras.csv")) {
-            Estudiante_Carrera estudianteCarrera = new Estudiante_Carrera((Estudiante) em.find(Estudiante.class, Integer.parseInt(row.get(0))), 
+            EstudianteCarrera estudianteCarrera = new EstudianteCarrera((Estudiante) em.find(Estudiante.class, Integer.parseInt(row.get(0))), 
                         (Carrera) em.find(Carrera.class, Integer.parseInt(row.get(1))), 
                         (Timestamp) Timestamp.valueOf(row.get(2)), 
                         (boolean) Boolean.parseBoolean(row.get(3)));
