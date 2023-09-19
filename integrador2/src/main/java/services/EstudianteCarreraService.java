@@ -8,9 +8,11 @@ import java.util.Date;
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
+import dtos.EstudianteDTO;
 import dtos.InformeCarreraCantEstudiantes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import repositories.EstudianteCarreraRepositoryImpl;
 
 public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
@@ -31,12 +33,15 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
     }
 
     public List<InformeCarreraCantEstudiantes> getCarrerasPorCantEstudiantes() {
-        List<InformeCarreraCantEstudiantes> res = new ArrayList<>();
-        String jpql = "SELECT c.nombre, COUNT(DISTINCT ec.estudiante) AS cantidad_estudiantes " +
+        em.getTransaction().begin();
+        String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantes(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
                         "FROM EstudianteCarrera ec " +
                         "JOIN ec.carrera c " +
                         "GROUP BY c.nombre " +
-                        "ORDER BY cantidad_estudiantes DESC";
-        Query query = em.createQuery(jpql);
+                        "ORDER BY cantEstudiantes DESC";
+        TypedQuery<InformeCarreraCantEstudiantes> query = em.createQuery(jpql, InformeCarreraCantEstudiantes.class);
+		List<InformeCarreraCantEstudiantes> res = query.getResultList();
+        em.getTransaction().commit();
+        return res;
     } 
 }

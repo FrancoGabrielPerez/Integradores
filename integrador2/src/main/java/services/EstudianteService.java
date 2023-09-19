@@ -6,7 +6,6 @@ import java.util.List;
 import dtos.EstudianteDTO;
 import entities.Estudiante;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import repositories.EstudianteRepositoryImpl;
 
@@ -20,29 +19,22 @@ public class EstudianteService extends EstudianteRepositoryImpl{
     public List<EstudianteDTO> getAllEstudiantesOrderByNombre(){
         this.em.getTransaction().begin();
 
-		List<Estudiante> aux;
-        List<EstudianteDTO> res = new ArrayList<EstudianteDTO>();
-        String jpql = "SELECT p FROM Estudiante p ORDER BY p.nombre LIMIT 50";
-        TypedQuery<Estudiante> query = em.createQuery(jpql, Estudiante.class);
-		aux = query.getResultList();
+        String jpql = "SELECT NEW dtos.EstudianteDTO(p.nombre,p.apellido,p.edad,p.ciudad_residencia,p.genero,p.dni,p.libreta) FROM Estudiante p ORDER BY p.nombre LIMIT 50";
+        TypedQuery<EstudianteDTO> query = em.createQuery(jpql, EstudianteDTO.class);
+		List<EstudianteDTO> res = query.getResultList();
 		this.em.getTransaction().commit();
-
-        for (Estudiante es : aux) {
-            res.add(new EstudianteDTO(es.getNombre(), es.getApellido(), es.getEdad(), es.getCiudad_residencia(), es.getGenero(),
-            es.getDni(), es.getLibreta()));
-        }
+        
         return res;
     }
     
     public EstudianteDTO getEstudianteByLibreta(int libreta){
         this.em.getTransaction().begin();
-        String jpql = "SELECT p FROM Estudiante p WHERE p.libreta = ?1";
-        TypedQuery<Estudiante> query = em.createQuery(jpql, Estudiante.class);
+        String jpql = "SELECT NEW dtos.EstudianteDTO(p.nombre,p.apellido,p.edad,p.ciudad_residencia,p.genero,p.dni,p.libreta) FROM Estudiante p WHERE p.libreta = ?1";
+        TypedQuery<EstudianteDTO> query = em.createQuery(jpql, EstudianteDTO.class);
         query.setParameter(1, libreta);
-		Estudiante es = query.getSingleResult();
+		EstudianteDTO res = query.getSingleResult();
         this.em.getTransaction().commit();
-        EstudianteDTO res = new EstudianteDTO(es.getNombre(), es.getApellido(), es.getEdad(), es.getCiudad_residencia(), es.getGenero(),
-            es.getDni(), es.getLibreta());
+
         return res;
     } 
     

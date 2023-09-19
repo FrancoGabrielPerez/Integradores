@@ -2,6 +2,7 @@
 import java.sql.Timestamp;
 
 import dtos.EstudianteDTO;
+import dtos.InformeCarreraCantEstudiantes;
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
@@ -11,6 +12,7 @@ import jakarta.persistence.Query;
 import repositories.CarreraRepositoryImpl;
 import repositories.EstudianteCarreraRepositoryImpl;
 import repositories.EstudianteRepositoryImpl;
+import services.EstudianteCarreraService;
 import services.EstudianteService;
 
 public class Main {
@@ -67,6 +69,10 @@ public class Main {
             System.out.println(est.getNombre());
         }
         System.out.println(es.getEstudianteByLibreta(25655));
+
+        EstudianteCarreraService ec = new EstudianteCarreraService(em);
+        for(InformeCarreraCantEstudiantes info : ec.getCarrerasPorCantEstudiantes())
+            System.out.println(info);
 
         conn.closeConnection(em);
     }

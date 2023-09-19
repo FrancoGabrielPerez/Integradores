@@ -4,6 +4,9 @@ public class InformeCarreraCantEstudiantes {
     private String nombre;
     private int cantEstudiantes;
 
+    public InformeCarreraCantEstudiantes() {
+        super();
+    }
     public InformeCarreraCantEstudiantes(String nombre, int cantEstudiantes) {
         this.nombre = nombre;
         this.cantEstudiantes = cantEstudiantes;
