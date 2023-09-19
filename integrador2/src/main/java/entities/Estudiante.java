@@ -125,11 +125,4 @@ public class Estudiante{
 	public void setCarreras(EstudianteCarrera carrera) {
 		this.carreras.add(carrera);
 	}
-
-	@Override
-	public String toString() { //TODO sacar ids
-		return "Estudiante [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", ciudad_residencia="
-				+ ciudad_residencia + ", genero=" + genero + "]";
-	}
-
 }

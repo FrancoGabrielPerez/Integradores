@@ -7,7 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
-	EntityManager em;
+	protected EntityManager em;
 
 	public EstudianteRepositoryImpl(EntityManager em) {
 		this.em = em;
@@ -15,11 +15,13 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 
 	@Override
 	public Estudiante save(Estudiante entity) {
+		em.getTransaction().begin();
 		if (entity.getId() == null) {
             em.persist(entity);
         } else {
             entity = em.merge(entity);
         }
+		em.getTransaction().commit();
 		return entity;
 	}
 
@@ -27,6 +29,7 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 	public Estudiante findById(int id) {
 		em.getTransaction().begin();
 		Estudiante aux = em.find(Estudiante.class, id);
+		System.out.println(aux);
 		em.getTransaction().commit();
 		return aux;
 
@@ -36,7 +39,7 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 	public List<Estudiante> findAll() {
 		em.getTransaction().begin();
 		List<Estudiante> result;
-        String jpql = "SELECT p FROM Equipo p";
+        String jpql = "SELECT e FROM Estudiante e";
         TypedQuery<Estudiante> res = em.createQuery(jpql, Estudiante.class);
 		result = res.getResultList();
 		em.getTransaction().commit();
@@ -50,7 +53,7 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
             em.remove(entity);
         else        
             em.merge(entity);
-		em.getTransaction().begin();
+		em.getTransaction().commit();
 	}
 	
 }

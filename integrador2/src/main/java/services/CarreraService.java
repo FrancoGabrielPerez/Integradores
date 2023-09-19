@@ -1,5 +1,7 @@
 package services;
 
+import entities.Carrera;
+import entities.Estudiante;
 import jakarta.persistence.EntityManager;
 import repositories.CarreraRepositoryImpl;
 

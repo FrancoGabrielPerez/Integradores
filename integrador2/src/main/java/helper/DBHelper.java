@@ -8,11 +8,13 @@ import java.sql.Timestamp;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.hibernate.query.NativeQuery;
 
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import repositories.CarreraRepositoryImpl;
 import repositories.EstudianteRepositoryImpl;
 import repositories.EstudianteCarreraRepositoryImpl;
@@ -32,7 +34,7 @@ public class DBHelper {
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
         // Path currentWorkingDir = Paths.get("").toAbsolutePath();
 		// System.out.println(currentWorkingDir.normalize().toString());
-        String path = "integrador2\\src\\main\\resources\\" + archivo;
+        String path = "src\\main\\resources\\" + archivo;
         Reader in = new FileReader(path);
         String[] header = {};
         CSVParser csvParser = CSVFormat.EXCEL.builder().setHeader(header).build().parse(in);
@@ -42,7 +44,7 @@ public class DBHelper {
     }
 
     public void populateDB() throws Exception {
-        em.getTransaction().begin();
+        
         System.out.println("Populating DB...");
         for(CSVRecord row : getData("carreras.csv")) {
             Carrera carrera = new Carrera((String) row.get(0));
@@ -61,9 +63,10 @@ public class DBHelper {
                         (Carrera) em.find(Carrera.class, Integer.parseInt(row.get(1))), 
                         (Timestamp) Timestamp.valueOf(row.get(2)), 
                         (boolean) Boolean.parseBoolean(row.get(3)));
+           // System.out.println(estudianteCarrera.getId_estudiante());
             estudianteCarreraRepo.save(estudianteCarrera);
         }
         System.out.println("Relacion Estudantes-Carrera insertadas");
-        em.getTransaction().commit();
+        //em.getTransaction().commit();
     }        
 }

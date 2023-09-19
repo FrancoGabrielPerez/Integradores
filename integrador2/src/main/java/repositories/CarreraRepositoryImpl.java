@@ -15,11 +15,13 @@ public class CarreraRepositoryImpl implements EntityRepository<Carrera> {
 
 	@Override
 	public Carrera save(Carrera entity) {
+		em.getTransaction().begin();
 		if (entity.getId() == null) {
             em.persist(entity);
         } else {
             entity = em.merge(entity);
         }
+		em.getTransaction().commit();
 		return entity;
 	}
 
@@ -36,7 +38,7 @@ public class CarreraRepositoryImpl implements EntityRepository<Carrera> {
 	public List<Carrera> findAll() {
 		em.getTransaction().begin();
 		List<Carrera> result;
-        String jpql = "SELECT p FROM Equipo p";
+        String jpql = "SELECT c FROM Carrera c";
         TypedQuery<Carrera> res = em.createQuery(jpql, Carrera.class);
 		result = res.getResultList();
 		em.getTransaction().commit();
@@ -50,7 +52,7 @@ public class CarreraRepositoryImpl implements EntityRepository<Carrera> {
             em.remove(entity);
         else        
             em.merge(entity);
-		em.getTransaction().begin();
+		em.getTransaction().commit();
 	}
 
 }

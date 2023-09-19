@@ -8,8 +8,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "estudiante_carrera")
 public class EstudianteCarrera {
     @Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
@@ -60,12 +62,4 @@ public class EstudianteCarrera {
 		fechaInscripcion.setTimeInMillis(this.fechaInscripcion.getTime());
 		return Calendar.getInstance().get(Calendar.YEAR) - fechaInscripcion.get(Calendar.YEAR);
 	}
-
-	@Override
-	public String toString() { //TODO sacar ids
-		return "Estudiante_Carrera [id_estudiante=" + estudiante.getId() + ", id_carrera=" + carrera.getId()
-				+ ", fechaInscripcion=" + fechaInscripcion + ", graduado=" + graduado + "]";
-	}
-
-	
 }

@@ -31,14 +31,13 @@ public class EstudianteCarreraRepositoryImpl implements EntityRepository<Estudia
 		EstudianteCarrera aux = em.find(EstudianteCarrera.class, id);
 		em.getTransaction().commit();
 		return aux;
-
 	}
 
 	@Override
 	public List<EstudianteCarrera> findAll() {
 		em.getTransaction().begin();
 		List<EstudianteCarrera> result;
-        String jpql = "SELECT p FROM Equipo p";
+        String jpql = "SELECT ec FROM EstudianteCarrera ec";
         TypedQuery<EstudianteCarrera> res = em.createQuery(jpql, EstudianteCarrera.class);
 		result = res.getResultList();
 		em.getTransaction().commit();
@@ -52,6 +51,6 @@ public class EstudianteCarreraRepositoryImpl implements EntityRepository<Estudia
             em.remove(entity);
         else        
             em.merge(entity);
-		em.getTransaction().begin();
+		em.getTransaction().commit();
 	}	
 }
