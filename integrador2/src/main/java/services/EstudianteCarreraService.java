@@ -13,20 +13,13 @@ import jakarta.persistence.TypedQuery;
 import repositories.EstudianteCarreraRepositoryImpl;
 
 public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
-    private EstudianteCarreraRepositoryImpl inscripcion;
+    
     private EntityManager em;
 
     public EstudianteCarreraService(EntityManager em) {
         super(em);
         this.em = em;
-        this.inscripcion = new EstudianteCarreraRepositoryImpl(em);
-    }    
-
-    public void matricular(Estudiante e, Carrera c) {
-        Date hoy = new Date();
-        EstudianteCarrera nuevo = new EstudianteCarrera(e, c, (Timestamp) hoy);
-        this.inscripcion.save(nuevo);
-    }
+    }        
 
     public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
         em.getTransaction().begin();

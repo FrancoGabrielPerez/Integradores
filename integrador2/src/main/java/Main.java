@@ -12,6 +12,7 @@ import jakarta.persistence.Query;
 import repositories.CarreraRepositoryImpl;
 import repositories.EstudianteCarreraRepositoryImpl;
 import repositories.EstudianteRepositoryImpl;
+import services.CarreraService;
 import services.EstudianteCarreraService;
 import services.EstudianteService;
 
@@ -19,20 +20,20 @@ public class Main {
     public static void main (String[] args) {
         ConnectionFactory conn = new ConnectionFactory();
         EntityManager em = conn.createConnection();
-        em.getTransaction().begin();
-        String sql = "DROP DATABASE IF EXISTS integrador2; ";
-        Query nq = em.createNativeQuery(sql);
-        nq.executeUpdate();
-        em.getTransaction().commit();
-        conn.closeConnection(em);
-        conn = new ConnectionFactory();
-        em = conn.createConnection();
-        DBHelper helper = new DBHelper(em);
-        try {
-            helper.populateDB();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // em.getTransaction().begin();
+        // String sql = "DROP DATABASE IF EXISTS integrador2; ";
+        // Query nq = em.createNativeQuery(sql);
+        // nq.executeUpdate();
+        // em.getTransaction().commit();
+        // conn.closeConnection(em);
+        // conn = new ConnectionFactory();
+        // em = conn.createConnection();
+        // DBHelper helper = new DBHelper(em);
+        // try {
+        //     helper.populateDB();
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
 
         //em.getTransaction().begin();
 
@@ -70,9 +71,16 @@ public class Main {
         // }
         // System.out.println(es.getEstudianteByLibreta(25655));
 
-        EstudianteCarreraService ec = new EstudianteCarreraService(em);
-        for(InformeCarreraCantEstudiantesDTO info : ec.getCarrerasPorCantEstudiantes())
-            System.out.println(info);
+        // EstudianteCarreraService ec = new EstudianteCarreraService(em);
+        // for(InformeCarreraCantEstudiantesDTO info : ec.getCarrerasPorCantEstudiantes())
+        //     System.out.println(info);
+
+        EstudianteService es = new EstudianteService(em);
+        Estudiante prueba = new Estudiante("Jose", "Perez", 33, "Tandil", "Male", 45000000, 20500);
+        es.save(prueba);
+        CarreraService cs = new CarreraService(em);  
+        cs.matricular(prueba, "Librarian");
+
 
         conn.closeConnection(em);
     }

@@ -3,6 +3,8 @@ package services;
 import java.util.List;
 
 import dtos.EstudianteDTO;
+import entities.Carrera;
+import entities.Estudiante;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import repositories.EstudianteRepositoryImpl;
@@ -11,7 +13,7 @@ public class EstudianteService extends EstudianteRepositoryImpl {
     public EstudianteService(EntityManager em) {
         super(em);
     }
-    
+
     public List<EstudianteDTO> getAllEstudiantesOrderByNombre() {
         this.em.getTransaction().begin();
         String jpql = "SELECT NEW dtos.EstudianteDTO(p.nombre,p.apellido,p.edad,p.ciudad_residencia,p.genero,p.dni,p.libreta) " +
