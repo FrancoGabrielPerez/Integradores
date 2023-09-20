@@ -16,11 +16,11 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 	@Override
 	public Estudiante save(Estudiante entity) {
 		em.getTransaction().begin();
-		if (entity.getId() == null) {
-            em.persist(entity);
-        } else {
-            entity = em.merge(entity);
-        }
+		if (entity.getLibreta() == null) {
+			em.persist(entity);
+		} else {
+			entity = em.merge(entity);
+		}
 		em.getTransaction().commit();
 		return entity;
 	}
@@ -39,20 +39,20 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 	public List<Estudiante> findAll() {
 		em.getTransaction().begin();
 		List<Estudiante> result;
-        String jpql = "SELECT e FROM Estudiante e";
-        TypedQuery<Estudiante> res = em.createQuery(jpql, Estudiante.class);
+		String jpql = "SELECT e FROM Estudiante e";
+		TypedQuery<Estudiante> res = em.createQuery(jpql, Estudiante.class);
 		result = res.getResultList();
 		em.getTransaction().commit();
-        return result;
+		return result;
 	}
 
 	@Override
 	public void delete(Estudiante entity) {
 		em.getTransaction().begin();
 		if (em.contains(entity))
-            em.remove(entity);
-        else        
-            em.merge(entity);
+			em.remove(entity);
+		else        
+			em.merge(entity);
 		em.getTransaction().commit();
 	}
 	

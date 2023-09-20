@@ -7,20 +7,20 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 public class CarreraRepositoryImpl implements EntityRepository<Carrera> {
-    private EntityManager em;
+	private EntityManager em;
 
-    public CarreraRepositoryImpl(EntityManager em) {
-        this.em = em;
-    }
+	public CarreraRepositoryImpl(EntityManager em) {
+		this.em = em;
+	}
 
 	@Override
 	public Carrera save(Carrera entity) {
 		em.getTransaction().begin();
 		if (entity.getId() == null) {
-            em.persist(entity);
-        } else {
-            entity = em.merge(entity);
-        }
+			em.persist(entity);
+		} else {
+			entity = em.merge(entity);
+		}
 		em.getTransaction().commit();
 		return entity;
 	}
@@ -38,20 +38,20 @@ public class CarreraRepositoryImpl implements EntityRepository<Carrera> {
 	public List<Carrera> findAll() {
 		em.getTransaction().begin();
 		List<Carrera> result;
-        String jpql = "SELECT c FROM Carrera c";
-        TypedQuery<Carrera> res = em.createQuery(jpql, Carrera.class);
+		String jpql = "SELECT c FROM Carrera c";
+		TypedQuery<Carrera> res = em.createQuery(jpql, Carrera.class);
 		result = res.getResultList();
 		em.getTransaction().commit();
-        return result;
+		return result;
 	}
 
 	@Override
 	public void delete(Carrera entity) {
 		em.getTransaction().begin();
 		if (em.contains(entity))
-            em.remove(entity);
-        else        
-            em.merge(entity);
+			em.remove(entity);
+		else        
+			em.merge(entity);
 		em.getTransaction().commit();
 	}
 

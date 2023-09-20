@@ -1,36 +1,46 @@
 package services;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Date;
 
-import entities.Carrera;
-import entities.Estudiante;
-import entities.EstudianteCarrera;
+import dtos.EstudianteDTO;
 import dtos.InformeCarreraCantEstudiantesDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import repositories.EstudianteCarreraRepositoryImpl;
 
 public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
-    
-    private EntityManager em;
+	
+	private EntityManager em;
 
-    public EstudianteCarreraService(EntityManager em) {
-        super(em);
-        this.em = em;
-    }        
+	public EstudianteCarreraService(EntityManager em) {
+		super(em);
+		this.em = em;
+	}        
 
-    public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
-        em.getTransaction().begin();
-        String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantesDTO(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
-                        "FROM EstudianteCarrera ec " +
-                        "JOIN ec.carrera c " +
-                        "GROUP BY c.nombre " +
-                        "ORDER BY cantEstudiantes DESC";
-        TypedQuery<InformeCarreraCantEstudiantesDTO> query = em.createQuery(jpql, InformeCarreraCantEstudiantesDTO.class);
+	public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
+		em.getTransaction().begin();
+		String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantesDTO(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
+						"FROM EstudianteCarrera ec " +
+						"JOIN ec.carrera c " +
+						"GROUP BY ec.carrera " +
+						"ORDER BY cantEstudiantes DESC";
+		TypedQuery<InformeCarreraCantEstudiantesDTO> query = em.createQuery(jpql, InformeCarreraCantEstudiantesDTO.class);
 		List<InformeCarreraCantEstudiantesDTO> res = query.getResultList();
-        em.getTransaction().commit();
-        return res;
-    } 
+		em.getTransaction().commit();
+		return res;
+	} 
+
+	public List<EstudianteDTO> getListEstudiantePorCiudadResidendcia(String ciudad, String carrera) {
+	    em.getTransaction().begin();
+	    String jpqlf = "SELECT NEW dtos.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.libreta) " +
+	                     "FROM Estudiante e " +
+	                    "WHERE e.ciudadResidencia = :ciudad " +
+	                    "AND e.id IN (SELECT ec.estudiante.id FROM Carrera c JOIN c.estudiantes ec WHERE c.nombre = :carrera)";
+	    TypedQuery<EstudianteDTO> query = em.createQuery(jpqlf, EstudianteDTO.class);
+	    query.setParameter("ciudad", ciudad);
+	    query.setParameter("carrera", carrera);
+	    List<EstudianteDTO> informe = query.getResultList();
+	    em.getTransaction().commit();
+		return informe;
+	}
 }

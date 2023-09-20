@@ -8,49 +8,42 @@ import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(indexes ={
-	@Index(name = "idx_dni", columnList = "dni"),
-	@Index(name = "idx_libreta", columnList = "libreta")
-})
+@Table(indexes ={@Index(name = "idx_dni", columnList = "dni")})
 public class Estudiante{
-    @Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
-    @Column(name="nombre")
-    private String nombre;
-    @Column(name="apellido")
-    private String apellido;
+	@Column(name="nombre")
+	private String nombre;
+	@Column(name="apellido")
+	private String apellido;
 	@Column(name="edad")
 	private int edad;
-    @Column(name="ciudad_residencia")
-    private String ciudad_residencia;
-    @Column(name="genero")
-    private String genero;
-    @Column(name="dni")
+	@Column(name="ciudad_residencia")
+	private String ciudadResidencia;
+	@Column(name="genero")
+	private String genero;
+	@Column(name="dni")
 	private Integer dni;
-    @Column(name="libreta")
+	@Id
+	@Column(name="libreta")
 	private Integer libreta;
 	@Column(name="carrera")
 	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
-    private Set<EstudianteCarrera> carreras;
+	private Set<EstudianteCarrera> carreras;
 
-    public Estudiante(){
-        super();
+	public Estudiante(){
+		super();
 		this.carreras = new HashSet<>();
-    }
+	}
 
-    public Estudiante(String nombre, String apellido, int edad, String ciudad_residencia, String genero, Integer dni, Integer libreta) {
+	public Estudiante(String nombre, String apellido, int edad, String ciudad_residencia, String genero, Integer dni, Integer libreta) {
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.ciudad_residencia = ciudad_residencia;
+		this.ciudadResidencia = ciudad_residencia;
 		this.genero = genero;
 		this.dni = dni;
 		this.libreta = libreta;
@@ -82,10 +75,6 @@ public class Estudiante{
 		this.libreta = libreta;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
 	public String getNombre() {
 		return nombre;
 	}
@@ -95,7 +84,7 @@ public class Estudiante{
 	}
 
 	public String getCiudad_residencia() {
-		return ciudad_residencia;
+		return ciudadResidencia;
 	}
 
 	public String getGenero() {
@@ -111,7 +100,7 @@ public class Estudiante{
 	}
 
 	public void setCiudad_residencia(String ciudad_residencia) {
-		this.ciudad_residencia = ciudad_residencia;
+		this.ciudadResidencia = ciudad_residencia;
 	}
 
 	public void setGenero(String genero) {

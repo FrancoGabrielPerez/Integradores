@@ -14,16 +14,16 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Carrera {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column
-    private String nombre;
+	private Integer id;
+	@Column
+	private String nombre;
 	@OneToMany(mappedBy = "carrera")
-    private Set<EstudianteCarrera> estudiantes;
+	private Set<EstudianteCarrera> estudiantes;
 
 	public Carrera() {
-        super();
+		super();
 		this.estudiantes = new HashSet<>();
 	}
 
