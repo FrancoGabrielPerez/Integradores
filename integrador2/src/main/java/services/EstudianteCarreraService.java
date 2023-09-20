@@ -1,17 +1,14 @@
 package services;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
-import dtos.EstudianteDTO;
-import dtos.InformeCarreraCantEstudiantes;
+import dtos.InformeCarreraCantEstudiantesDTO;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import repositories.EstudianteCarreraRepositoryImpl;
 
@@ -23,8 +20,7 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
         super(em);
         this.em = em;
         this.inscripcion = new EstudianteCarreraRepositoryImpl(em);
-    }
-    
+    }    
 
     public void matricular(Estudiante e, Carrera c) {
         Date hoy = new Date();
@@ -32,15 +28,15 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
         this.inscripcion.save(nuevo);
     }
 
-    public List<InformeCarreraCantEstudiantes> getCarrerasPorCantEstudiantes() {
+    public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
         em.getTransaction().begin();
-        String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantes(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
+        String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantesDTO(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
                         "FROM EstudianteCarrera ec " +
                         "JOIN ec.carrera c " +
                         "GROUP BY c.nombre " +
                         "ORDER BY cantEstudiantes DESC";
-        TypedQuery<InformeCarreraCantEstudiantes> query = em.createQuery(jpql, InformeCarreraCantEstudiantes.class);
-		List<InformeCarreraCantEstudiantes> res = query.getResultList();
+        TypedQuery<InformeCarreraCantEstudiantesDTO> query = em.createQuery(jpql, InformeCarreraCantEstudiantesDTO.class);
+		List<InformeCarreraCantEstudiantesDTO> res = query.getResultList();
         em.getTransaction().commit();
         return res;
     } 

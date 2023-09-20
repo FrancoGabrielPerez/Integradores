@@ -34,7 +34,7 @@ public class DBHelper {
     private Iterable<CSVRecord> getData(String archivo) throws IOException {
         // Path currentWorkingDir = Paths.get("").toAbsolutePath();
 		// System.out.println(currentWorkingDir.normalize().toString());
-        String path = "src\\main\\resources\\" + archivo;
+        String path = "integrador2\\src\\main\\resources\\" + archivo;
         Reader in = new FileReader(path);
         String[] header = {};
         CSVParser csvParser = CSVFormat.EXCEL.builder().setHeader(header).build().parse(in);

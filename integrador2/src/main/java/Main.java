@@ -2,7 +2,7 @@
 import java.sql.Timestamp;
 
 import dtos.EstudianteDTO;
-import dtos.InformeCarreraCantEstudiantes;
+import dtos.InformeCarreraCantEstudiantesDTO;
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
@@ -64,14 +64,14 @@ public class Main {
         // estudiante.setCarreras(inscripcion);
         // carrera.setEstudiantes(inscripcion);
 
-        EstudianteService es = new EstudianteService(em);
-        for(EstudianteDTO est : es.getAllEstudiantesOrderByNombre()){
-            System.out.println(est.getNombre());
-        }
-        System.out.println(es.getEstudianteByLibreta(25655));
+        // EstudianteService es = new EstudianteService(em);
+        // for(EstudianteDTO est : es.getAllEstudiantesOrderByNombre()){
+        //     System.out.println(est.getNombre());
+        // }
+        // System.out.println(es.getEstudianteByLibreta(25655));
 
         EstudianteCarreraService ec = new EstudianteCarreraService(em);
-        for(InformeCarreraCantEstudiantes info : ec.getCarrerasPorCantEstudiantes())
+        for(InformeCarreraCantEstudiantesDTO info : ec.getCarrerasPorCantEstudiantes())
             System.out.println(info);
 
         conn.closeConnection(em);

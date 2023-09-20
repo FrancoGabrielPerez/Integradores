@@ -1,13 +1,10 @@
 package dtos;
 
-public class InformeCarreraCantEstudiantes {
+public class InformeCarreraCantEstudiantesDTO {
     private String nombre;
-    private int cantEstudiantes;
-
-    public InformeCarreraCantEstudiantes() {
-        super();
-    }
-    public InformeCarreraCantEstudiantes(String nombre, int cantEstudiantes) {
+    private Long cantEstudiantes;
+    
+    public InformeCarreraCantEstudiantesDTO(String nombre, Long cantEstudiantes) {
         this.nombre = nombre;
         this.cantEstudiantes = cantEstudiantes;
     }
@@ -16,7 +13,7 @@ public class InformeCarreraCantEstudiantes {
         return nombre;
     }
 
-    public int getCantEstudiantes() {
+    public Long getCantEstudiantes() {
         return cantEstudiantes;
     }
 
