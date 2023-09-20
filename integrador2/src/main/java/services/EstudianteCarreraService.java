@@ -43,4 +43,25 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 	    em.getTransaction().commit();
 		return informe;
 	}
+
+	public List<String> getGeneros() {
+		em.getTransaction().begin();
+		String jpql = "SELECT DISTINCT e.genero FROM Estudiante e";
+		TypedQuery<String> query = em.createQuery(jpql, String.class);
+		List<String> res = query.getResultList();
+		em.getTransaction().commit();
+		return res;
+	}
+
+	public List<EstudianteDTO> getEstudiantesPorGenero(String genero) {
+		em.getTransaction().begin();
+		String jpql = "SELECT NEW dtos.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.libreta) " +
+						"FROM Estudiante e " +
+						"WHERE e.genero = :genero";
+		TypedQuery<EstudianteDTO> query = em.createQuery(jpql, EstudianteDTO.class);
+		query.setParameter("genero", genero);
+		List<EstudianteDTO> res = query.getResultList();
+		em.getTransaction().commit();
+		return res;
+	}
 }

@@ -1,5 +1,7 @@
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Scanner;
 
 import dtos.EstudianteDTO;
 import dtos.InformeCarreraCantEstudiantesDTO;
@@ -85,9 +87,32 @@ public class Main {
 		// CarreraService cs = new CarreraService(em);  
 		// cs.matricular(prueba, "Librarian");
 
+		// Inciso 2)e
+		e(em);
+
 		EstudianteCarreraService ecs = new EstudianteCarreraService(em);
+		System.out.println("//////////////////////////////////////////////////");
 		System.out.println(ecs.getListEstudiantePorCiudadResidendcia("Dallas", "Sales Analist").toString());
 
 		conn.closeConnection(em);
+	}
+
+	private static void e(EntityManager em) {
+		System.out.println("//////////////////////////////////////////////////");
+		System.out.println("Inciso 2)e:");
+		System.out.println("//////////////////////////////////////////////////");
+		EstudianteCarreraService ecs = new EstudianteCarreraService(em);
+		Scanner scanner = new Scanner(System.in);
+		for (String string : ecs.getGeneros()) {
+			System.out.println(string);
+		}
+		System.out.println("Ingrese el genero a filtrar: ");
+		String genero = scanner.nextLine();
+		System.out.println("Estudiantes de genero " + genero + ":");
+		for(EstudianteDTO estudiante : ecs.getEstudiantesPorGenero(genero)) {
+			System.out.println(estudiante);
+		}
+		scanner.close();
+		System.out.println();
 	}
 }
