@@ -8,6 +8,7 @@ public class InformeCarreraDTO {
 	
 	public InformeCarreraDTO(String carrera, Integer año, Long inscriptos, Long graduados) {
 		this.carrera = carrera;
+		this.año = año;
 		this.inscriptos = inscriptos;
 		this.graduados = graduados;
 	}
