@@ -9,38 +9,39 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import entities.Carrera;
-import entities.Estudiante;
-import entities.EstudianteCarrera;
+import entity.Carrera;
+import entity.Estudiante;
+import entity.EstudianteCarrera;
+import factory.ServiceFactory;
 import jakarta.persistence.EntityManager;
-import repositories.CarreraRepositoryImpl;
-import repositories.EstudianteRepositoryImpl;
-import repositories.EstudianteCarreraRepositoryImpl;
+import service.CarreraService;
+import service.EstudianteCarreraService;
+import service.EstudianteService;
 public class DBHelper {
 	private EntityManager em;
-	private CarreraRepositoryImpl carreraRepo;
-	private EstudianteRepositoryImpl estudianteRepo;
-	private EstudianteCarreraRepositoryImpl estudianteCarreraRepo;
+	private CarreraService carreraRepo;
+	private EstudianteService estudianteRepo;
+	private EstudianteCarreraService estudianteCarreraRepo;
+	private ServiceFactory repoFactory;
 
-	public DBHelper(EntityManager em) {
+	public DBHelper(EntityManager em) {		
 		this.em = em;
-		this.carreraRepo = new CarreraRepositoryImpl(em);
-		this.estudianteRepo = new EstudianteRepositoryImpl(em);
-		this.estudianteCarreraRepo = new EstudianteCarreraRepositoryImpl(em);
+		this.repoFactory = ServiceFactory.getInstance(em);
+		this.carreraRepo = repoFactory.getCarreraService();
+		this.estudianteRepo = repoFactory.getEstudianteService();
+		this.estudianteCarreraRepo = repoFactory.getEstudianteCarreraService();
 	}    
 	
 	private Iterable<CSVRecord> getData(String archivo) throws IOException {
 		String path = "integrador2\\src\\main\\resources\\" + archivo;
 		Reader in = new FileReader(path);
 		String[] header = {};
-		CSVParser csvParser = CSVFormat.EXCEL.builder().setNullString("").setHeader(header).build().parse(in);
-		
+		CSVParser csvParser = CSVFormat.EXCEL.builder().setNullString("").setHeader(header).build().parse(in);		
 		Iterable<CSVRecord> record = csvParser;
 		return record;
 	}
 
-	public void populateDB() throws Exception {
-		
+	public void populateDB() throws Exception {	
 		System.out.println("Populating DB...");
 		for(CSVRecord row : getData("carreras.csv")) {
 			Carrera carrera = new Carrera((String) row.get(0));

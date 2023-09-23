@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import dtos.EstudianteDTO;
 import dtos.InformeCarreraDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import repositories.EstudianteCarreraRepositoryImpl;
+import repository.EstudianteCarreraRepositoryImpl;
 
 public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 	

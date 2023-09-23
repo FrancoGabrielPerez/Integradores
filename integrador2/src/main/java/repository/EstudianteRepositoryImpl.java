@@ -1,8 +1,8 @@
-package repositories;
+package repository;
 
 import java.util.List;
 
-import entities.Estudiante;
+import entity.Estudiante;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 

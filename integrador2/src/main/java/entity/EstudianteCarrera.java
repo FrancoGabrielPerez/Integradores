@@ -1,4 +1,4 @@
-package entities;
+package entity;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
