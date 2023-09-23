@@ -22,20 +22,20 @@ public class Main {
 	public static void main (String[] args) {
 		ConnectionFactory conn = new ConnectionFactory();
 		EntityManager em = conn.createConnection();
-		// em.getTransaction().begin();
-		// String sql = "DROP DATABASE IF EXISTS integrador2; ";
-		// Query nq = em.createNativeQuery(sql);
-		// nq.executeUpdate();
-		// em.getTransaction().commit();
-		// conn.closeConnection(em);
-		// conn = new ConnectionFactory();
-		// em = conn.createConnection();
-		// DBHelper helper = new DBHelper(em);
-		// try {
-		// 	helper.populateDB();
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		em.getTransaction().begin();
+		String sql = "DROP DATABASE IF EXISTS integrador2; ";
+		Query nq = em.createNativeQuery(sql);
+		nq.executeUpdate();
+		em.getTransaction().commit();
+		conn.closeConnection(em);
+		conn = new ConnectionFactory();
+		em = conn.createConnection();
+		DBHelper helper = new DBHelper(em);
+		try {
+			helper.populateDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		//em.getTransaction().begin();
 
@@ -88,11 +88,11 @@ public class Main {
 		// cs.matricular(prueba, "Librarian");
 
 		// Inciso 2)e
-		e(em);
+		//e(em);
 
-		EstudianteCarreraService ecs = new EstudianteCarreraService(em);
-		System.out.println("//////////////////////////////////////////////////");
-		System.out.println(ecs.getListEstudiantePorCiudadResidendcia("Dallas", "Sales Analist").toString());
+		// EstudianteCarreraService ecs = new EstudianteCarreraService(em);
+		// System.out.println("//////////////////////////////////////////////////");
+		// System.out.println(ecs.getListEstudiantePorCiudadResidendcia("Dallas", "Sales Analist").toString());
 
 		conn.closeConnection(em);
 	}

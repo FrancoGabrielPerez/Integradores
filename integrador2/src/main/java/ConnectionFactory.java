@@ -3,7 +3,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class ConnectionFactory {
-	
+
 	private EntityManagerFactory emf;
 
 	public EntityManager createConnection() {
