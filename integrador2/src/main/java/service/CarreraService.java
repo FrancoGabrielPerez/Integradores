@@ -1,15 +1,15 @@
-package services;
+package service;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
-import entities.Carrera;
-import entities.Estudiante;
-import entities.EstudianteCarrera;
+import entity.Carrera;
+import entity.Estudiante;
+import entity.EstudianteCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import repositories.CarreraRepositoryImpl;
-import repositories.EstudianteCarreraRepositoryImpl;
+import repository.CarreraRepositoryImpl;
+import repository.EstudianteCarreraRepositoryImpl;
 
 public class CarreraService extends CarreraRepositoryImpl{
 	private EstudianteCarreraRepositoryImpl inscriptos;

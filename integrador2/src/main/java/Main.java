@@ -1,35 +1,46 @@
 
+import java.security.Provider.Service;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Scanner;
 
 import dtos.EstudianteDTO;
 import dtos.InformeCarreraDTO;
-import entities.Carrera;
-import entities.Estudiante;
-import entities.EstudianteCarrera;
+import entity.Carrera;
+import entity.Estudiante;
+import entity.EstudianteCarrera;
+import factory.ConnectionFactory;
+import factory.ServiceFactory;
 import helper.DBHelper;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
-import repositories.CarreraRepositoryImpl;
-import repositories.EstudianteCarreraRepositoryImpl;
-import repositories.EstudianteRepositoryImpl;
-import services.CarreraService;
-import services.EstudianteCarreraService;
-import services.EstudianteService;
+import repository.CarreraRepositoryImpl;
+import repository.EstudianteCarreraRepositoryImpl;
+import repository.EstudianteRepositoryImpl;
+import service.CarreraService;
+import service.EstudianteCarreraService;
+import service.EstudianteService;
 
 public class Main {
 	public static void main (String[] args) {
-		ConnectionFactory conn = new ConnectionFactory();
-		EntityManager em = conn.createConnection();
-		em.getTransaction().begin();
+		// EntityManagerFactory emfDropeo = Persistence.createEntityManagerFactory("integrador2");
+		// EntityManager emDropeo = emfDropeo.createEntityManager();
+
+		EntityManager emDrop = ConnectionFactory.createConnection();
+		emDrop.getTransaction().begin();
 		String sql = "DROP DATABASE IF EXISTS integrador2; ";
-		Query nq = em.createNativeQuery(sql);
+		Query nq = emDrop.createNativeQuery(sql);
 		nq.executeUpdate();
-		em.getTransaction().commit();
-		conn.closeConnection(em);
-		conn = new ConnectionFactory();
-		em = conn.createConnection();
+		emDrop.getTransaction().commit();	
+		ConnectionFactory.closeConnection();	
+
+		EntityManager em = ConnectionFactory.createConnection();
+		if (em == null)
+			System.out.println("SI");
+		ServiceFactory serviceFactory = ServiceFactory.getInstance(em);
+
 		DBHelper helper = new DBHelper(em);
 		try {
 			helper.populateDB();
@@ -87,25 +98,25 @@ public class Main {
 		// CarreraService cs = new CarreraService(em);  
 		// cs.matricular(prueba, "Librarian");
         
-		// Inciso 2)e
-		// e(em);
+		//Inciso 2)e
+		e(serviceFactory);
         
 		// EstudianteCarreraService ecs = new EstudianteCarreraService(em);
 		// System.out.println("//////////////////////////////////////////////////");
 		// System.out.println(ecs.getListEstudiantePorCiudadResidendcia("Dallas", "Sales Analist").toString());
         
-		EstudianteCarreraService ec = new EstudianteCarreraService(em);
+		EstudianteCarreraService ec = serviceFactory.getEstudianteCarreraService();
         for(InformeCarreraDTO info : ec.getInformePorCarrera())
-            System.out.println(info);
-
-		conn.closeConnection(em);
+		System.out.println(info);
+		
+		ConnectionFactory.closeConnection();
 	}
-
-	private static void e(EntityManager em) {
+	
+	private static void e(ServiceFactory serviceFactory) {
 		System.out.println("//////////////////////////////////////////////////");
 		System.out.println("Inciso 2)e:");
 		System.out.println("//////////////////////////////////////////////////");
-		EstudianteCarreraService ecs = new EstudianteCarreraService(em);
+		EstudianteCarreraService ecs = serviceFactory.getEstudianteCarreraService();
 		Scanner scanner = new Scanner(System.in);
 		for (String string : ecs.getGeneros()) {
 			System.out.println(string);

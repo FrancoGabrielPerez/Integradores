@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import dtos.InformeCarreraDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import repositories.EstudianteCarreraRepositoryImpl;
+import repository.EstudianteCarreraRepositoryImpl;
 
 public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 	

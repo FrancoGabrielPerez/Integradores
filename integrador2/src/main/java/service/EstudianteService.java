@@ -1,11 +1,11 @@
-package services;
+package service;
 
 import java.util.List;
 
 import dtos.EstudianteDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import repositories.EstudianteRepositoryImpl;
+import repository.EstudianteRepositoryImpl;
 
 public class EstudianteService extends EstudianteRepositoryImpl {
 	public EstudianteService(EntityManager em) {
