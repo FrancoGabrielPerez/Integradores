@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +36,9 @@ public class Estudiante{
 	@Column(name="libreta")
 	private Integer libreta;
 	@Column(name="carrera")
-	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
+	
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<EstudianteCarrera> carreras;
 
 	public Estudiante(){

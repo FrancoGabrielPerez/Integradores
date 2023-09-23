@@ -19,6 +19,6 @@ public class InformeCarreraCantEstudiantesDTO {
 
 	@Override
 	public String toString() {
-		return "InformeCarreraCantEstudiantes [nombre=" + nombre + ", cantEstudiantes=" + cantEstudiantes + "]";
+		return "Carrera: " + nombre + ", cantidad de estudiantes: " + cantEstudiantes;
 	}
 }

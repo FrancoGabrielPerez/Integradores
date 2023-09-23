@@ -16,7 +16,7 @@ public class EstudianteCarreraRepositoryImpl implements EntityRepository<Estudia
 	@Override
 	public EstudianteCarrera save(EstudianteCarrera entity) {
 		em.getTransaction().begin();
-		if (entity.getLibreta() == null && entity.getId_carrera() == null) {
+		if (entity.getLibreta() == null && entity.getCarreraId() == null) {
 			em.persist(entity);
 		} else {
 			entity = em.merge(entity);

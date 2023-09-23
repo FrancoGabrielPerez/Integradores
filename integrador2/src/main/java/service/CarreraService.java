@@ -2,6 +2,7 @@ package service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 import entity.Carrera;
 import entity.Estudiante;
@@ -32,12 +33,12 @@ public class CarreraService extends CarreraRepositoryImpl{
 		}
 	}
 	
-	public void matricular(Estudiante e, String c) {
-		Integer carreraId = getCarreraIdByName(c);
-		Carrera carrera = em.find(Carrera.class, carreraId);
+	public void matricular(Estudiante e, Carrera c) {	
+		Objects.requireNonNull(e);
+		Objects.requireNonNull(c);	
 		Date hoy = new Date();
 		Timestamp ts = new Timestamp(hoy.getTime());
-		EstudianteCarrera nuevo = new EstudianteCarrera(e, carrera, ts);            
+		EstudianteCarrera nuevo = new EstudianteCarrera(e, c, ts);            
 		this.inscriptos.save(nuevo);
 	}
 }

@@ -1,18 +1,17 @@
 package dtos;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class EstudianteCarreraDTO {
 	private Timestamp fechaInscripcion;
 	private Timestamp fechaGraduacion;
-	private EstudianteDTO e;
-	private CarreraDTO c;
-	private int antiguedad;
+	private String e;
+	private String c;
 
-	public EstudianteCarreraDTO(EstudianteDTO e, CarreraDTO c, Timestamp fechaInscripcion, Timestamp fechaGaduacion, int antiguedad) {
+	public EstudianteCarreraDTO(String e, String c, Timestamp fechaInscripcion, Timestamp fechaGaduacion) {
 		this.fechaInscripcion = fechaInscripcion;
 		this.fechaGraduacion = fechaGaduacion;
-		this.antiguedad = antiguedad;
 		this.e = e;
 		this.c = c;
 	}
@@ -25,25 +24,26 @@ public class EstudianteCarreraDTO {
 		return fechaGraduacion != null;
 	}
 
-	public int getAntiguedad() {
-		return antiguedad;
+	public Integer getAntiguedad(){
+		Calendar fechaInscripcion = Calendar.getInstance();
+		fechaInscripcion.setTimeInMillis(this.fechaInscripcion.getTime());
+		return Calendar.getInstance().get(Calendar.YEAR) - fechaInscripcion.get(Calendar.YEAR);
 	}
 	
 	public Timestamp getFechaGraduacion() {
 		return fechaGraduacion;
 	}
 
-	public EstudianteDTO getE() {
+	public String getE() {
 		return e;
 	}
 
-	public CarreraDTO getC() {
+	public String getC() {
 		return c;
 	}
 
 	@Override
 	public String toString() {
-		return "EstudianteCarreraDTO [Estudiante=" + e + "Carrera=" + c +", fechaInscripcion=" + fechaInscripcion + ", fechaGraduacion=" + fechaGraduacion + ", antiguedad=" + antiguedad + "]";
+		return "Estudiante: " + e + ", Carrera: " + c +", fecha de inscripcion: " + fechaInscripcion + ", fecha de graduacion:" + fechaGraduacion + ", antiguedad:" + getAntiguedad();
 	}
-	
 }

@@ -29,7 +29,6 @@ public class EstudianteRepositoryImpl implements EntityRepository<Estudiante> {
 	public Estudiante findById(int id) {
 		em.getTransaction().begin();
 		Estudiante aux = em.find(Estudiante.class, id);
-		System.out.println(aux);
 		em.getTransaction().commit();
 		return aux;
 

@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Objects;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,15 +21,17 @@ public class EstudianteCarrera {
 	@Column(name = "fecha_insc")
 	private Timestamp fechaInscripcion;
 	@Column(name = "fecha_grad")
-	private Timestamp fechaGraduado;
+	private Timestamp fechaGraduacion;
 
 	@Id
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "estudiante_id")
 	private Estudiante estudiante;
 
 	@Id
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "carrera_id")
 	private Carrera carrera;
 
@@ -38,7 +43,7 @@ public class EstudianteCarrera {
 		this.estudiante = Objects.requireNonNull(estudiante, "Estudiante must not be null");
 		this.carrera = Objects.requireNonNull(carrera, "Carrera must not be null");
 		this.fechaInscripcion = fechaInscripcion;
-		this.fechaGraduado = fechaGraduado;
+		this.fechaGraduacion = fechaGraduado;
 	}
 
 	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, Timestamp fechaInscripcion) {
@@ -49,12 +54,12 @@ public class EstudianteCarrera {
 		return estudiante.getLibreta();
 	}
 
-	public Integer getId_carrera() {
+	public Integer getCarreraId() {
 		return carrera.getId();
 	}
 
 	public void setGraduado(Timestamp fechaGraduado) {
-		this.fechaGraduado = fechaGraduado;
+		this.fechaGraduacion = fechaGraduado;
 	}
 
 	public Integer getAntiguedad(){
