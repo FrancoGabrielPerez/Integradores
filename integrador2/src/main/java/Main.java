@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import dtos.EstudianteDTO;
-import dtos.InformeCarreraCantEstudiantesDTO;
+import dtos.InformeCarreraDTO;
 import entities.Carrera;
 import entities.Estudiante;
 import entities.EstudianteCarrera;
@@ -80,19 +80,23 @@ public class Main {
 		// EstudianteCarreraService ec = new EstudianteCarreraService(em);
 		// for(InformeCarreraCantEstudiantesDTO info : ec.getCarrerasPorCantEstudiantes())
 		//     System.out.println(info);
-
+        
 		// EstudianteService es = new EstudianteService(em);
 		// Estudiante prueba = new Estudiante("Jose", "Perez", 33, "Tandil", "Male", 45000000, 20500);
 		// es.save(prueba);
 		// CarreraService cs = new CarreraService(em);  
 		// cs.matricular(prueba, "Librarian");
-
+        
 		// Inciso 2)e
-		//e(em);
-
+		// e(em);
+        
 		// EstudianteCarreraService ecs = new EstudianteCarreraService(em);
 		// System.out.println("//////////////////////////////////////////////////");
 		// System.out.println(ecs.getListEstudiantePorCiudadResidendcia("Dallas", "Sales Analist").toString());
+        
+		EstudianteCarreraService ec = new EstudianteCarreraService(em);
+        for(InformeCarreraDTO info : ec.getInformePorCarrera())
+            System.out.println(info);
 
 		conn.closeConnection(em);
 	}
