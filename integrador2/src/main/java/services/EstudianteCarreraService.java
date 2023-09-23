@@ -3,6 +3,7 @@ package services;
 import java.util.List;
 
 import dtos.EstudianteDTO;
+import dtos.InformeCarreraCantEstudiantesDTO;
 import dtos.InformeCarreraDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -17,18 +18,18 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 		this.em = em;
 	}        
 
-	// public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
-	// 	em.getTransaction().begin();
-	// 	String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantesDTO(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
-	// 					"FROM EstudianteCarrera ec " +
-	// 					"JOIN ec.carrera c " +
-	// 					"GROUP BY ec.carrera " +
-	// 					"ORDER BY cantEstudiantes DESC";
-	// 	TypedQuery<InformeCarreraCantEstudiantesDTO> query = em.createQuery(jpql, InformeCarreraCantEstudiantesDTO.class);
-	// 	List<InformeCarreraCantEstudiantesDTO> res = query.getResultList();
-	// 	em.getTransaction().commit();
-	// 	return res;
-	// } 
+	public List<InformeCarreraCantEstudiantesDTO> getCarrerasPorCantEstudiantes() {
+		em.getTransaction().begin();
+		String jpql = "SELECT NEW dtos.InformeCarreraCantEstudiantesDTO(c.nombre, COUNT(DISTINCT ec.estudiante) AS cantEstudiantes) " +
+						"FROM EstudianteCarrera ec " +
+						"JOIN ec.carrera c " +
+						"GROUP BY ec.carrera " +
+						"ORDER BY cantEstudiantes DESC";
+		TypedQuery<InformeCarreraCantEstudiantesDTO> query = em.createQuery(jpql, InformeCarreraCantEstudiantesDTO.class);
+		List<InformeCarreraCantEstudiantesDTO> res = query.getResultList();
+		em.getTransaction().commit();
+		return res;
+	} 
 
 	public List<EstudianteDTO> getListEstudiantePorCiudadResidendcia(String ciudad, String carrera) {
 	    em.getTransaction().begin();
@@ -67,6 +68,24 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 
 	public List<InformeCarreraDTO> getInformePorCarrera() {
 		em.getTransaction().begin();
+		String CGPT1 = "SELECT c.nombre AS Carrera, FUNCTION('YEAR', ec.fechaInscripcion) AS Año, SUM(CASE WHEN ec.fechaGraduado IS NOT NULL THEN 0 ELSE 1 END) AS Inscriptos, SUM(CASE WHEN ec.fechaGraduado IS NOT NULL THEN 1 ELSE 0 END) AS Graduados " +
+		"FROM Carrera c " +
+		"JOIN EstudianteCarrera ec On c.id = ec.carrera.id " +
+		"GROUP BY c.nombre, FUNCTION('YEAR', ec.fechaInscripcion) " +
+		"ORDER BY c.nombre, Año";
+		String CGPT2 = "SELECT NEW dtos.InformeCarreraDTO(c.nombre AS carrera, FUNCTION('YEAR', ec.fecha) AS año, SUM(ec.Inscriptos) AS inscriptos, SUM(ec.Graduados) AS graduados) " +
+		"FROM Carrera c JOIN ( " +
+			"(SELECT ec1.carrera.id, ec1.fechaInscripcion, COUNT(*) AS Inscriptos, 0 AS Graduados " +
+			"FROM EstudianteCarrera ec1 " +
+			"GROUP BY ec1.carrera.id, FUNCTION('YEAR', ec1.fechaInscripcion)) " +
+			"UNION ALL " +
+			"(SELECT ec2.carrera.id, ec2.fechaGraduado, 0 AS Inscriptos, COUNT(*) AS Graduados " +
+			"FROM EstudianteCarrera ec2 " +
+			"WHERE ec2.fechaGraduado IS NOT NULL " +
+			"GROUP BY ec2.carrera.id, FUNCTION('YEAR', ec2.fechaGraduado)) " +
+		") ec ON c.id = ec.id " +
+		"GROUP BY c.nombre, año " +
+		"ORDER BY c.nombre, año";
 		String jpql = "SELECT NEW dtos.InformeCarreraDTO (u.nombre AS Carrera, u.año, SUM(u.inscriptos) AS inscriptos, SUM(u.graduados) AS graduados) " +
 		"FROM " +
 			"((SELECT c.id, c.nombre, YEAR(ec.fechaInscripcion) AS año, COUNT(c.nombre) AS inscriptos, 0 AS graduados " +
@@ -78,7 +97,8 @@ public class EstudianteCarreraService extends EstudianteCarreraRepositoryImpl{
 			"GROUP BY d.id, YEAR(ed.fechaGraduado))) u " +
 		"GROUP BY u.nombre, u.año " +
 		"ORDER BY u.nombre, u.año";
-		TypedQuery<InformeCarreraDTO> query = em.createQuery(jpql, InformeCarreraDTO.class);
+		//esto no anda T.T
+		TypedQuery<InformeCarreraDTO> query = em.createQuery(CGPT2, InformeCarreraDTO.class);
 		List<InformeCarreraDTO> res = query.getResultList();
 		em.getTransaction().commit();
 		return res;
