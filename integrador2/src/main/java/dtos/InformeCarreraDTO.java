@@ -2,11 +2,11 @@ package dtos;
 
 public class InformeCarreraDTO {
 	private String carrera;
-	private int año;
-	private long inscriptos;
-	private long graduados;
+	private Integer año;
+	private Long inscriptos;
+	private Long graduados;
 	
-	public InformeCarreraDTO(String carrera, int año, Long inscriptos, Long graduados) {
+	public InformeCarreraDTO(String carrera, Integer año, Long inscriptos, Long graduados) {
 		this.carrera = carrera;
 		this.inscriptos = inscriptos;
 		this.graduados = graduados;
@@ -16,11 +16,11 @@ public class InformeCarreraDTO {
 		return carrera;
 	}
 
-	public Long getCantInscriptos() {
+	public long getCantInscriptos() {
 		return inscriptos;
 	}
 
-	public Long getCantGraduados() {
+	public long getCantGraduados() {
 		return graduados;
 	}
 
