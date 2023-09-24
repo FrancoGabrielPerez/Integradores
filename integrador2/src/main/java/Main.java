@@ -1,5 +1,3 @@
-
-
 import java.util.Scanner;
 
 import dtos.EstudianteDTO;
@@ -16,11 +14,14 @@ import service.CarreraService;
 import service.EstudianteCarreraService;
 import service.EstudianteService;
 
-public class Main {
+public class Main {	
 	public static void main (String[] args) {
-		// Only for testing.
-		//dropDB();	
+		// Only for testing. NEXT LINE DROP ALL DATABASE!!!
+		// dropDB();	
 		EntityManager em = ConnectionFactory.createConnection();
+		/*
+		 * Populate Database, MySql.
+		 */
 		loadDB(em);
 		
 		ServiceFactory serviceFactory = ServiceFactory.getInstance(em);		
@@ -48,7 +49,7 @@ public class Main {
 		System.out.println("Inciso 2.c: Ordenado por apellido");
 		System.out.println("//////////////////////////////////////////////////");	
 		for(EstudianteDTO info : es.getAllEstudiantesOrderByApellido())
-		    System.out.println(info.getNombreCompleto());
+		    System.out.println(info);
 		System.out.println();
 		System.out.println("//////////////////////////////////////////////////");
 		System.out.println("Inciso 2.d: ");
@@ -63,7 +64,7 @@ public class Main {
 			System.out.print(string + ", ");
 		}
 		System.out.println();
-		System.out.println("Ingrese el genero a filtrar: ");
+		System.out.print("Ingrese el genero a filtrar: ");
 		String genero = scanner.nextLine();
 		System.out.println("Estudiantes de genero " + genero + ":");
 		for(EstudianteDTO est : es.getEstudiantesPorGenero(genero)) {
