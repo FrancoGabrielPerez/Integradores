@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="botscrew.bot.framework.core.spring.boot.starter" type="repository">
+    <properties maven-id="com.botscrew:bot-framework-core-spring-boot-starter:1.2.4" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/botscrew/bot-framework-core-spring-boot-starter/1.2.4/bot-framework-core-spring-boot-starter-1.2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
