@@ -1,12 +1,12 @@
 package com.integrador3.model;
 
 import jakarta.persistence.ManyToOne;
-import lombok.Getter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
+@Data
 public class EstudianteCarreraPK implements Serializable {
     @ManyToOne
     private Estudiante estudiante;
@@ -20,7 +20,6 @@ public class EstudianteCarreraPK implements Serializable {
 
     public EstudianteCarreraPK() {
     }
-
 
     @Override
     public boolean equals(Object o) {

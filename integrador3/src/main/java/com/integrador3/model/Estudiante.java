@@ -26,7 +26,7 @@ public class Estudiante{
 	private Integer dni;
 	@Id
 	@Column(name="libreta")
-	private Integer libreta;
+	private Integer id;
 	@Column(name="carrera")
 	
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -44,7 +44,7 @@ public class Estudiante{
 		this.ciudadResidencia = ciudad_residencia;
 		this.genero = genero;
 		this.dni = dni;
-		this.libreta = libreta;
+		this.id = libreta;
 		this.edad = edad;
 		this.carreras = new HashSet<>();
 	}
