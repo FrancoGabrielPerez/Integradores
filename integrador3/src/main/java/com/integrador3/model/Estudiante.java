@@ -5,6 +5,8 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.integrador3.dto.EstudianteDTO;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,6 +48,17 @@ public class Estudiante{
 		this.dni = dni;
 		this.id = libreta;
 		this.edad = edad;
+		this.carreras = new HashSet<>();
+	}
+
+	public Estudiante(EstudianteDTO dto){
+		this.nombre = dto.getNombre();
+		this.apellido = dto.getApellido();
+		this.ciudadResidencia = dto.getCiudadResidencia();
+		this.genero = dto.getGenero();
+		this.dni = dto.getDni();
+		this.id = dto.getLibreta();
+		this.edad = dto.getEdad();
 		this.carreras = new HashSet<>();
 	}
 }
