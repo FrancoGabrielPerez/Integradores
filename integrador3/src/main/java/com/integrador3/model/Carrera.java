@@ -2,6 +2,9 @@ package com.integrador3.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
 public class Carrera {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

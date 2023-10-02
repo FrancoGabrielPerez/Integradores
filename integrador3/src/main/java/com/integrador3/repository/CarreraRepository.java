@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository("carreraRepository")
 public interface CarreraRepository extends JpaRepository<Carrera, Integer> {
-
-    @Query("SELECT c FROM Carrera c WHERE c.id = :id")
-    Carrera findCarreraById(Integer id); 
+    /*
+    @Query("SELECT e FROM Estudiante e WHERE e.libreta = :libreta");
+    Estudiante getEstudiantesPorLibreta(Integer libreta); 
+    */
 }
 
