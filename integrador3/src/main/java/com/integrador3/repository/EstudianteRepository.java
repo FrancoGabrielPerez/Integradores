@@ -17,19 +17,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository("estudianteRepository")
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
-    
-	@Query("SELECT e FROM Estudiante e 	WHERE (e.genero = :genero)")
-    List<Estudiante> findAllByGenero(@Param("genero") String genero);
+   
+	// @Query("SELECT NEW com.example.integrador3.dto.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.libreta) FROM Estudiante e 	WHERE (e.genero = :genero)")
+   //  List<EstudianteDTO> genero(@Param("genero") String genero);
 
     // porque no se puede hacer con new DTO?
     // @Query("SELECT NEW dtos.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.libreta) FROM Estudiante e WHERE (e.genero = :genero)")
     // List<Estudiante> findAllByGeneroF(@Param("genero") String genero);
 
-    // @Query("SELECT NEW com.integrador3.dto.EstudianteDTO(e.nombre, e.apellido, e.edad, e.ciudadResidencia, e.genero, e.dni, e.libreta) " +
-    //    "FROM Estudiante e " +
-    //    "WHERE e.genero = :genero")
-    // List<EstudianteDTO> findAllByGeneroF(@Param("genero") String genero);
-
-    
+   //   @Query("SELECT new com.integrador3.dto.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.libreta) " +
+   //      "FROM Estudiante e " +
+   //      "WHERE e.genero = :genero")
+   //   List<EstudianteDTO> findAllByGenero(@Param("genero") String genero);
+    List<Estudiante> findByGenero(String genero);
 }
 

@@ -17,7 +17,7 @@ import service.EstudianteService;
 public class Main {	
 	public static void main (String[] args) {
 		// Only for testing. NEXT LINE DROP ALL DATABASE!!!
-		// dropDB();	
+		dropDB();	
 		EntityManager em = ConnectionFactory.createConnection();
 		/*
 		 * Populate Database, MySql.

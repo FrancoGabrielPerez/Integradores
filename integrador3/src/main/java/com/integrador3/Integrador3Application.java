@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-@ComponentScan("com.integrador3")
+//@ComponentScan("com.integrador3")
 public class Integrador3Application {	
 	public static void main(String[] args) {
 		SpringApplication.run(Integrador3Application.class, args);

@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.model.Estudiante;
 import com.integrador3.repository.EstudianteRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service("estudianteService")
 public class EstudianteService{
@@ -36,19 +35,14 @@ public class EstudianteService{
         return this.estudianteRepository.findAll().stream().map(EstudianteDTO::new ).toList();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void delete(EstudianteDTO entity) {
         estudianteRepository.delete(estudianteRepository.findById(entity.getLibreta()).orElseThrow(
             () -> new IllegalArgumentException("Invalid user Id:" + entity.getLibreta())));
     }   
 
-    @Transactional 
-    public List<EstudianteDTO> findAllByGenero(String genero) {
-        List<EstudianteDTO> res = new ArrayList<EstudianteDTO>();
-        for (Estudiante e : estudianteRepository.findAllByGenero(genero)) {
-            System.out.println(e.getNombre());
-            res.add(new EstudianteDTO(e));
-        }
-        return res;
+    @Transactional( readOnly = true)
+    public List<EstudianteDTO> findByGenero(String genero) {
+       return estudianteRepository.findByGenero(genero).stream().map(EstudianteDTO::new ).toList();
     }
 }
