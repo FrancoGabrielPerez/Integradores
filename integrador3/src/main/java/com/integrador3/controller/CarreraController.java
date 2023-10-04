@@ -73,10 +73,19 @@ public class CarreraController {
         }
     }
 
-    @GetMapping("/CarrearsPorCantEstudiantes")
+    @GetMapping("/carrerasPorCantEstudiantes")
     public ResponseEntity<?> carrerasOrdenadas() {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(carreraService.carrerasOrdenadas());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
+    @GetMapping("/carrerasPorAnioInscritosYEgresados")
+    public ResponseEntity<?> carrerasPorInscriptos() {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(carreraService.carrerasPorInscriptos());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

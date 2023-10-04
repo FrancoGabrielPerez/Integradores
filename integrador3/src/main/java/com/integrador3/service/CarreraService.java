@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.integrador3.dto.CarreraDTO;
 import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.dto.InformeCarreraCantEstudiantesDTO;
+import com.integrador3.dto.InformeCarreraDTO;
 import com.integrador3.model.Carrera;
 import com.integrador3.model.Estudiante;
 import com.integrador3.model.EstudianteCarrera;
@@ -87,6 +88,11 @@ public class CarreraService{
 	@Transactional(readOnly = true)
 	public List<InformeCarreraCantEstudiantesDTO> carrerasOrdenadas() {
 		return this.carreraRepository.carrerasOrdenadas().stream().map(InformeCarreraCantEstudiantesDTO::new ).toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<InformeCarreraDTO> carrerasPorInscriptos() {
+		return this.carreraRepository.listaCarrerasOrdenadasPorAnio().stream().map(InformeCarreraDTO::new ).toList();
 	}
 	
 	// @Transactional(readOnly = true)
