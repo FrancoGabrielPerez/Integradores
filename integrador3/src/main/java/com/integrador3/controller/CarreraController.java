@@ -26,7 +26,7 @@ public class CarreraController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(carreraService.findById(id));
         }catch (Exception e){

@@ -29,7 +29,7 @@ public class CarreraService{
 	private EstudianteCarreraRepository inscriptos;
 
 	@Transactional (readOnly = true)
-	public CarreraDTO findById(Integer id) {
+	public CarreraDTO findById(Long id) {
 		return carreraRepository.findById(id).map(CarreraDTO::new).orElseThrow(
 			() -> new IllegalArgumentException("ID de carrera invalido:" + id));
 	}
@@ -86,7 +86,7 @@ public class CarreraService{
 
 	@Transactional(readOnly = true)
 	public List<InformeCarreraCantEstudiantesDTO> carrerasOrdenadas() {
-		return carreraRepository.carrerasOrdenadas();
+		return this.carreraRepository.carrerasOrdenadas().stream().map(InformeCarreraCantEstudiantesDTO::new ).toList();
 	}
 	
 	// @Transactional(readOnly = true)

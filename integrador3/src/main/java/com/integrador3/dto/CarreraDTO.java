@@ -8,7 +8,7 @@ import com.integrador3.model.Carrera;
 @Getter
 @RequiredArgsConstructor
 public class CarreraDTO {
-	private Integer id;
+	private Long id;
 	private String nombre;
 
 	public CarreraDTO(Carrera carrera) {

@@ -22,7 +22,7 @@ import java.util.Set;
 public class Carrera {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column
 	private String nombre;
 	

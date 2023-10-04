@@ -16,5 +16,6 @@ public interface EstudianteCarreraRepository extends JpaRepository<EstudianteCar
 	Optional<EstudianteCarrera> findByEstudianteAndCarrera(Estudiante estudiante, Carrera carrera);
 
 	void deleteByEstudianteAndCarrera(Estudiante estudiante, Carrera carrera);
+	
 }
 
