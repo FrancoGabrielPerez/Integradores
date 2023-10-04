@@ -60,7 +60,6 @@ public class CarreraController {
         }
     }
 
-    //TODO fix error string to integer
     @DeleteMapping("/baja")
     public ResponseEntity<?> delete(@RequestBody CarreraDTO entity){
         try{

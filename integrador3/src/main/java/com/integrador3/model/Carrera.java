@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 public class Carrera {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column
 	private String nombre;
