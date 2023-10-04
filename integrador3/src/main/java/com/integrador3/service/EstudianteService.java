@@ -16,21 +16,18 @@ public class EstudianteService{
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    @Transactional
+    @Transactional (readOnly = true)
     public EstudianteDTO findById(Integer libreta) {
         return estudianteRepository.findById(libreta).map(EstudianteDTO::new).orElseThrow(
-            () -> new IllegalArgumentException("Invalid user Id:" + libreta));
+            () -> new IllegalArgumentException("ID de usuario invalido:" + libreta));
     }
     
     @Transactional
     public EstudianteDTO save(EstudianteDTO entity) {
-        Estudiante aux = new Estudiante(entity);
-        Estudiante res = this.estudianteRepository.save(aux);
-        return new EstudianteDTO(res.getNombre(),res.getApellido(),res.getEdad(),res.getCiudadResidencia(),
-                                    res.getGenero(),res.getDni(),res.getId());
+        return new EstudianteDTO(this.estudianteRepository.save(new Estudiante(entity)));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> findAll() {
         return this.estudianteRepository.findAll().stream().map(EstudianteDTO::new ).toList();
     }
@@ -38,11 +35,16 @@ public class EstudianteService{
     @Transactional(readOnly = true)
     public void delete(EstudianteDTO entity) {
         estudianteRepository.delete(estudianteRepository.findById(entity.getLibreta()).orElseThrow(
-            () -> new IllegalArgumentException("Invalid user Id:" + entity.getLibreta())));
+            () -> new IllegalArgumentException("ID de usuario invalido:" + entity.getLibreta())));
     }   
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> findByGenero(String genero) {
        return estudianteRepository.findByGenero(genero).stream().map(EstudianteDTO::new ).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<EstudianteDTO> findAllByOrderByApellidoAscNombreAsc() {
+        return estudianteRepository.findAllByOrderByApellidoAscNombreAsc().stream().map(EstudianteDTO::new ).toList();
     }
 }

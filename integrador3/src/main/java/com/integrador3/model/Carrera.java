@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.integrador3.dto.CarreraDTO;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +33,11 @@ public class Carrera {
 
 	public Carrera(String nombre) {
 		this.nombre = nombre;
+		this.estudiantes = new HashSet<>();
+	}
+
+	public Carrera(CarreraDTO dto) {
+		this.nombre = dto.getNombre();
 		this.estudiantes = new HashSet<>();
 	}
 }

@@ -20,7 +20,7 @@ public class EstudianteController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAll());
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 
@@ -29,57 +29,44 @@ public class EstudianteController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByGenero(genero));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. no se pudo eliminar intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 
-
-    //TODO: Implementar el metodo de ordenamiento
-    @GetMapping("/OrderedByName")
+    @GetMapping("/ordenadosPorApellidoYNombre")
     public ResponseEntity<?> getAllSorted(){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAll());
+            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findAllByOrderByApellidoAscNombreAsc());
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 
     @GetMapping("/{libreta}")
-    public ResponseEntity<?> getEstudiantesPorLibreta(@PathVariable Integer libreta) {
+    public ResponseEntity<?> getById(@PathVariable Integer libreta) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findById(libreta));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 
-    @PostMapping("")
+    @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody EstudianteDTO entity){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.save(entity));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody Perro entity){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(perroServicio.update(id,entity));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo editar, revise los campos e intente nuevamente.\"}");
-        }
-    }
-    */
-
-    @DeleteMapping("delete")
+    @DeleteMapping("/baja")
     public ResponseEntity<?> delete(@RequestBody EstudianteDTO entity){
         try{
             estudianteService.delete(entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al estudiante con libreta: "+entity.getLibreta());
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. no se pudo eliminar intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar el estudiante, revise los campos e intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
 }
