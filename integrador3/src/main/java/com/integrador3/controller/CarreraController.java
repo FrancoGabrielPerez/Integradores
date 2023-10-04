@@ -63,8 +63,6 @@ public class CarreraController {
     @DeleteMapping("/baja")
     public ResponseEntity<?> delete(@RequestBody CarreraDTO entity){
         try{
-            System.out.println(entity.getId());
-            System.out.println(entity.getNombre());
             carreraService.delete(entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente la carrera: " + entity.getNombre());
         }catch (Exception e){

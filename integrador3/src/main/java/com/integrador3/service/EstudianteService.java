@@ -32,7 +32,7 @@ public class EstudianteService{
         return this.estudianteRepository.findAll().stream().map(EstudianteDTO::new ).toList();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void delete(EstudianteDTO entity) {
         estudianteRepository.delete(estudianteRepository.findById(entity.getLibreta()).orElseThrow(
             () -> new IllegalArgumentException("ID de usuario invalido:" + entity.getLibreta())));

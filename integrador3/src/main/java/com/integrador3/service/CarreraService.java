@@ -32,7 +32,7 @@ public class CarreraService{
         return this.carreraRepository.findAll().stream().map(CarreraDTO::new ).toList();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void delete(CarreraDTO entity) {
         carreraRepository.delete(carreraRepository.findById(entity.getId()).orElseThrow(
             () -> new IllegalArgumentException("ID de Carrera invalido:" + entity.getId())));
