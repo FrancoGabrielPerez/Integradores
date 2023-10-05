@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.model.Estudiante;
+import com.integrador3.repository.EstudianteCarreraRepository;
 import com.integrador3.repository.EstudianteRepository;
 
 @Service("estudianteService")
 public class EstudianteService{
     @Autowired
     private EstudianteRepository estudianteRepository;
+
+    @Autowired
+    private EstudianteCarreraRepository estudianteCarreraRepository;
 
     @Transactional (readOnly = true)
     public EstudianteDTO findById(Integer libreta) {
@@ -32,9 +36,9 @@ public class EstudianteService{
     }
 
     @Transactional
-    public void delete(EstudianteDTO entity) {
-        estudianteRepository.delete(estudianteRepository.findById(entity.getLibreta()).orElseThrow(
-            () -> new IllegalArgumentException("ID de usuario invalido:" + entity.getLibreta())));
+    public void delete(Integer id) {
+        estudianteRepository.delete(estudianteRepository.findById(id).orElseThrow(
+            () -> new IllegalArgumentException("ID de usuario invalido:" + id)));
     }   
 
     @Transactional(readOnly = true)
@@ -46,4 +50,9 @@ public class EstudianteService{
     public List<EstudianteDTO> findAllByOrderByApellidoAscNombreAsc() {
         return estudianteRepository.findAllByOrderByApellidoAscNombreAsc().stream().map(EstudianteDTO::new ).toList();
     }
+    @Transactional(readOnly = true)
+    public List<EstudianteDTO> estudiantePorCiudadDeResidencia(String carrera, String ciudad) {
+        return estudianteCarreraRepository.buscarPorCarrerasYCiudadResidencia(carrera, ciudad);
+    }
+
 }

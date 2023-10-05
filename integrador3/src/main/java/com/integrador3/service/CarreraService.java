@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.integrador3.dto.CarreraDTO;
-import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.dto.InformeCarreraCantEstudiantesDTO;
 import com.integrador3.dto.InformeCarreraDTO;
 import com.integrador3.model.Carrera;
@@ -46,21 +45,21 @@ public class CarreraService{
 	}
 
 	@Transactional
-	public void delete(CarreraDTO entity) {
-		carreraRepository.delete(carreraRepository.findById(entity.getId()).orElseThrow(
-			() -> new IllegalArgumentException("ID de Carrera invalido:" + entity.getId())));
+	public void delete(Long id) {
+		carreraRepository.delete(carreraRepository.findById(id).orElseThrow(
+			() -> new IllegalArgumentException("ID de Carrera invalido:" + id)));
 	}
 
 	@Transactional
-	public void matricular(EstudianteDTO e, CarreraDTO c) {
+	public void matricular(Integer e, String c) {
 		Objects.requireNonNull(e);
 		Objects.requireNonNull(c);
 
-		Estudiante estudiante = estudianteRepository.findById(e.getLibreta())
-				.orElseThrow(() -> new IllegalArgumentException("ID de Estudiante invalido:" + e.getLibreta()));
+		Estudiante estudiante = estudianteRepository.findById(e)
+				.orElseThrow(() -> new IllegalArgumentException("ID de Estudiante invalido:" + e));
 
-		Carrera carrera = carreraRepository.findById(c.getId())
-				.orElseThrow(() -> new IllegalArgumentException("ID de Carrera invalido:" + c.getId()));
+		Carrera carrera = carreraRepository.findByNombre(c)
+				.orElseThrow(() -> new IllegalArgumentException("ID de Carrera invalido:" + c));
 
 		if (inscriptos.findByEstudianteAndCarrera(estudiante, carrera).isPresent()) {
 			throw new IllegalArgumentException("El estudiante ya esta inscripto en esta carrera");
@@ -72,38 +71,26 @@ public class CarreraService{
 	}
 
 	@Transactional
-	public void desmatricular(EstudianteDTO e, CarreraDTO c) {
+	public void desmatricular(Integer e, String c) {
 		Objects.requireNonNull(e);
 		Objects.requireNonNull(c);
 
-		Estudiante estudiante = estudianteRepository.findById(e.getLibreta())
-				.orElseThrow(() -> new IllegalArgumentException("ID de Estudiante invalido:" + e.getLibreta()));
+		Estudiante estudiante = estudianteRepository.findById(e)
+				.orElseThrow(() -> new IllegalArgumentException("ID de Estudiante invalido:" + e));
 
-		Carrera carrera = carreraRepository.findById(c.getId())
-				.orElseThrow(() -> new IllegalArgumentException("ID de Carrera invalido:" + c.getId()));
+		Carrera carrera = carreraRepository.findByNombre(c)
+				.orElseThrow(() -> new IllegalArgumentException("Nombre de Carrera invalido:" + c));
 
 		inscriptos.deleteByEstudianteAndCarrera(estudiante, carrera);
 	}
 
 	@Transactional(readOnly = true)
-	public List<InformeCarreraCantEstudiantesDTO> carrerasOrdenadas() {
-		return this.carreraRepository.carrerasOrdenadas().stream().map(InformeCarreraCantEstudiantesDTO::new ).toList();
+	public List<InformeCarreraDTO> InformeCarreras() {
+		return this.inscriptos.InformeCarreras();
 	}
 
 	@Transactional(readOnly = true)
-	public List<InformeCarreraDTO> carrerasPorInscriptos() {
-		return this.carreraRepository.listaCarrerasOrdenadasPorAnio().stream().map(InformeCarreraDTO::new ).toList();
+	public List<InformeCarreraCantEstudiantesDTO> carrerasOrdenadas() {
+		return this.carreraRepository.carrerasOrdenadas();
 	}
-	
-	// @Transactional(readOnly = true)
-	// public List<CarreraDTO> findByGenero(String genero) {
-	//    return CarreraRepository.findByGenero(genero).stream().map(CarreraDTO::new ).toList();
-	// }
-
-	// @Transactional(readOnly = true)
-	// public List<CarreraDTO> findAllByOrderByApellidoAscNombreAsc() {
-	//     return CarreraRepository.findAllByOrderByApellidoAscNombreAsc().stream().map(CarreraDTO::new ).toList();
-	// }
-
-	//InformeCarreraCantEstudiantesDTO listCarrerasPorCantEstudiantes();
 }

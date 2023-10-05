@@ -26,8 +26,6 @@ public class EstudianteDTO {
 		this.libreta = estudiante.getId();
 	}
 	
-
-	//TODO eliminar si no se usa
 	public EstudianteDTO(String nombre, String apellido, int edad, String ciudadResidencia, String genero,
 			Integer dni, Integer libreta) {
 		this.nombre = nombre;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
    
     List<Estudiante> findByGenero(String genero);
-    List<Estudiante> findAllByOrderByApellidoAscNombreAsc();
+    List<Estudiante> findAllByOrderByApellidoAscNombreAsc();   
 
 }
 

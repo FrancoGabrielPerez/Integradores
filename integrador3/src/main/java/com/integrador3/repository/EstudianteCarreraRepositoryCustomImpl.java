@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.integrador3.dto.EstudianteDTO;
+import com.integrador3.dto.InformeCarreraDTO;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -13,11 +16,11 @@ public class EstudianteCarreraRepositoryCustomImpl implements EstudianteCarreraR
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
+	@Override
     @SuppressWarnings("unchecked")
-    public List<Object[]> listaCarrerasOrdenadasPorAnio() {
+    public List<InformeCarreraDTO> InformeCarreras() {
         return entityManager.createNativeQuery(
-            "SELECT nombre AS Carrera, Año, SUM(Inscriptos) AS Inscriptos, SUM(Graduados) AS Graduados " +
+            "SELECT nombre AS carrera, Año AS año, SUM(Inscriptos) AS inscriptos, SUM(Graduados) AS graduados " +
 			"FROM " +
 			"((SELECT id, nombre, YEAR(fecha_insc) AS Año, COUNT(*) AS Inscriptos, 0 AS Graduados " +
 			"FROM carrera JOIN estudiante_carrera on carrera.id = estudiante_carrera.carrera_id " +
@@ -28,7 +31,19 @@ public class EstudianteCarreraRepositoryCustomImpl implements EstudianteCarreraR
 			"GROUP BY id, YEAR(fecha_grad))) u " +
 			"GROUP BY nombre, Año " +
 			"ORDER BY nombre, Año",
-            Object[].class
+            InformeCarreraDTO.class
         ).getResultList();
     }
+
+    public List<EstudianteDTO> buscarPorCarrerasYCiudadResidencia(String carrera, String ciudad){
+		return entityManager.createQuery(
+			"SELECT NEW com.integrador3.dto.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.id) " +
+						"FROM Estudiante e " +
+						"WHERE e.ciudadResidencia = :ciudad " +
+						"AND e.id IN (SELECT ec.estudiante.id FROM Carrera c JOIN c.estudiantes ec WHERE c.nombre = :carrera)",
+			EstudianteDTO.class
+		).setParameter("ciudad", ciudad)
+		 .setParameter("carrera", carrera)
+		 .getResultList();
+	}
 }

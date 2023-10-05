@@ -60,13 +60,22 @@ public class EstudianteController {
         }
     }
 
-    @DeleteMapping("/baja")
-    public ResponseEntity<?> delete(@RequestBody EstudianteDTO entity){
+    @DeleteMapping("/{libreta}")
+    public ResponseEntity<?> delete(@PathVariable Integer libreta){
         try{
-            estudianteService.delete(entity);
-            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al estudiante con libreta: "+entity.getLibreta());
+            estudianteService.delete(libreta);
+            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al estudiante con libreta: "+libreta);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar el estudiante, revise los campos e intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }
     }
+    @GetMapping("/buscarPor")
+    public ResponseEntity<?> buscarPor(@RequestParam("carrera") String carrera, @RequestParam("ciudad") String ciudad) {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.estudiantePorCiudadDeResidencia(carrera, ciudad));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
 }
