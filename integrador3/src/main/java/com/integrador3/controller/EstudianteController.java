@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.service.EstudianteService;
@@ -54,6 +56,15 @@ public class EstudianteController {
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody EstudianteDTO entity){
         try{
+            if (entity.getEdad() < 18) 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. El estudiante debe ser mayor de edad.\"\n\"}");
+            if (entity.getEdad() > 100) 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. El estudiante debe se menor de 100 años.\"\n\"}");                    
+            List<String> generos = estudianteService.getGeneros();
+            if (!generos.contains(entity.getGenero())) {                
+                String generosValidos = generos.stream().collect(Collectors.joining(", "));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. El genero debe ser alguno de los siguientes: "+generosValidos+".\"\n\"}");
+            }
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.save(entity));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
@@ -64,7 +75,7 @@ public class EstudianteController {
     public ResponseEntity<?> delete(@PathVariable Integer libreta){
         try{
             estudianteService.delete(libreta);
-            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al estudiante con libreta: "+libreta);
+            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al estudiante con libreta: " + libreta);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar el estudiante, revise los campos e intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
         }

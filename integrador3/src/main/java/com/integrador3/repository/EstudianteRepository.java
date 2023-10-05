@@ -4,6 +4,7 @@ import com.integrador3.model.Estudiante;
 
 import java.util.List;
 
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
    
     List<Estudiante> findByGenero(String genero);
-    List<Estudiante> findAllByOrderByApellidoAscNombreAsc();   
+    List<Estudiante> findAllByOrderByApellidoAscNombreAsc(); 
 
 }
 

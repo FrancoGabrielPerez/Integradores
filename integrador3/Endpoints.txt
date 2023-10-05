@@ -7,13 +7,13 @@ Ej. 2.a) Dar de alta un estudiante
 		Ejemplo: 
 		Request Headers:
 			{
-			"Content-Type": "application/json"
+				"Content-Type": "application/json"
 			}
 		Request Body:
 			{
 				"nombre": "Tito",
 				"apellido": "Alvarez",
-				"edad": 222,
+				"edad": 22,
 				"ciudadResidencia": "Puerto Rico",
 				"genero": "Male",
 				"dni": 91748144,

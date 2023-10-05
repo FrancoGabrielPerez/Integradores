@@ -30,6 +30,11 @@ public class EstudianteService{
         return new EstudianteDTO(this.estudianteRepository.save(new Estudiante(entity)));
     }
 
+    @Transactional 
+    public List<String> getGeneros() {
+        return estudianteCarreraRepository.getGeneros();
+    }
+
     @Transactional(readOnly = true)
     public List<EstudianteDTO> findAll() {
         return this.estudianteRepository.findAll().stream().map(EstudianteDTO::new ).toList();
