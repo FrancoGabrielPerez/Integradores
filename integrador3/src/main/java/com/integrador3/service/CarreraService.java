@@ -85,8 +85,8 @@ public class CarreraService{
 	}
 
 	@Transactional(readOnly = true)
-	public List<InformeCarreraDTO> InformeCarreras() {
-		return this.inscriptos.InformeCarreras();
+	public List<InformeCarreraDTO> informeCarreras() {
+		return this.inscriptos.informeCarreras();
 	}
 
 	@Transactional(readOnly = true)

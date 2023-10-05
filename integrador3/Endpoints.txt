@@ -62,5 +62,5 @@ Ej. 2.g) Recuperar los estudiantes de una determinada carrera, filtrado por ciud
 Ej. 2.h) Generar un reporte de las carreras, que para cada carrera incluya información de los
 		inscriptos y egresados por año. Se deben ordenar las carreras alfabéticamente, y
 		presentar los años de manera cronológica.
-		Request Url: http://localhost:8080/carreras/InformeCarreras
+		Request Url: http://localhost:8080/carreras/informeCarreras
 		Method: GET

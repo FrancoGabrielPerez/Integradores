@@ -88,10 +88,10 @@ public class CarreraController {
         }
     }
     
-    @GetMapping("/InformeCarreras")
+    @GetMapping("/informeCarreras")
     public ResponseEntity<?> carrerasPorInscriptos() {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(carreraService.InformeCarreras());
+            return ResponseEntity.status(HttpStatus.OK).body(carreraService.informeCarreras());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

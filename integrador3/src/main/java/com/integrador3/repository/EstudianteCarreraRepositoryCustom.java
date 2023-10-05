@@ -6,6 +6,6 @@ import com.integrador3.dto.EstudianteDTO;
 import com.integrador3.dto.InformeCarreraDTO;
 
 public interface EstudianteCarreraRepositoryCustom {
-    List<InformeCarreraDTO> InformeCarreras();
+    List<InformeCarreraDTO> informeCarreras();
     List<EstudianteDTO> buscarPorCarrerasYCiudadResidencia(String carrera, String ciudad);
 }

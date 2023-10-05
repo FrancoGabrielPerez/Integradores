@@ -18,7 +18,7 @@ public class EstudianteCarreraRepositoryCustomImpl implements EstudianteCarreraR
 
 	@Override
     @SuppressWarnings("unchecked")
-    public List<InformeCarreraDTO> InformeCarreras() {
+    public List<InformeCarreraDTO> informeCarreras() {
         return entityManager.createNativeQuery(
             "SELECT nombre AS carrera, Año AS año, SUM(Inscriptos) AS inscriptos, SUM(Graduados) AS graduados " +
 			"FROM " +
@@ -38,9 +38,9 @@ public class EstudianteCarreraRepositoryCustomImpl implements EstudianteCarreraR
     public List<EstudianteDTO> buscarPorCarrerasYCiudadResidencia(String carrera, String ciudad){
 		return entityManager.createQuery(
 			"SELECT NEW com.integrador3.dto.EstudianteDTO(e.nombre,e.apellido,e.edad,e.ciudadResidencia,e.genero,e.dni,e.id) " +
-						"FROM Estudiante e " +
-						"WHERE e.ciudadResidencia = :ciudad " +
-						"AND e.id IN (SELECT ec.estudiante.id FROM Carrera c JOIN c.estudiantes ec WHERE c.nombre = :carrera)",
+			"FROM Estudiante e " +
+			"WHERE e.ciudadResidencia = :ciudad " +
+			"AND e.id IN (SELECT ec.estudiante.id FROM Carrera c JOIN c.estudiantes ec WHERE c.nombre = :carrera)",
 			EstudianteDTO.class
 		).setParameter("ciudad", ciudad)
 		 .setParameter("carrera", carrera)
