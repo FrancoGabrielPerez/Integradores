@@ -23,7 +23,6 @@ public class EstudianteCarreraDTO {
 		this.c = estudianteCarrera.getCarrera().getNombre();
 	}
 
-	// TODO eliminar si no se usa
 	public EstudianteCarreraDTO(String e, String c, Timestamp fechaInscripcion, Timestamp fechaGaduacion) {
 		this.fechaInscripcion = fechaInscripcion;
 		this.fechaGraduacion = fechaGaduacion;
