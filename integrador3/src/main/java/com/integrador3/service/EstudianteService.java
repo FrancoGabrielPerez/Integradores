@@ -1,6 +1,7 @@
 package com.integrador3.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,15 @@ public class EstudianteService{
     
     @Transactional
     public EstudianteDTO save(EstudianteDTO entity) {
+            if (entity.getEdad() < 18) 
+                throw new IllegalArgumentException("El estudiante debe ser mayor de edad.");
+            if (entity.getEdad() > 150) 
+                throw new IllegalArgumentException("El estudiante debe se menor de 150 años.");                    
+            List<String> generos = getGeneros();
+            if (!generos.contains(entity.getGenero())) {                
+                String generosValidos = generos.stream().collect(Collectors.joining(", "));
+                throw new IllegalArgumentException("El genero debe ser alguno de los siguientes: "+generosValidos+".\n");
+            }
         return new EstudianteDTO(this.estudianteRepository.save(new Estudiante(entity)));
     }
 
