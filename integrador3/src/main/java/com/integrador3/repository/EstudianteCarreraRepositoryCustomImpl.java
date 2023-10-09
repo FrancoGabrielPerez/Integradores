@@ -46,11 +46,4 @@ public class EstudianteCarreraRepositoryCustomImpl implements EstudianteCarreraR
 		 .setParameter("carrera", carrera)
 		 .getResultList();
 	}
-
-	public List<String> getGeneros() {
-		return entityManager.createQuery(
-			"SELECT DISTINCT e.genero FROM Estudiante e",
-			String.class
-		).getResultList();
-	} 
 }
