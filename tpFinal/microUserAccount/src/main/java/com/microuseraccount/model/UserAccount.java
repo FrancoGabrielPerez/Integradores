@@ -16,23 +16,17 @@ public class UserAccount {
 	private Double saldo;
 	
 	@Id
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn()
-	private User userId;
+	private User user;
 
 	@Id
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn()
-	private Account accountId;
+	private Account account;
 
 	public UserAccount(){
 		super();
 	}
 
 	public UserAccount(User user, Account account) {
-		this.userId = Objects.requireNonNull(user, "user must not be null");
-		this.accountId = Objects.requireNonNull(account, "account must not be null");
+		this.user = Objects.requireNonNull(user, "user must not be null");
+		this.account = Objects.requireNonNull(account, "account must not be null");
 	}
 }

@@ -4,6 +4,7 @@ Microservicios
 	- MercadoPago (atributo, puede ser duplicado)
 	- Saldo
 	- Habilitado
+	- FechaAlta
 
 - Usuarios
 	- ID
@@ -11,7 +12,6 @@ Microservicios
 	- Apellido
 	- Celular
 	- Email (Valido)
-	- FechaAlta
 
 - Monopatines
 	- ID

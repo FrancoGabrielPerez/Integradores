@@ -5,6 +5,8 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.microuseraccount.dto.UserDTO;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,13 +22,14 @@ public class User {
 	private long nroCelular;
 	@Column(name="email")
 	private String email;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@Column(name="user_id")
-	private Integer userId;
+	@Column(name="user_id")
+	private long userId;
 
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@OneToMany(mappedBy = "userId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private Set<UserAccount> cuentas;
 
 	public User(){
@@ -38,18 +41,15 @@ public class User {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nroCelular = nroCelular;
-		this.email = email;
+		this.email = email;		
 		this.cuentas = new HashSet<>();
 	}
 
-//	public User(EstudianteDTO dto){
-//		this.nombre = dto.getNombre();
-//		this.apellido = dto.getApellido();
-//		this.ciudadResidencia = dto.getCiudadResidencia();
-//		this.genero = dto.getGenero();
-//		this.dni = dto.getDni();
-//		this.id = dto.getLibreta();
-//		this.edad = dto.getEdad();
-//		this.carreras = new HashSet<>();
-//	}
+	public User(UserDTO dto){
+		this.nombre = dto.getNombre();
+		this.apellido = dto.getApellido();
+		this.nroCelular = dto.getNroCelular();
+		this.email = dto.getEmail();
+		this.cuentas = new HashSet<>();
+	}
 }
