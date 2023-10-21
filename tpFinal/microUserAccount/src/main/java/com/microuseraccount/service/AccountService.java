@@ -91,6 +91,21 @@ public class AccountService{
 
 		userAccountRepository.deleteByUserAndAccount(user, account);
 	}
+
+	@Transactional
+	public void updateSaldo(Double saldo, long accountId) {
+		Account account = accountRepository.findById(accountId).orElseThrow(
+			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		account.setSaldo(saldo);
+		accountRepository.save(account);
+	}
+
+	@Transactional(readOnly = true)
+	public Double getSaldo(long accountId) {
+		User user = userRepository.findById(accountId).orElseThrow(
+			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		return accountRepository.findById(user.getUserId()).orElseThrow().getSaldo();
+	}
 	
 	/*
 	@Transactional(readOnly = true)

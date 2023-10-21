@@ -39,7 +39,7 @@ public class UserController {
     }
     
     @Operation(description = "Obtiene un usuario por su userId")
-    @GetMapping("/buscarPor/{userId}")
+    @GetMapping("/buscar/{userId}")
     public ResponseEntity<?> getById(@PathVariable long userId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @Operation(description = "Elimina un usuario por su userId")
-    @DeleteMapping("/eliminarPor/{userId}")
+    @DeleteMapping("/eliminar/{userId}")
     public ResponseEntity<?> delete(@PathVariable long userId){
         try{
             userService.delete(userId);
@@ -70,8 +70,8 @@ public class UserController {
         }
     }
 
-    @Operation(description = "Asocia una cuenta a un usuario")
-    @PutMapping("/asociarCuenta/{userId}/{accountId}")
+    @Operation(description = "Vincula una cuenta a un usuario")
+    @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarCuenta(@PathVariable long userId, @PathVariable long accountId){
         try{
             userService.asociarCuenta(userId, accountId);
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @Operation(description = "Desvincula una cuenta de un usuario")
-    @DeleteMapping("/desvincularCuenta/{userId}/{accountId}")
+    @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularCuenta(@PathVariable long userId, @PathVariable long accountId){
         try{
             userService.desvincularCuenta(userId, accountId);
@@ -91,32 +91,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo desvincular la cuenta, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
-
-    /* @GetMapping("genero/{genero}")
-    public ResponseEntity<?> getAllByGenero(@PathVariable String genero){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(userService.findByGenero(genero));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
-        }
-    }
-
-    @GetMapping("/ordenadosPorApellidoYNombre")
-    public ResponseEntity<?> getAllSorted(){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(userService.findAllByOrderByApellidoAscNombreAsc());
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\""+e.getMessage()+"\"}");
-        }
-    }
-
-    @GetMapping("/buscarPor")
-    public ResponseEntity<?> buscarPor(@RequestParam("carrera") String carrera, @RequestParam("ciudad") String ciudad) {
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(userService.userPorCiudadDeResidencia(carrera, ciudad));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
-        }
-    } */
-
 }

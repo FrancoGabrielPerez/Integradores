@@ -11,10 +11,7 @@ import java.util.Objects;
 @Table(name = "user_account")
 @Data
 @IdClass(UserAccountPK.class)
-public class UserAccount {
-	@Column(name = "saldo", nullable = false)
-	private Double saldo;
-	
+public class UserAccount {	
 	@Id
 	private User user;
 

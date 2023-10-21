@@ -9,8 +9,6 @@ import com.microuseraccount.model.Account;
 import com.microuseraccount.model.User;
 import com.microuseraccount.model.UserAccount;
 import com.microuseraccount.model.UserAccountPK;
-import java.util.List;
-
 
 @Repository("userAccountRepository")
 public interface UserAccountRepository extends JpaRepository<UserAccount, UserAccountPK> {
