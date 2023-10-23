@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 
 @RestController
-@RequestMapping("/estaciones")
+@RequestMapping("/viajes")
 public class TravelController {
     
     @Autowired
@@ -29,10 +29,10 @@ public class TravelController {
     }
     
     @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje")
-    @PostMapping("/alta")
-    public ResponseEntity<?> save(@RequestBody TravelDTO entity){
+    @PostMapping("/alta/usuario/{idUsuario}/scooter/{idScooter}")
+    public ResponseEntity<?> save(@RequestBody long idUsuario, long idScooter) {
         try{            
-            return ResponseEntity.status(HttpStatus.OK).body(travelService.save(entity));
+            return ResponseEntity.status(HttpStatus.OK).body(travelService.save(idUsuario, idScooter));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

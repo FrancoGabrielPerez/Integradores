@@ -7,7 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.microtravel.dto.TravelDTO;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;

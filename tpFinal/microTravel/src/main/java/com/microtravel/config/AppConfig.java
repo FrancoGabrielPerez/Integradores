@@ -1,4 +1,4 @@
-package com.microstation.config;
+package com.microtravel.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
