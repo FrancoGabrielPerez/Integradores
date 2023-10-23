@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(description = "Obtiene todos los usuarios")
+    @Operation(summary = "Obtiene todos los usuarios.", description = "Obtiene todos los usuarios")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
@@ -28,7 +28,7 @@ public class UserController {
         }
     }
     
-    @Operation(description = "Crea un usuario")
+    @Operation(summary = "Agrega un nuevo usuario.", description = "Crea un usuario")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody UserDTO entity){
         try{            
@@ -38,7 +38,7 @@ public class UserController {
         }
     }
     
-    @Operation(description = "Obtiene un usuario por su userId")
+    @Operation(summary = "Obtiene un usuario por su id.", description = "Obtiene un usuario por su userId")
     @GetMapping("/buscar/{userId}")
     public ResponseEntity<?> getById(@PathVariable long userId) {
         try{
@@ -48,7 +48,7 @@ public class UserController {
         }
     }
 
-    @Operation(description = "Elimina un usuario por su userId")
+    @Operation(summary = "Elimina un usuario por su id.", description = "Elimina un usuario por su userId")
     @DeleteMapping("/eliminar/{userId}")
     public ResponseEntity<?> delete(@PathVariable long userId){
         try{
@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @Operation(description = "Actualiza un usuario por su userId")
+    @Operation(summary = "Actualiza los datos de un usuario por su id.", description = "Actualiza un usuario por su userId")
     @PutMapping("/actualizar/{userId}")
     public ResponseEntity<?> update(@PathVariable long userId, @RequestBody UserDTO entity){
         try{
@@ -70,7 +70,7 @@ public class UserController {
         }
     }
 
-    @Operation(description = "Vincula una cuenta a un usuario")
+    @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula una cuenta a un usuario")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarCuenta(@PathVariable long userId, @PathVariable long accountId){
         try{
@@ -81,7 +81,7 @@ public class UserController {
         }
     }
 
-    @Operation(description = "Desvincula una cuenta de un usuario")
+    @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula una cuenta de un usuario")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularCuenta(@PathVariable long userId, @PathVariable long accountId){
         try{

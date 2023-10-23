@@ -25,7 +25,7 @@ public class AccountController {
     @Autowired
     private UserAccountService userAccountService;
 
-    @Operation(description = "Obtiene todas las cuentas")
+    @Operation(summary = "Obtiene todos las cuentas.", description = "Obtiene todas las cuentas")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
@@ -35,7 +35,7 @@ public class AccountController {
         }
     }
     
-    @Operation(description = "Crea una cuenta")
+    @Operation(summary = "Crea una nueva cuenta.", description = "Crea una cuenta")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody AccountDTO entity){
         try{            
@@ -45,7 +45,7 @@ public class AccountController {
         }
     }
     
-    @Operation(description = "Obtiene una cuenta por su accountId")
+    @Operation(summary = "Obtiene una cuenta por su id.", description = "Obtiene una cuenta por su accountId")
     @GetMapping("/buscar/{accountId}")
     public ResponseEntity<?> getById(@PathVariable long accountId) {
         try{
@@ -55,7 +55,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "Elimina una cuenta por su accountId")    
+    @Operation(summary = "Elimina una cuenta por su id.", description = "Elimina una cuenta por su accountId")    
     @DeleteMapping("/eliminar/{accountId}")
     public ResponseEntity<?> delete(@PathVariable long accountId){
         try{
@@ -66,7 +66,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "Actualiza una cuenta por su accountId")
+    @Operation(summary = "Actualiza una cuenta por su id.", description = "Actualiza una cuenta por su accountId")
     @PutMapping("/actualizar/{accountId}")
     public ResponseEntity<?> update(@PathVariable long accountId, @RequestBody AccountDTO entity){
         try{
@@ -77,7 +77,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "vincula un usuario a una cuenta")
+    @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula un usuario a una cuenta")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarUsuario(@PathVariable long userId, @PathVariable long accountId){
         try{
@@ -88,7 +88,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "Desvincula un usuario de una cuenta")
+    @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula un usuario de una cuenta")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularUsuario(@PathVariable long userId, @PathVariable long accountId){
         try{
@@ -99,7 +99,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "Obtiene el saldo de una cuenta")
+    @Operation(summary = "Obtiene el saldo de una cuenta.", description = "Obtiene el saldo de una cuenta")
     @GetMapping("/saldo/obtener/{accountId}")
     public ResponseEntity<?> getSaldo(@PathVariable long accountId) {
         try{
@@ -109,7 +109,7 @@ public class AccountController {
         }
     }
 
-    @Operation(description = "Actualiza el saldo de una cuenta")
+    @Operation(summary = "Actualiza el saldo de una cuenta.", description = "Actualiza el saldo de una cuenta")
     @PutMapping("/saldo/actualizar/{accountId}")
     public void updateSaldo(@PathVariable long accountId, @RequestBody Double saldo) {
         accountService.updateSaldo(saldo, accountId);

@@ -18,7 +18,7 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
-    @Operation(description = "Obtiene todos las estaciones")
+    @Operation(summary = "Obtiene todas las estaciones.", description = "Obtiene todos las estaciones")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
@@ -28,7 +28,7 @@ public class StationController {
         }
     }
     
-    @Operation(description = "Agrega una estacion")
+    @Operation(summary = "Agrega una estacion.", description = "Agrega una estacion")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody StationDTO entity){
         try{            
@@ -38,7 +38,7 @@ public class StationController {
         }
     }
     
-    @Operation(description = "Obtiene un estacion por su stationId")
+    @Operation(summary = "Obtiene una estacion por su id.", description = "Obtiene un estacion por su stationId")
     @GetMapping("/buscar/{stationId}")
     public ResponseEntity<?> getById(@PathVariable long stationId) {
         try{
@@ -48,7 +48,7 @@ public class StationController {
         }
     }
 
-    @Operation(description = "Elimina una estacion por su stationId")
+    @Operation(summary = "Eliminia una estacion por su id.", description = "Elimina una estacion por su stationId")
     @DeleteMapping("/eliminar/{stationId}")
     public ResponseEntity<?> delete(@PathVariable long stationId){
         try{
@@ -59,7 +59,7 @@ public class StationController {
         }
     }
 
-    @Operation(description = "Actualiza una estacion por su stationId")
+    @Operation(summary = "Actualiza los datos de una estacion por su id.", description = "Actualiza una estacion por su stationId")
     @PutMapping("/actualizar/{stationId}")
     public ResponseEntity<?> update(@PathVariable long stationId, @RequestBody StationDTO entity){
         try{
