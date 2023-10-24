@@ -69,5 +69,16 @@ public class TravelController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudieron actualizar los datos de la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     } 
+
+    @Operation(summary = "Finaliza un viaje por su id.", description = "Finaliza un viaje por su travelId")
+    @PutMapping("/finalizar/{travelId}")
+    public ResponseEntity<?> travelEnd(@PathVariable long travelId){
+        try{
+            travelService.travelEnd(travelId);
+            return ResponseEntity.status(HttpStatus.OK).body("Se finalizo correctamente el viaje con travelId: " + travelId);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo finalizar el viaje, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
    
 }

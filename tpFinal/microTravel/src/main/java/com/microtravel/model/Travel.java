@@ -31,8 +31,10 @@ public class Travel {
 	private Timestamp startTime;
 	@Column(name = "endTime")
 	private Timestamp endTime;
-	@Column(name = "kilometers")
-	private double kilometers;
+	@Column(name = "scooter_start_kms")
+	private double scooterStartKms;
+	@Column(name = "scooter_end_kms")
+	private double scooterEndKms;
 	@Column(name = "pause")
 	private Duration pause;
 	@Column(name = "fare")
@@ -42,12 +44,13 @@ public class Travel {
 		super();
 	}	
 
-	public Travel(long userId, long scooterId, Double fare) {
+	public Travel(long userId, long scooterId, Double fare, double scooterStartKms) {
 		this.userId = userId;
 		this.scooterId = scooterId;
 		this.startTime = new Timestamp(System.currentTimeMillis());
 		this.endTime = null;
-		this.kilometers = 0;
+		this.scooterStartKms = scooterStartKms;
+		this.scooterEndKms = 0;
 		this.pause = Duration.ZERO;
 		this.fare = fare;
 	}

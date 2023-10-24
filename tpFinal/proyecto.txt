@@ -1,50 +1,55 @@
 Microservicios
-- Account
-	- Usuarios (multiples, minimo uno)
-	- MercadoPago (atributo, puede ser duplicado)
-	- Saldo
-	- Habilitado
-	- FechaAlta
+- User-Account
+	- Account
+		- Usuarios (multiples, minimo uno)
+		- MercadoPago (atributo, puede ser duplicado)
+		- Saldo
+		- Habilitado
+		- FechaAlta
 
-- Usuarios
-	- ID
-	- Nombre
-	- Apellido
-	- Celular
-	- Email (Valido)
+	- Usuarios
+		- ID
+		- Nombre
+		- Apellido
+		- Celular
+		- Email (Valido)
 
-- Monopatines
+- Scooter
 	- ID
 	- QR
     - Coordenadas
 	- Estado (Disponible, En uso, En mantenimiento)
 
-- Viajes
-	- Tarifas
-	- Usuarios
-	- Monopatin
-	- TimeStamp Inicio
-	- TimeStap Fin
-	- TimeStamp PausaInicio
-	- TimeStamp PausaFin
-	- Kilometros
+- Travel
+	- Travel
+		- Tarifas
+		- Usuarios
+		- Monopatin
+		- TimeStamp Inicio
+		- TimeStap Fin
+		- TimeStamp PausaInicio
+		- TimeStamp PausaFin
+		- Kilometros
 
-- Administracion
+	- Tarifa
+		- Tarifa plana
+		- Tarifa extra
+		- Nueva tarifa plana
+		- Nueva tarifa extra
+		- Timestamp aumento
+
+		O se pueden registrar los datos de esta forma
+		7/8/22 $10 $12
+		3/2/23 $100 $120
+		3/10/23 $150 $200
+		14/11/23 $300 $400
+
+- Admin
 	- Personal
 
-- Tarifas
-	- Tarifa plana
-	- Tarifa extra
-	- Nueva tarifa plana
-	- Nueva tarifa extra
-	- Timestamp aumento
-
-	O se pueden registrar los datos de esta forma
-	7/8/22 $10 $12
-	3/2/23 $100 $120
-	3/10/23 $150 $200
-	14/11/23 $300 $400
-
-- Paradas
+- Stations
 	- Coordenadas
 	- Monopatines
+
+RECURSOS
+https://robertocrespo.net/implementar-microservicios-spring-boot-iii-acceso-datos-mongodb-data/

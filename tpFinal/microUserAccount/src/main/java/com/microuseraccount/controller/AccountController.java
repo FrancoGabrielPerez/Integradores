@@ -34,6 +34,15 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
+
+    @GetMapping("/cuentas/usuario/{userId}")
+    public ResponseEntity<?> getCuentasByUserId(@PathVariable long userId){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(userAccountService.getCuentasByUserId(userId));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
     
     @Operation(summary = "Crea una nueva cuenta.", description = "Crea una cuenta")
     @PostMapping("/alta")
