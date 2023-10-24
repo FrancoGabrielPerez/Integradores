@@ -62,8 +62,13 @@ public class TravelService{
 	}
 
 	@Transactional
-	private Double getCurrentFare() {
-		return fareRepository.getCurrentFare();
+	private Double getCurrentFlatFare() {
+		return fareRepository.getCurrentFlatRate();
+	}
+
+	@Transactional
+	private Double getCurrentFullRate() {
+		return fareRepository.getCurrentFullRate();
 	}
 
 	@Transactional
@@ -72,9 +77,16 @@ public class TravelService{
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
 		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/scooters/buscar/" + travel.getScooterId(), ScooterDTO.class);
 		travel.setEndTime(new Timestamp(System.currentTimeMillis()));
-		travel.setKilometers(scooter.getBody().getKilometers() - travel.getScooterStartKms());
-		travel.setPause(scooter.getBody().getPause());
-		travel.setFare(null);
+		//travel.setPause(scooter.getBody().getPause());
+		travel.setScooterEndKms(scooter.getBody().getKilometers());
+
+		if (travel.getPause() == null) {
+			travel.setFare(scooter.getBody().getKilometers() - travel.getScooterStartKms() * getCurrentFlatFare());//esto tiene que ser con el tiempo
+		}
+		else {
+			travel.setFare(scooter.getBody().getKilometers() - travel.getScooterStartKms() * getCurrentFullRate());
+		}	
+			
 		travelRepository.save(travel);
 		scooter.getBody().setEstado("Libre");
 		updateUserAccount(travel.getUserId(), travel.getFare());
@@ -86,8 +98,8 @@ public class TravelService{
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
 		AccountDTO account = accounts.stream().filter(a -> a.getBalance() >= fare && a.isHabilitada()).findFirst().orElse(null);
-		if (Objects.isNull(account)) {
-			throw new IllegalArgumentException("No hay cuentas con saldo suficiente para el usuario: " + userId);
+		if (Objects.isNull(account)) { //TODO: ver que hacer si no hay cuentas con saldo suficiente
+			throw new IllegalArgumentException("No hay cuentas con saldo suficiente para el usuario: " + userId); 
 		}
 		account.setBalance(account.getBalance() - fare);
 		try {

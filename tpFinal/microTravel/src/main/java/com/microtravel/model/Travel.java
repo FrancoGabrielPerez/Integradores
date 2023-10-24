@@ -23,19 +23,19 @@ public class Travel {
 	@Column(name="travel_id")
 	private long travelId;
 
-	@Column(name = "userId")
+	@Column(name = "user_id")
 	private long userId;
-	@Column(name = "scooterId")
+	@Column(name = "scooter_id")
 	private long scooterId;
-	@Column(name = "startTime")
+	@Column(name = "start_time")
 	private Timestamp startTime;
-	@Column(name = "endTime")
+	@Column(name = "end_time")
 	private Timestamp endTime;
 	@Column(name = "scooter_start_kms")
 	private double scooterStartKms;
 	@Column(name = "scooter_end_kms")
 	private double scooterEndKms;
-	@Column(name = "pause")
+	@Column(name = "pause_time")
 	private Duration pause;
 	@Column(name = "fare")
 	private Double fare;
