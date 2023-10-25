@@ -7,8 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="integrador3" />
         <module name="microUserAccount" />
+        <module name="microScooter" />
+        <module name="microTravel" />
+        <module name="microStation" />
+        <module name="integrador3" />
         <module name="integrador2" />
         <module name="integrador1" />
       </profile>
@@ -20,7 +23,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="integrador3" options="-parameters" />
-      <module name="microUserAccount" options="-parameters" />
+      <module name="microScooter" options="-parameters" />
+      <module name="microStation" options="-parameters" />
+      <module name="microTravel" options="-parameters" />
+      <module name="microUserAccount" options="" />
     </option>
   </component>
 </project>

@@ -9,6 +9,9 @@
         <option value="$PROJECT_DIR$/integrador3/pom.xml" />
         <option value="$PROJECT_DIR$/tpFinal/pom.xml" />
         <option value="$PROJECT_DIR$/tpFinal/microUserAccount/pom.xml" />
+        <option value="$PROJECT_DIR$/tpFinal/microScooter/pom.xml" />
+        <option value="$PROJECT_DIR$/tpFinal/microStation/pom.xml" />
+        <option value="$PROJECT_DIR$/tpFinal/microTravel/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

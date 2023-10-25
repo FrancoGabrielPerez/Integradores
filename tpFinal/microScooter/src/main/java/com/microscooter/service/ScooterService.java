@@ -22,6 +22,7 @@ import com.microscooter.repository.ScooterRepository;
 public class ScooterService{
 	@Autowired
 	private ScooterRepository scooterRepository;
+
 	@Transactional(readOnly = true)
 	public List<ScooterDTO> findAll() {
 		return this.scooterRepository.findAll().stream().map(ScooterDTO::new ).toList();
@@ -48,8 +49,7 @@ public class ScooterService{
 	public void update(Long id, ScooterDTO entity) {
 		Scooter scooter = scooterRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
-		scooter.setLatitud(entity.getLatitud());
-		scooter.setLongitud(entity.getLongitud());
+		scooter.setFromDTO(entity);
 		scooterRepository.save(scooter);
 	}
 	

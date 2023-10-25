@@ -39,7 +39,7 @@ public class ScooterController {
     }
     
     @Operation(summary = "Obtiene un monopatin por su id.", description = "Obtiene un monopatin por su scooterId")
-    @GetMapping("/buscar/{scooterId}")
+    @GetMapping("/{scooterId}")
     public ResponseEntity<?> getById(@PathVariable long scooterId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findById(scooterId));
@@ -49,18 +49,18 @@ public class ScooterController {
     }
 
     @Operation(summary = "Eliminia un monopatin por su id.", description = "Elimina una monopatin por su scooterId")
-    @DeleteMapping("/eliminar/{stationId}")
+    @DeleteMapping("/eliminar/{scooterId}")
     public ResponseEntity<?> delete(@PathVariable long scooterId){
         try{
             scooterService.delete(scooterId);
-            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente la estacion con scooterId: " + scooterId);
+            return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente el monopatin con scooterId: " + scooterId);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar el monopatin, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
 
     @Operation(summary = "Actualiza los datos de un monopatin por su id.", description = "Actualiza un monopatin por su scooterId")
-    @PutMapping("/actualizar/{stationId}")
+    @PutMapping("/actualizar/{scooterId}")
     public ResponseEntity<?> update(@PathVariable long scooterId, @RequestBody ScooterDTO entity){
         try{
             scooterService.update(scooterId, entity);

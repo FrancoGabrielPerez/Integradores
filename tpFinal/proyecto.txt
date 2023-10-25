@@ -46,6 +46,7 @@ Microservicios
 
 - Admin
 	- Personal
+	faturas con los montos cobrados para el punto 3d. cuando finaliza un servicio se registra la factura
 
 - Stations
 	- Coordenadas

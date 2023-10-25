@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c933521-6b54-444c-9b84-1b26748e5f80" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Integradores.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Integradores.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microScooter/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microScooter/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/model/Scooter.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/model/Scooter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microTravel/src/main/java/com/microtravel/service/TravelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microTravel/src/main/java/com/microtravel/service/TravelService.java" afterDir="false" />
+    </list>
+    <list id="cd35d388-1b52-4f08-bded-e37ab38925d5" name="Changes by lucho" comment="">
+      <change beforePath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/controller/ScooterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/controller/ScooterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/dto/ScooterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/dto/ScooterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/service/ScooterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microScooter/src/main/java/com/microscooter/service/ScooterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tpFinal/microTravel/src/main/java/com/microtravel/service/TravelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/tpFinal/microTravel/src/main/java/com/microtravel/service/TravelService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +49,15 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/tpFinal/microTravel/src/main/java/com/microtravel/service/TravelService.java">
+      <ranges>
+        <range start1="17" end1="17" start2="17" end2="18" changelist="cd35d388-1b52-4f08-bded-e37ab38925d5" />
+        <range start1="53" end1="54" start2="54" end2="55" changelist="cd35d388-1b52-4f08-bded-e37ab38925d5" />
+        <range start1="58" end1="59" start2="59" end2="61" changelist="4c933521-6b54-444c-9b84-1b26748e5f80" />
+      </ranges>
+    </file>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -56,35 +72,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;temurin-17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;J:/Otros ordenadores/Mi Portátil/Documentos/TUDAI/Arquitecturas/Integradores/tpFinal/microUserAccount/src/main/java/com/microuseraccount/model&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JAVA_MODULE": "temurin-17",
+    "last_opened_file_path": "J:/Otros ordenadores/Mi Portátil/Documentos/TUDAI/Arquitecturas/Integradores/tpFinal/microUserAccount/src/main/java/com/microuseraccount/model",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="J:\Otros ordenadores\Mi Portátil\Documentos\TUDAI\Arquitecturas\Integradores\tpFinal\microUserAccount\src\main\java\com\microuseraccount\model" />
       <recent name="J:\Otros ordenadores\Mi Portátil\Documentos\TUDAI\Arquitecturas\Integradores\tpFinal\microUserAccount\src\main\java\com\microuseraccount" />
       <recent name="J:\Otros ordenadores\Mi Portátil\Documentos\TUDAI\Arquitecturas\Integradores\tpFinal\microUserAccount\src\test\java\com\microuseraccount" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.microtravel.model" />
+      <recent name="com.microtravel.dto" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -94,11 +114,35 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.MicroUserAccountApp">
+  <component name="RunManager" selected="Spring Boot.MicroScooterApplication">
     <configuration name="Integrador3Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="integrador3" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.integrador3.Integrador3Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MicroScooterApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="microScooter" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.microscooter.MicroScooterApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MicroStationApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="microStation" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.microstation.MicroStationApp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MicroTravelApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="microTravel" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.microtravel.MicroTravelApp" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -146,11 +190,23 @@
       <workItem from="1696308242101" duration="611000" />
       <workItem from="1697723947129" duration="4282000" />
       <workItem from="1697728257923" duration="2412000" />
+      <workItem from="1698252665613" duration="4804000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
