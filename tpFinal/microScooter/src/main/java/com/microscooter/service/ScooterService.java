@@ -45,9 +45,9 @@ public class ScooterService{
 	}
 
 	@Transactional
-	public void update(Long id, ScooterDTO entity) {
-		Scooter scooter = scooterRepository.findById(id).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
+	public void update(ScooterDTO entity) {
+		Scooter scooter = scooterRepository.findById(entity.getScooterId()).orElseThrow(
+			() -> new IllegalArgumentException("ID de estacion invalido: " + entity.getScooterId()));
 		scooter.setLatitud(entity.getLatitud());
 		scooter.setLongitud(entity.getLongitud());
 		scooterRepository.save(scooter);

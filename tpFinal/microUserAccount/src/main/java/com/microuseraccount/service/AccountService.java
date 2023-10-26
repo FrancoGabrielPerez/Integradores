@@ -102,11 +102,28 @@ public class AccountService{
 
 	@Transactional(readOnly = true)
 	public Double getSaldo(long accountId) {
-		User user = userRepository.findById(accountId).orElseThrow(
+		Account account = accountRepository.findById(accountId).orElseThrow(
 			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
-		return accountRepository.findById(user.getUserId()).orElseThrow().getSaldo();
+		return accountRepository.findById(account.getAccountId()).orElseThrow().getSaldo();
 	}
 	
+	@Transactional
+	public void suspendAccount(long accountId) {
+		Account account = accountRepository.findById(accountId).orElseThrow(
+			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		account.setHabilitada(false);
+		accountRepository.save(account);
+	}
+
+	@Transactional
+	public void activateAccount(long accountId) {
+		Account account = accountRepository.findById(accountId).orElseThrow(
+			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		account.setHabilitada(true);
+		accountRepository.save(account);
+	}
+
+
 	/*
 	@Transactional(readOnly = true)
 	public List<InformeAccountDTO> informeAccounts() {

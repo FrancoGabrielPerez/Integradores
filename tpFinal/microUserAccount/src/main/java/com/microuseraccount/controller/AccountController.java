@@ -75,6 +75,28 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Desactiva una cuenta por su id.", description = "Desactiva una cuenta por su accountId")
+    @PutMapping("/suspender/{accountId}")
+    public ResponseEntity<?> suspend(@PathVariable long accountId){
+        try{
+            accountService.suspendAccount(accountId);
+            return ResponseEntity.status(HttpStatus.OK).body("Se suspendio correctamente la cuenta con accountId: " + accountId);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo suspender la cuenta, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
+    @Operation(summary = "Activa una cuenta por su id.", description = "Activa una cuenta por su accountId")
+    @PutMapping("/activar/{accountId}")
+    public ResponseEntity<?> activate(@PathVariable long accountId){
+        try{
+            accountService.activateAccount(accountId);
+            return ResponseEntity.status(HttpStatus.OK).body("Se activo correctamente la cuenta con accountId: " + accountId);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo activar la cuenta, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
     @Operation(summary = "Actualiza una cuenta por su id.", description = "Actualiza una cuenta por su accountId")
     @PutMapping("/actualizar/{accountId}")
     public ResponseEntity<?> update(@PathVariable long accountId, @RequestBody AccountDTO entity){

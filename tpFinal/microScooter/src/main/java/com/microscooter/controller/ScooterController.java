@@ -49,7 +49,7 @@ public class ScooterController {
     }
 
     @Operation(summary = "Eliminia un monopatin por su id.", description = "Elimina una monopatin por su scooterId")
-    @DeleteMapping("/eliminar/{stationId}")
+    @DeleteMapping("/eliminar/{scooterId}")
     public ResponseEntity<?> delete(@PathVariable long scooterId){
         try{
             scooterService.delete(scooterId);
@@ -60,11 +60,11 @@ public class ScooterController {
     }
 
     @Operation(summary = "Actualiza los datos de un monopatin por su id.", description = "Actualiza un monopatin por su scooterId")
-    @PutMapping("/actualizar/{stationId}")
-    public ResponseEntity<?> update(@PathVariable long scooterId, @RequestBody ScooterDTO entity){
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> update(@RequestBody ScooterDTO entity){
         try{
-            scooterService.update(scooterId, entity);
-            return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos del monopatin con scooterId: " + scooterId);
+            scooterService.update(entity);
+            return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos del monopatin con scooterId: " + entity.getScooterId());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudieron actualizar los datos de la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
