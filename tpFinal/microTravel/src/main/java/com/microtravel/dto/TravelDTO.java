@@ -14,19 +14,31 @@ public class TravelDTO {
 	
 	private long userId;
 	private long scooterId;
-	private Timestamp startTime;
+	// private Timestamp startTime;
 	private Timestamp endTime;
+	private double useTime;
+	private double pauseTime;
 	private double kilometers;
-	private Duration pause;
+	//private Double pause;
 	private Double fare;
 
 	public TravelDTO(Travel travel) {
 		this.userId = travel.getUserId();
 		this.scooterId = travel.getScooterId();
-		this.startTime = travel.getStartTime();
+		this.useTime = travel.getUseTime();
+		this.pauseTime = travel.getPauseTime();
+		this.fare = travel.getFare();
 		this.endTime = travel.getEndTime();
 		this.kilometers = travel.getKilometers();
-		this.pause = travel.getPause();
-		this.fare = travel.getFare();
+	}
+
+	public TravelDTO(long userId, long scooterId, double useTime, double pauseTime, Double fare, Timestamp endTime, double kilometers) {
+		this.userId = userId;
+		this.scooterId = scooterId;
+		this.useTime = useTime;
+		this.pauseTime = pauseTime;
+		this.fare = fare;
+		this.endTime = endTime;
+		this.kilometers = kilometers;
 	}
 }

@@ -27,16 +27,16 @@ public class Travel {
 	private long userId;
 	@Column(name = "scooter_id")
 	private long scooterId;
-	@Column(name = "start_time")
-	private Timestamp startTime;
+	@Column(name = "use_time")
+	private int useTime;
 	@Column(name = "end_time")
 	private Timestamp endTime;
-	@Column(name = "scooter_start_kms")
-	private double scooterStartKms;
-	@Column(name = "scooter_end_kms")
-	private double scooterEndKms;
+	@Column(name = "kilometers")
+	private double kilometers;
+	// @Column(name = "scooter_end_kms")
+	// private double scooterEndKms;
 	@Column(name = "pause_time")
-	private Duration pause;
+	private int pauseTime;
 	@Column(name = "fare")
 	private Double fare;
 
@@ -44,21 +44,24 @@ public class Travel {
 		super();
 	}	
 
-	public Travel(long userId, long scooterId, Double fare, double scooterStartKms) {
+	// public Travel(long userId, long scooterId, Double fare, double scooterStartKms) {
+	// 	this.userId = userId;
+	// 	this.scooterId = scooterId;
+	// 	this.startTime = new Timestamp(System.currentTimeMillis());
+	// 	this.endTime = null;
+	// 	this.scooterStartKms = scooterStartKms;
+	// 	this.scooterEndKms = 0;
+	// 	this.pause = Duration.ZERO;
+	// 	this.fare = fare;
+	// }
+
+	public Travel(long userId, long scooterId, int pauseTime, Double fare, int useTime, double scooterInitKms) {
 		this.userId = userId;
 		this.scooterId = scooterId;
-		this.startTime = new Timestamp(System.currentTimeMillis());
+		this.useTime = useTime;
+		this.kilometers = scooterInitKms;	
 		this.endTime = null;
-		this.scooterStartKms = scooterStartKms;
-		this.scooterEndKms = 0;
-		this.pause = Duration.ZERO;
+		this.pauseTime = 0;
 		this.fare = fare;
 	}
-
-
-
-	// public Travel(TravelDTO dto){
-	// 	this.latitud = dto.getLatitud();
-	// 	this.longitud = dto.getLongitud();
-	// }
 }

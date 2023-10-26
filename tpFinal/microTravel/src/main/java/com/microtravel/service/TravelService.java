@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.microtravel.dto.UserDTO;
 import com.microtravel.dto.AccountDTO;
 import com.microtravel.dto.TravelDTO;
+import com.microtravel.dto.ScooterDTO;
 import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
@@ -51,14 +52,34 @@ public class TravelService{
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) {
 		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8080/usuarios/buscar/" + idUsuario, UserDTO.class);
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/scooters/buscar/" + idScooter, ScooterDTO.class);
+		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK || scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario o scooter invalido: " + idUsuario + " " + idScooter);
 		}
-		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, getCurrentFare())));
-		scooter.getBody().setEstado("Ocupado");
-		ResponseEntity<?> scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
+		UpdateScooterState(idScooter, scooter.getBody());
+
+		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, fareRepository.getCurrentFlatRate(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
+		
+
+		//ResponseEntity<?> scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
 		return res;
+	}
+
+	private ScooterDTO UpdateScooterState(long idScooter, ScooterDTO scooter) {
+		String scooterUpdateUrl = "http://localhost:8002/monopatines/" + idScooter;
+		scooter.setEstado("Ocupado");
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooter, headers);
+
+		ResponseEntity<ScooterDTO> scooterResponse = restTemplate.exchange(
+			scooterUpdateUrl,
+			HttpMethod.PUT,
+			requestEntity,
+			ScooterDTO.class
+		);
+		return scooterResponse.getBody();
 	}
 
 	@Transactional
@@ -72,25 +93,26 @@ public class TravelService{
 	}
 
 	@Transactional
-	public void travelEnd(Long id) {
+	public void travelEnd(Long id) throws Exception {
 		Travel travel = travelRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
 		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/scooters/buscar/" + travel.getScooterId(), ScooterDTO.class);
+		travel.setPauseTime(scooter.getBody().getTiempoEnpausa());
+		travel.setUseTime(scooter.getBody().getTiempoDeUso());
+		travel.setKilometers(scooter.getBody().getKilometros());
 		travel.setEndTime(new Timestamp(System.currentTimeMillis()));
-		//travel.setPause(scooter.getBody().getPause());
-		travel.setScooterEndKms(scooter.getBody().getKilometers());
-
-		if (travel.getPause() == null) {
-			travel.setFare(scooter.getBody().getKilometers() - travel.getScooterStartKms() * getCurrentFlatFare());//esto tiene que ser con el tiempo
+		//travel.setScooterEndKms(scooter.getBody().getKilometers());
+		if (travel.getPauseTime() == 0) {
+			travel.setFare(scooter.getBody().getTiempoDeUso() * getCurrentFlatFare());//esto tiene que ser con el tiempo
 		}
 		else {
-			travel.setFare(scooter.getBody().getKilometers() - travel.getScooterStartKms() * getCurrentFullRate());
+			travel.setFare( scooter.getBody().getTiempoDeUso() * getCurrentFlatFare() + scooter.getBody().getTiempoEnpausa() * getCurrentFullRate());
 		}	
 			
 		travelRepository.save(travel);
 		scooter.getBody().setEstado("Libre");
 		updateUserAccount(travel.getUserId(), travel.getFare());
-		ResponseEntity<?> scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
+		URI scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
 		
 	}
 
@@ -127,7 +149,6 @@ public class TravelService{
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        //AccountDTO actualAccount = new AccountDTO(accountId, newBalance);
         HttpEntity<AccountDTO> requestEntity = new HttpEntity<>(account, headers);
 
         ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PUT, requestEntity, Void.class);
@@ -150,7 +171,6 @@ public class TravelService{
 		travel.setUserId(entity.getUserId());
 		travel.setScooterId(entity.getScooterId());
 		travel.setFare(entity.getFare());
-		travel.setStartTime(entity.getStartTime());
 		travel.setEndTime(entity.getEndTime());		
 		travelRepository.save(travel);
 	}

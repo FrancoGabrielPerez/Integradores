@@ -26,7 +26,7 @@ public class ScooterDTO {
 		this.tiempoEnpausa = scooter.getTiempoEnpausa();
 	}
 
-	public ScooterDTO(long QR,String latitud, String longitud,String estado, double kilometros, int tiempoDeUso, int tiempoEnPausa) {
+	public ScooterDTO(String latitud, String longitud,String estado, double kilometros, int tiempoDeUso, int tiempoEnPausa) {
 		this.latitud = latitud;
 		this.longitud = longitud;
 		this.estado = estado;

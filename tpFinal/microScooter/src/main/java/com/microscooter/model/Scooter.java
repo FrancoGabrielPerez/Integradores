@@ -4,6 +4,7 @@ import com.microscooter.dto.ScooterDTO;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NonNull;
 
 @Entity
 @Data
@@ -34,20 +35,40 @@ public class Scooter{
 
     public Scooter(){
         super();
+		this.estado = "Libre";
+		this.kilometros = 0;
+		this.tiempoDeUso = 0;
+		this.tiempoEnpausa = 0;
+		this.latitud = "0";
+		this.longitud = "0";
     }
 
-    public Scooter(long QR,String latitud,String longitud){
-        super();
-        this.latitud = latitud;
-        this.longitud = longitud;
-        this.estado = "Libre";
-        this.kilometros = 0;
-        this.tiempoDeUso = 0;
-        this.tiempoEnpausa = 0;
+//    public Scooter(String latitud,String longitud){
+//        super();
+//        this.latitud = latitud;
+//        this.longitud = longitud;
+//        this.estado = "Libre";
+//        this.kilometros = 0;
+//        this.tiempoDeUso = 0;
+//        this.tiempoEnpausa = 0;
+//    }
+
+    public Scooter(@NonNull ScooterDTO dto){ //dejamos el notnull?
+		super();
+		this.latitud = dto.getLatitud();
+		this.longitud = dto.getLongitud();
+		this.estado = dto.getEstado();
+		this.kilometros = dto.getKilometros();
+		this.tiempoDeUso = dto.getTiempoDeUso();
+		this.tiempoEnpausa = dto.getTiempoEnpausa();
     }
 
-    public Scooter(ScooterDTO dto){
-        this.latitud = dto.getLatitud();
-        this.longitud = dto.getLongitud();
-    }
+	public void setFromDTO(@NonNull ScooterDTO dto){
+		this.latitud = dto.getLatitud();
+		this.longitud = dto.getLongitud();
+		this.estado = dto.getEstado();
+		this.kilometros = dto.getKilometros();
+		this.tiempoDeUso = dto.getTiempoDeUso();
+		this.tiempoEnpausa = dto.getTiempoEnpausa();
+	}
 }
