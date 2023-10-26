@@ -22,6 +22,7 @@ import com.microtravel.repository.TravelRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -52,13 +53,25 @@ public class TravelService{
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) {
 		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8080/usuarios/buscar/" + idUsuario, UserDTO.class);
+		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8080/cuentas/usuario/" + idUsuario, 
+											HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountDTO>>() {});
+											if (accounts.getStatusCode() != HttpStatus.OK) {
+												throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
+											}
+		boolean hasCredit = false;
+		for(AccountDTO account : accounts.getBody()) {
+			if (account.getBalance() > 0)
+			hasCredit = true;
+		}
+		if (!hasCredit) {
+			throw new IllegalArgumentException("El usuario no tiene saldo suficiente para realizar un viaje");
+		}
 		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK || scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario o scooter invalido: " + idUsuario + " " + idScooter);
 		}
-		UpdateScooterState(idScooter, scooter.getBody());
-
 		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, fareRepository.getCurrentFlatRate(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
+		UpdateScooterState(idScooter, scooter.getBody());
 		
 
 		//ResponseEntity<?> scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());

@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.microadministration.dto.AdminStaffDTO;
 import com.microadministration.dto.ScooterDTO;
+import com.microadministration.dto.ScooterReporteKilometrosDTO;
 import com.microadministration.dto.StationDTO;
 import com.microadministration.model.AdminStaff;
 import com.microadministration.repository.AdminStaffRepository;
@@ -102,20 +103,22 @@ public class AdminService{
 		}
 	}
 
-	// @Transactional
-	// public ResponseEntity getReportScootersByKms() throws Exception {
-	// 	String scooterUrl = "localhost:8002/monopatines";
+	@Transactional
+	public List<ScooterReporteKilometrosDTO> getReportScootersByKms() throws Exception {
+		String scooterUrl = "localhost:8002/monopatines/reporte/kilometros";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
 
-	// 	HttpHeaders headers = new HttpHeaders();
-	// 	headers.setContentType(MediaType.APPLICATION_JSON);
-	// 	HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
-
-	// 	ResponseEntity<List<ScooterDTO>> response = restTemplate.exchange(scooterUrl, HttpMethod.PUT, requestEntity, 
-	// 	new ParameterizedTypeReference<List<ScooterDTO>>() {});
-	// 	if (response.getStatusCode() != HttpStatus.OK) {
-	// 		throw new Exception("Error al obtener los monopatines");
-	// 	}
-	// 	List<ScooterDTO> scooters = response.getBody();
-	// }
+		ResponseEntity<List<ScooterReporteKilometrosDTO>> response = restTemplate.exchange(scooterUrl, 
+								HttpMethod.GET, 
+								requestEntity, 
+								ParameterizedTypeReference.forType(List.class));
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new Exception("Error al obtener los datos.");
+		}
+		return response.getBody();
+		
+	}
 	
 }
