@@ -2,6 +2,8 @@ package com.microscooter.service;
 
 import java.util.List;
 
+import com.microscooter.dto.ScooterReporteKilometrosDTO;
+import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient;
 import org.springframework.http.HttpEntity;
@@ -52,7 +54,16 @@ public class ScooterService{
 		scooter.setFromDTO(entity);
 		scooterRepository.save(scooter);
 	}
-	
+
+	@Transactional
+	public List<ScooterReporteKilometrosDTO> findByKilometros(){
+		return this.scooterRepository.findAllByOrderByKilometrosDesc().stream().map(ScooterReporteKilometrosDTO::new ).toList();
+	}
+
+	@Transactional
+	public List<ScooterReporteTiempoUsoDTO> findByTiempoUso(){
+		return this.scooterRepository.findAllByOrderByTiempoDeUsoDesc().stream().map(ScooterReporteTiempoUsoDTO::new ).toList();
+	}
 	
 	/*
 	@Transactional(readOnly = true)

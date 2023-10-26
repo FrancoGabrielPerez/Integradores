@@ -63,11 +63,31 @@ public class ScooterController {
     @PutMapping("/actualizar/{scooterId}")
     public ResponseEntity<?> update(@PathVariable long scooterId, @RequestBody ScooterDTO entity){
         try{
-            scooterService.update(entity);
+            scooterService.update(scooterId,entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos del monopatin con scooterId: " + entity.getScooterId());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudieron actualizar los datos de la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
-    } 
-   
+    }
+
+    @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
+    @GetMapping("/reporte/kilometros")
+    public ResponseEntity<?> getReporteByKilometros(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometros());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
+    @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo de uso", description = "Obtengo un reporte de monopatines ordenados por tiempo de uso")
+    @GetMapping("/reporte/tiempoUso")
+    public ResponseEntity<?> getReporteByTiempoUso(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByTiempoUso());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
 }
