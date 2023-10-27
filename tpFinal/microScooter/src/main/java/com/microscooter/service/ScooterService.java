@@ -1,7 +1,9 @@
 package com.microscooter.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.microscooter.dto.ScooterReporteKmsTiempoUsoDTO;
 import com.microscooter.dto.ScooterReporteKilometrosDTO;
 import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.stream.Collectors;
 
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;
@@ -57,13 +60,19 @@ public class ScooterService{
 
 	@Transactional
 	public List<ScooterReporteKilometrosDTO> findByKilometros(){
-		return this.scooterRepository.findAllByOrderByKilometrosDesc().stream().map(ScooterReporteKilometrosDTO::new ).toList();
+		return this.scooterRepository.findAllByOrderByKilometrosDesc().stream().map(ScooterReporteKilometrosDTO::new ).collect(Collectors.toList());
 	}
 
 	@Transactional
 	public List<ScooterReporteTiempoUsoDTO> findByTiempoUso(){
-		return this.scooterRepository.findAllByOrderByTiempoDeUsoDesc().stream().map(ScooterReporteTiempoUsoDTO::new ).toList();
+		return this.scooterRepository.findAllByOrderByTiempoDeUsoDesc().stream().map(ScooterReporteTiempoUsoDTO::new).collect(Collectors.toList());
 	}
+	
+
+    public List<ScooterReporteKmsTiempoUsoDTO> findByKilometrosConTiempoUso() {
+        return this.scooterRepository.buscarKilometrosAndTiempoDeUso().stream().collect(Collectors.toList());
+	}
+    
 	
 	/*
 	@Transactional(readOnly = true)
