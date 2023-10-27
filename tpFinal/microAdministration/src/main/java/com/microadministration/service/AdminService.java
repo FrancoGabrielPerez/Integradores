@@ -118,7 +118,7 @@ public class AdminService{
 
 		ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PATCH, requestEntity, Void.class);
 		if (response.getStatusCode() != HttpStatus.OK) {
-			throw new Exception("Error al activa la cuenta " + accountId);
+			throw new Exception("Error al activar la cuenta " + accountId);
 		}
 		return response;
 	}
@@ -138,7 +138,6 @@ public class AdminService{
 			throw new Exception("Error al obtener los datos.");
 		}
 		return response.getBody();		
-	}
-	
+	}	
 
 }

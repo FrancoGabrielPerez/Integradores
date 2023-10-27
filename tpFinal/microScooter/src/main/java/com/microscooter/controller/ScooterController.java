@@ -80,6 +80,16 @@ public class ScooterController {
         }
     }
 
+    @Operation(summary = "Obtiene un reporte de monopatines por kilometros y tiempo de uso.", description = "Obtiene un reporte de monopatines por kilometros y tiempo de uso")
+    @GetMapping("/reporte/kilometrosConTiempoUso")
+    public ResponseEntity<?> getReporteByKilometrosConTiempoUso(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometrosConTiempoUso());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo de uso", description = "Obtengo un reporte de monopatines ordenados por tiempo de uso")
     @GetMapping("/reporte/tiempoUso")
     public ResponseEntity<?> getReporteByTiempoUso(){
