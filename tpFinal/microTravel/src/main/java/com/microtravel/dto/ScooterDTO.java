@@ -22,4 +22,13 @@ public class ScooterDTO {
 		this.tiempoDeUso = tiempoDeUso;
 		this.tiempoEnpausa = tiempoEnPausa;		
 	}
+
+	public ScooterDTO(ScooterDTO dto, String estado){
+		this.latitud = dto.getLatitud();
+		this.longitud = dto.getLongitud();
+		this.estado = estado;
+		this.kilometros = dto.getKilometros();
+		this.tiempoDeUso = dto.getTiempoDeUso();
+		this.tiempoEnpausa = dto.getTiempoEnpausa();
+	}
 }

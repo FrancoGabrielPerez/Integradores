@@ -49,15 +49,10 @@ public class StationService{
 		stationRepository.save(station);
 	}
 	
-	
-	/*
 	@Transactional(readOnly = true)
-	public List<InformeStationDTO> informeStations() {
-		return this.inscriptos.informeStations();
+	public StationDTO findByLatitudAndLongitud(String latitud, String longitud) {
+		return this.stationRepository.findByLatitudAndLongitud(latitud, longitud).map(StationDTO::new).orElseThrow(
+			() -> new IllegalArgumentException("Latitud y longitud invalidos: " + latitud + " " + longitud));
 	}
 
-	@Transactional(readOnly = true)
-	public List<InformeStationCantEstudiantesDTO> stationsOrdenadas() {
-		return this.stationRepository.stationsOrdenadas();
-	} */
 }

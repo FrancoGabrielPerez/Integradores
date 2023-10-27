@@ -10,12 +10,15 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.microtravel.dto.UserDTO;
 import com.microtravel.dto.AccountDTO;
+import com.microtravel.dto.NewBillDTO;
 import com.microtravel.dto.TravelDTO;
 import com.microtravel.dto.ScooterDTO;
+import com.microtravel.dto.StationDTO;
 import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
@@ -32,6 +35,8 @@ import org.springframework.http.ResponseEntity;
 
 @Service("travelService")
 public class TravelService{
+	public static final int TIEMPOLIMITE = 15;
+
 	@Autowired
 	private TravelRepository travelRepository;
 	
@@ -53,36 +58,39 @@ public class TravelService{
 	}
 	
 	@Transactional
-	public TravelDTO save(long idUsuario, long idScooter) {
+	public TravelDTO save(long idUsuario, long idScooter) throws IllegalArgumentException, RestClientException {
 		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8080/usuarios/buscar/" + idUsuario, UserDTO.class);
+		if (user.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("ID de usuario invalido: " + idUsuario);
+		}
 		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8080/cuentas/usuario/" + idUsuario, 
 											HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountDTO>>() {});
-											if (accounts.getStatusCode() != HttpStatus.OK) {
-												throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
-											}
+		if (accounts.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
+		}
 		boolean hasCredit = false;
 		for(AccountDTO account : accounts.getBody()) {
-			if (account.getBalance() > 0)
+			if (account.isHabilitada() && account.getBalance() > 0)
 			hasCredit = true;
 		}
 		if (!hasCredit) {
 			throw new IllegalArgumentException("El usuario no tiene saldo suficiente para realizar un viaje");
 		}
 		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
-		if (user.getStatusCode() != HttpStatus.OK || scooter.getStatusCode() != HttpStatus.OK) {
-			throw new IllegalArgumentException("ID de usuario o scooter invalido: " + idUsuario + " " + idScooter);
+		if (scooter.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
+		}
+		if (!updateScooterState(idScooter, scooter.getBody(), "Ocupado")) {
+			throw new IllegalArgumentException("El monopatin no se pudo actualizar");
 		}
 		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, fareRepository.getCurrentFlatRate(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
-		UpdateScooterState(idScooter, scooter.getBody());
 		
-
-		//ResponseEntity<?> scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
 		return res;
 	}
 
-	private ScooterDTO UpdateScooterState(long idScooter, ScooterDTO scooter) {
+	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado) {
 		String scooterUpdateUrl = "http://localhost:8002/monopatines/" + idScooter;
-		scooter.setEstado("Ocupado");
+		scooter.setEstado(estado);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,7 +102,7 @@ public class TravelService{
 			requestEntity,
 			ScooterDTO.class
 		);
-		return scooterResponse.getBody();
+		return scooterResponse.getStatusCode() == HttpStatus.OK;
 	}
 
 	@Transactional
@@ -110,33 +118,56 @@ public class TravelService{
 	@Transactional
 	public void travelEnd(Long id) throws Exception {
 		Travel travel = travelRepository.findById(id).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/scooters/buscar/" + travel.getScooterId(), ScooterDTO.class);
-		travel.setPauseTime(scooter.getBody().getTiempoEnpausa());
-		travel.setUseTime(scooter.getBody().getTiempoDeUso());
-		travel.setKilometers(scooter.getBody().getKilometros());
+			() -> new IllegalArgumentException("No se encuentra el viaje con id: " + id));
+		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + travel.getScooterId(), ScooterDTO.class);
+		if (scooter.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("ID de monopatin invalido: " + travel.getScooterId());
+		}
+		ResponseEntity<StationDTO> station = restTemplate.getForEntity("http://localhost:8001/estaciones/verificar/latitud/" + scooter.getBody().getLatitud() + "/longitud/" + scooter.getBody().getLongitud(), StationDTO.class);
+		if (station.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("No se encuentra una estacion valida para el monopatin: " + travel.getScooterId());
+		}
+		travel.setPauseTime(scooter.getBody().getTiempoEnpausa() + scooter.getBody().getTiempoEnpausa());
+		travel.setUseTime(scooter.getBody().getTiempoDeUso() + scooter.getBody().getTiempoDeUso());
+		travel.setKilometers(scooter.getBody().getKilometros() + scooter.getBody().getKilometros());
 		travel.setEndTime(new Timestamp(System.currentTimeMillis()));
-		//travel.setScooterEndKms(scooter.getBody().getKilometers());
-		if (travel.getPauseTime() == 0) {
-			travel.setFare(scooter.getBody().getTiempoDeUso() * getCurrentFlatFare());//esto tiene que ser con el tiempo
+		if (travel.getPauseTime() < TIEMPOLIMITE) {
+			travel.setFare(travel.getUseTime() * getCurrentFlatFare());
 		}
 		else {
-			travel.setFare( scooter.getBody().getTiempoDeUso() * getCurrentFlatFare() + scooter.getBody().getTiempoEnpausa() * getCurrentFullRate());
+			travel.setFare(travel.getUseTime() * getCurrentFullRate());
 		}	
 			
 		travelRepository.save(travel);
-		scooter.getBody().setEstado("Libre");
+		updateScooterState(travel.getScooterId(), scooter.getBody(), "Disponible");
 		updateUserAccount(travel.getUserId(), travel.getFare());
-		URI scooterResponse = restTemplate.postForLocation("http://localhost:8002/scooters/actualizar", scooter.getBody());
+		sendBill(travel);
+	}
+
+	@Transactional
+	public void sendBill(Travel travel) throws Exception {
+		String accountUrl = "http://localhost:8006/adminiastracion/facturacion/nueva";
 		
+		String billDescription = "Viaje realizado el " + travel.getEndTime() + " en el monopatin " + travel.getScooterId() + " por el usuario " + travel.getUserId();
+		NewBillDTO bill = new NewBillDTO(travel.getEndTime(), travel.getFare(), billDescription);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<NewBillDTO> requestEntity = new HttpEntity<>(bill, headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.POST, requestEntity, Void.class);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new Exception("Error al crear la factura");
+        }
 	}
 
 	@Transactional
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
-		AccountDTO account = accounts.stream().filter(a -> a.getBalance() >= fare && a.isHabilitada()).findFirst().orElse(null);
-		if (Objects.isNull(account)) { //TODO: ver que hacer si no hay cuentas con saldo suficiente
-			throw new IllegalArgumentException("No hay cuentas con saldo suficiente para el usuario: " + userId); 
+		AccountDTO account = accounts.stream().filter(a -> a.getBalance() > 0).findFirst().orElse(null);
+		if (Objects.isNull(account)) { //TODO: si no tiene saldo, se usa la primer cuenta que encuentre
+			 account = accounts.stream().findFirst().map(AccountDTO::new);
 		}
 		account.setBalance(account.getBalance() - fare);
 		try {

@@ -42,7 +42,7 @@ public class BillController {
     }
     
     @Operation(summary = "Carga una nueva factura.", description = "Carga una nueva factura.")
-    @PostMapping("/facturacion/nuevaFactura")
+    @PostMapping("/facturacion/nueva")
     public ResponseEntity<?> save(@RequestBody NewBillDTO NewBillDTO) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(billService.save(NewBillDTO));

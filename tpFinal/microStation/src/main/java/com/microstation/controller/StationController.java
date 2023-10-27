@@ -70,4 +70,13 @@ public class StationController {
         }
     } 
    
+    @Operation(summary = "Verifica si las coordenadas son validas.", description = "Verifica que las coordenadas proveidas coinciden con als coordenadas de una estacion")
+    @GetMapping("/verificar/latitud/{latitud}/longitud/{longitud}")
+    public ResponseEntity<?> verify(@PathVariable String latitud, @PathVariable String longitud){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(stationService.findByLatitudAndLongitud(latitud, longitud));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo verificar la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
 }
