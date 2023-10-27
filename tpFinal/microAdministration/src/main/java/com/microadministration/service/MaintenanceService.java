@@ -21,8 +21,8 @@ import org.springframework.http.ResponseEntity;
 
 @Service("maintenanceService")
 public class MaintenanceService{
-
-	private RestTemplate restTemplate;	
+	@Autowired
+	private RestTemplate restTemplate = new RestTemplate();	
 
 	@Transactional
 	public void updateScooterState(long idScooter, String estado) {
@@ -30,13 +30,19 @@ public class MaintenanceService{
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de scooter invalido: " + idScooter);
 		}
-		scooter.getBody().setEstado(estado);
+		
+		HttpEntity<ScooterDTO> requestEntity;
+		ScooterDTO scooterBody = scooter.getBody();
+		if (scooterBody != null) {
+			scooterBody.setEstado(estado);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
 
-		ScooterDTO scooterDTO = scooter.getBody();
-		HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooterDTO, headers);
+			requestEntity = new HttpEntity<>(scooterBody, headers);
+		} else {
+			throw new RuntimeException("Error al actualizar el estado del monopatin. El cuerpo de la respuesta es nulo.");
+		}
 
 		try {
 			ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8002/monopatines/actualizar/", HttpMethod.PUT, requestEntity, Void.class);

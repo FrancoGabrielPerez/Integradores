@@ -8,7 +8,7 @@ import lombok.NonNull;
 
 @Entity
 @Data
-@Table(name = "station")
+@Table(name = "scooter")
 public class Scooter{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class Scooter{
     @Column(name = "kilometros")
     private double kilometros;
 
-    @Column(name = "tiempoDeUso")
+    @Column(name = "tiempo_de_uso")
     private int tiempoDeUso;
 
-    @Column(name = "tiempoEnPausa")
+    @Column(name = "tiempo_en_pausa")
     private int tiempoEnpausa;
 
     public Scooter(){

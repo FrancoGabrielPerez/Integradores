@@ -29,18 +29,21 @@ public class AdminStaff {
 	private long nroCelular;
 	@Column(name="email")
 	private String email;
+	@Column(name="password")
+	private String password;
 
 
 	public AdminStaff(){
 		super();
 	}
 
-	public AdminStaff(String rol, String nombre, String apellido, long nroCelular, String email) {
+	public AdminStaff(String rol, String nombre, String apellido, long nroCelular, String email, String password) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nroCelular = nroCelular;
 		this.email = email;	
 		this.rol = rol;
+		this.password = password;
 	}
 
 	public AdminStaff(AdminStaffDTO dto){
@@ -49,5 +52,6 @@ public class AdminStaff {
 		this.nroCelular = dto.getNroCelular();
 		this.email = dto.getEmail();
 		this.rol = dto.getRol();
+		this.password = dto.getPassword();
 	}
 }

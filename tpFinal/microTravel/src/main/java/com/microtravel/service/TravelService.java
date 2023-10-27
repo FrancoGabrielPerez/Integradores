@@ -34,10 +34,12 @@ import org.springframework.http.ResponseEntity;
 public class TravelService{
 	@Autowired
 	private TravelRepository travelRepository;
+	
 	@Autowired
 	private FareRepository fareRepository;
 
-	private RestTemplate restTemplate;
+	@Autowired
+	private RestTemplate restTemplate = new RestTemplate();
 
 	@Transactional(readOnly = true)
 	public List<TravelDTO> findAll() {
@@ -157,7 +159,7 @@ public class TravelService{
 
 	@Transactional
 	public void updateAccountBalance(AccountDTO account) throws Exception {
-        String accountUrl = "localhost:8080/usuarios/actualizar/" + account.getAccountId();
+        String accountUrl = "http://localhost:8080/usuarios/actualizar/" + account.getAccountId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

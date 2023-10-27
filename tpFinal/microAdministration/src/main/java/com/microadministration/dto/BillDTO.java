@@ -15,27 +15,20 @@ import java.sql.Time;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+
 @Getter
 @Table(name = "factura")
-public class BillDTO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="admin_id")
+public class BillDTO {	
 	private long adminId;
-
-	@Column(name="fecha_factura")
 	private Timestamp billDate;
-	@Column(name="monto")
-	private String amount;
-	@Column(name="descipcion")
+	private Double amount;
 	private String description;
 
 	public BillDTO(){
 		super();
 	}
 
-	public BillDTO(Timestamp billDate, String amount, String description) {
+	public BillDTO(Timestamp billDate, Double amount, String description) {
 		this.billDate = billDate;
 		this.amount = amount;
 		this.description = description;

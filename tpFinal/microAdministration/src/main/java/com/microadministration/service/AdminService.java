@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.microadministration.dto.AdminStaffDTO;
+import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
 import com.microadministration.dto.ScooterReporteKilometrosDTO;
 import com.microadministration.dto.StationDTO;
@@ -27,16 +28,17 @@ import org.springframework.http.ResponseEntity;
 
 @Service("adminService")
 public class AdminService{
-	RestTemplate restTemplate;	
+	@Autowired
+	private RestTemplate restTemplate = new RestTemplate();	
 
 	@Transactional
-	public ResponseEntity<?> saveNewScooter(ScooterDTO scooterDTO) throws Exception {
-		String stationUrl = "localhost:8002/monopatines/alta";
+	public ResponseEntity<?> saveNewScooter(NewScooterDTO scooterDTO) throws Exception {
+		String stationUrl = "http://localhost:8002/monopatines/alta";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooterDTO, headers);
+        HttpEntity<NewScooterDTO> requestEntity = new HttpEntity<>(scooterDTO, headers);
 
         ResponseEntity<Void> response = restTemplate.exchange(stationUrl, HttpMethod.PUT, requestEntity, Void.class);
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -47,7 +49,7 @@ public class AdminService{
 
 	@Transactional
 	public void deleteScooter(long scooterId) throws Exception {
-		String stationUrl = "localhost:8002/monopatines/eliminar/" + scooterId;
+		String stationUrl = "http://localhost:8002/monopatines/eliminar/" + scooterId;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -61,7 +63,7 @@ public class AdminService{
 
 	@Transactional
 	public ResponseEntity<?> saveNewStation(StationDTO stationDTO) throws Exception {
-		String stationUrl = "localhost:8001/estaciones/alta";
+		String stationUrl = "http://localhost:8001/estaciones/alta";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -77,7 +79,7 @@ public class AdminService{
 
 	@Transactional
 	public void deleteStation(long stationId) throws Exception {
-		String accountUrl = "localhost:8001/estaciones/eliminar/" + stationId;
+		String accountUrl = "http://localhost:8001/estaciones/eliminar/" + stationId;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -91,7 +93,7 @@ public class AdminService{
 
 	@Transactional
 	public void suspendAccount(long accountId) throws Exception {
-		String accountUrl = "localhost:8003/cuentas/suspender/" + accountId;
+		String accountUrl = "http://localhost:8003/cuentas/suspender/" + accountId;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -105,7 +107,7 @@ public class AdminService{
 
 	@Transactional
 	public List<ScooterReporteKilometrosDTO> getReportScootersByKms() throws Exception {
-		String scooterUrl = "localhost:8002/monopatines/reporte/kilometros";
+		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);

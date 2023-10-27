@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.microadministration.dto.BillDTO;
+import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
 import com.microadministration.service.BillService;
 import com.microadministration.service.AdminService;
@@ -22,7 +23,7 @@ public class AdminController {
    
     @Operation(summary = "Da de alta un nuevo monopatin.", description = "Da de alta un nuevo monopatin.")
     @PostMapping("administracion/nuevoMonopatin")
-    public ResponseEntity<?> save(@RequestBody ScooterDTO scooterDTO) {
+    public ResponseEntity<?> save(@RequestBody NewScooterDTO scooterDTO) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.saveNewScooter(scooterDTO));
         } catch (Exception e) {
@@ -30,4 +31,14 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Obtiene un informe de lo kilometros recorridos por todos los monopatines", 
+                description = "Se comunica con el microservicio de monopatines para obtener un informe de los kilometros recorridos por todos los monopatines.")
+    @GetMapping("administracion/informes/reporteDeMonopatinesPor/KilometrosRecorridos")
+    public ResponseEntity<?> getKilometros() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByKms());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
 }
