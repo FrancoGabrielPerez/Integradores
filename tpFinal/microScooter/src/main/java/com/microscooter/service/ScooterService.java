@@ -1,5 +1,6 @@
 package com.microscooter.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,7 +71,13 @@ public class ScooterService{
 	
 
     public List<ScooterReporteKmsTiempoUsoDTO> findByKilometrosConTiempoUso() {
-        return this.scooterRepository.buscarKilometrosAndTiempoDeUso().stream().collect(Collectors.toList());
+        List<ScooterDTO> scooters = scooterRepository.findAll().stream().map(ScooterDTO::new).collect(Collectors.toList());
+		List<ScooterReporteKmsTiempoUsoDTO> scootersRes = new ArrayList<>();
+		for (ScooterDTO scooter : scooters) {
+			ScooterReporteKmsTiempoUsoDTO res = new ScooterReporteKmsTiempoUsoDTO(scooter);			
+			scootersRes.add(res);
+		}
+		return scootersRes;
 	}
     
 	

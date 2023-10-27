@@ -71,7 +71,7 @@ public class ScooterController {
     }
 
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
-    @GetMapping("/reporte/kilometros")
+    @GetMapping("/reporte/kilometros/sinTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometros(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometros());
@@ -81,7 +81,7 @@ public class ScooterController {
     }
 
     @Operation(summary = "Obtiene un reporte de monopatines por kilometros y tiempo de uso.", description = "Obtiene un reporte de monopatines por kilometros y tiempo de uso")
-    @GetMapping("/reporte/kilometrosConTiempoUso")
+    @GetMapping("/reporte/kilometros/conTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometrosConTiempoUso(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometrosConTiempoUso());

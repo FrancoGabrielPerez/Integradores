@@ -18,6 +18,12 @@ public class ScooterReporteKmsTiempoUsoDTO {
         this.tiempoUso = scooter.getTiempoDeUso();
     }
 
+    public ScooterReporteKmsTiempoUsoDTO(ScooterDTO scooter) {
+        this.scooterId = scooter.getScooterId();
+        this.kilometros = scooter.getKilometros();
+        this.tiempoUso = scooter.getTiempoDeUso();
+    }
+
     public ScooterReporteKmsTiempoUsoDTO(long scooterId, double kilometros, int tiempoUso) {
         this.scooterId = scooterId;
         this.kilometros = kilometros;

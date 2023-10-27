@@ -125,7 +125,7 @@ public class AdminService{
 
 	@Transactional(readOnly = true)
 	public List<ScooterReporteKilometrosDTO> getReportScootersByKms() throws Exception {
-		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros";
+		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros/sinTiempoDeUso";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
@@ -138,6 +138,23 @@ public class AdminService{
 			throw new Exception("Error al obtener los datos.");
 		}
 		return response.getBody();		
-	}	
+	}
+
+	@Transactional
+    public Object getReportScootersByKmsAndUseTime() throws Exception {
+		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros/conTiempoDeUso";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<List<ScooterReporteKilometrosDTO>> response = restTemplate.exchange(scooterUrl, 
+								HttpMethod.GET, 
+								requestEntity, 
+								ParameterizedTypeReference.forType(List.class));
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new Exception("Error al obtener los datos.");
+		}
+		return response.getBody();	
+    }	
 
 }

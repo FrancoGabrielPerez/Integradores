@@ -11,6 +11,7 @@ import com.microscooter.model.Scooter;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository ("scooterRepository")
 public interface ScooterRepository extends JpaRepository<Scooter, Long> {
@@ -21,8 +22,8 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long> {
     // @Query("SELECT e.scooterId, e.kilometros, e.tiempoDeUso FROM Scooter e ORDER BY e.kilometros DESC")
     // List<Object> searchScootersByKilometrosAndTiempoDeUso();
 
-    @Query("SELECT new com.microscooter.dto.ScooterReporteKmsTiempoUsoDTO(s.scooterId, s.kilometros, s.tiempoDeUso) FROM Scooter s ORDER BY s.kilometros DESC")
-    List<ScooterReporteKmsTiempoUsoDTO> buscarKilometrosAndTiempoDeUso();
+    // @Query("SELECT s.scooterId, s.kilometros, s.tiempoDeUso FROM Scooter s ORDER BY s.kilometros DESC")
+    // List<Scooter> findAll();
     /*
     @Query("SELECT e FROM Scooter e ORDER BY SUM(e.tiempoDeUso + e.tiempoEnPausa)")
     List<Scooter> tiempoUsoYPausa();

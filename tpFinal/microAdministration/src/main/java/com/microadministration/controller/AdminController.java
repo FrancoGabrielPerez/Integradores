@@ -44,10 +44,20 @@ public class AdminController {
 
     @Operation(summary = "Obtiene un informe de lo kilometros recorridos por todos los monopatines", 
                 description = "Se comunica con el microservicio de monopatines para obtener un informe de los kilometros recorridos por todos los monopatines.")
-    @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos")
+    @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/sinTiempoDeUso")
     public ResponseEntity<?> getKilometros() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByKms());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
+    @Operation(summary = "Obtiene un informe con los kilometros recorridos y tiempo de uso de cada monopatin.", description = "Se comunica con el microservicio de monopatines para obtener un informe con los kilometros recorridos y tiempo de uso de cada monopatin.")   
+    @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/conTiempoDeUso")
+    public ResponseEntity<?> getKilometrosTiempoUso() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByKmsAndUseTime());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

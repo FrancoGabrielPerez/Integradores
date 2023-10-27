@@ -167,7 +167,7 @@ public class TravelService{
 		List<AccountDTO> accounts = getUserAccounts(userId);
 		AccountDTO account = accounts.stream().filter(a -> a.getBalance() > 0).findFirst().orElse(null);
 		if (Objects.isNull(account)) { //TODO: si no tiene saldo, se usa la primer cuenta que encuentre
-			 account = accounts.stream().findFirst().map(AccountDTO::new);
+			 account = accounts.get(0);
 		}
 		account.setBalance(account.getBalance() - fare);
 		try {
