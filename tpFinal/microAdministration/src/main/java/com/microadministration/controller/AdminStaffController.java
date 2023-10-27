@@ -28,7 +28,7 @@ public class AdminStaffController {
         }
     }
 
-    @GetMapping("/buscar/{rol}")
+    @GetMapping("/buscar/rol/{rol}")
     public ResponseEntity<?> getByRol(@PathVariable String rol){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(adminService.findByRol(rol));
@@ -48,7 +48,7 @@ public class AdminStaffController {
     }
     
     @Operation(summary = "Obtiene un integrante por su id.", description = "Obtiene un integrante del staff por su adminId")
-    @GetMapping("/buscar/{adminId}")
+    @GetMapping("/buscar/id/{adminId}")
     public ResponseEntity<?> getById(@PathVariable long adminId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(adminService.findById(adminId));

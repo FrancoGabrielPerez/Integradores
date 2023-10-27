@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.microadministration.dto.AdminStaffDTO;
 import com.microadministration.dto.BillDTO;
+import com.microadministration.dto.NewBillDTO;
 import com.microadministration.service.BillService;
 import com.microadministration.service.AdminStaffService;
 
@@ -30,11 +31,21 @@ public class BillController {
         }
     }
 
+    @Operation(summary = "Obtiene una factura por id.", description = "Obtiene una factura por id.")
+    @GetMapping("/facturacion/{id}")
+    public ResponseEntity<?> getOne(@PathVariable Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(billService.findById(id));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+    
     @Operation(summary = "Carga una nueva factura.", description = "Carga una nueva factura.")
     @PostMapping("/facturacion/nuevaFactura")
-    public ResponseEntity<?> save(@RequestBody BillDTO billDTO) {
+    public ResponseEntity<?> save(@RequestBody NewBillDTO NewBillDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(billService.save(billDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(billService.save(NewBillDTO));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

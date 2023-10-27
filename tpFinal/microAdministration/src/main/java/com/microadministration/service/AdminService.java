@@ -48,7 +48,7 @@ public class AdminService{
 	}
 
 	@Transactional
-	public void deleteScooter(long scooterId) throws Exception {
+	public ResponseEntity<?> deleteScooter(long scooterId) throws Exception {
 		String stationUrl = "http://localhost:8002/monopatines/eliminar/" + scooterId;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -59,6 +59,7 @@ public class AdminService{
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al borrar el monopatin " + scooterId);
 		}
+		return response;
 	}
 
 	@Transactional
@@ -78,7 +79,7 @@ public class AdminService{
 	}
 
 	@Transactional
-	public void deleteStation(long stationId) throws Exception {
+	public ResponseEntity<?> deleteStation(long stationId) throws Exception {
 		String accountUrl = "http://localhost:8001/estaciones/eliminar/" + stationId;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -89,10 +90,11 @@ public class AdminService{
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error borrar la estacion " + stationId);
 		}
+		return response;
 	}
 
 	@Transactional
-	public void suspendAccount(long accountId) throws Exception {
+	public ResponseEntity<?> suspendAccount(long accountId) throws Exception {
 		String accountUrl = "http://localhost:8003/cuentas/suspender/" + accountId;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -101,11 +103,27 @@ public class AdminService{
 
 		ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PUT, requestEntity, Void.class);
 		if (response.getStatusCode() != HttpStatus.OK) {
-			throw new Exception("Error borrar la estacion " + accountId);
+			throw new Exception("Error al suspender la cuenta " + accountId);
 		}
+		return response;
 	}
 
 	@Transactional
+	public ResponseEntity<?> activateAccount(long accountId) throws Exception {
+		String accountUrl = "http://localhost:8003/cuentas/activar/" + accountId;
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PATCH, requestEntity, Void.class);
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new Exception("Error al activa la cuenta " + accountId);
+		}
+		return response;
+	}
+
+	@Transactional(readOnly = true)
 	public List<ScooterReporteKilometrosDTO> getReportScootersByKms() throws Exception {
 		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros";
 		HttpHeaders headers = new HttpHeaders();
@@ -119,8 +137,8 @@ public class AdminService{
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al obtener los datos.");
 		}
-		return response.getBody();
-		
+		return response.getBody();		
 	}
 	
+
 }

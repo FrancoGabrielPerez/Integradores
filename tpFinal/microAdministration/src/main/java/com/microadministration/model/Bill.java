@@ -7,8 +7,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.microadministration.dto.AdminStaffDTO;
 import com.microadministration.dto.BillDTO;
+import com.microadministration.dto.NewBillDTO;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.sql.Time;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +41,12 @@ public class Bill {
 	}
 
 	public Bill(BillDTO dto){
+		this.billDate = dto.getBillDate();
+		this.amount = dto.getAmount();
+		this.description = dto.getDescription();
+	}
+
+	public Bill(NewBillDTO dto){
 		this.billDate = dto.getBillDate();
 		this.amount = dto.getAmount();
 		this.description = dto.getDescription();

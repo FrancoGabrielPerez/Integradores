@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.microadministration.dto.BillDTO;
+import com.microadministration.dto.NewBillDTO;
 import com.microadministration.model.AdminStaff;
 import com.microadministration.model.Bill;
 import com.microadministration.repository.AdminStaffRepository;
@@ -23,7 +24,7 @@ public class BillService{
 		
 	@Transactional(readOnly = true)
 	public List<BillDTO> findAll() {
-		return this.billRepository.findAll().stream().map(BillDTO::new ).toList();
+		return this.billRepository.findAll().stream().map(BillDTO::new).toList();
 	}
 
 	@Transactional(readOnly = true)
@@ -33,7 +34,7 @@ public class BillService{
 	}
 	
 	@Transactional
-	public BillDTO save(BillDTO entity) {
+	public BillDTO save(NewBillDTO entity) {
 		return new BillDTO(this.billRepository.save(new Bill(entity)));
 	}
 

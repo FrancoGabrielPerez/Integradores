@@ -111,6 +111,9 @@ public class AccountService{
 	public void suspendAccount(long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
 			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		if (!account.isHabilitada()) {
+			throw new IllegalArgumentException("La cuenta ya se encuentra suspendida");
+		}
 		account.setHabilitada(false);
 		accountRepository.save(account);
 	}
@@ -119,6 +122,9 @@ public class AccountService{
 	public void activateAccount(long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
 			() -> new IllegalArgumentException("ID de Cuenta invalido: " + accountId));
+		if (account.isHabilitada()) {
+			throw new IllegalArgumentException("La cuenta ya se encuentra activa");
+		}
 		account.setHabilitada(true);
 		accountRepository.save(account);
 	}
