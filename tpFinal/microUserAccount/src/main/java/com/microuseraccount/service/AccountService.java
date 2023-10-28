@@ -129,6 +129,12 @@ public class AccountService{
 		accountRepository.save(account);
 	}
 
+	@Transactional(readOnly = true)
+    public List<Account> getCuentasByUserId(long userId) {
+		User usuario = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("ID de usuario invalido: " + userId));
+        return this.accountRepository.findByUser(usuario);    
+    }
+
 
 	/*
 	@Transactional(readOnly = true)

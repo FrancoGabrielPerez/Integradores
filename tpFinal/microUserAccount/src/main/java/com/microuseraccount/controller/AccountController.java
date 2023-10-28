@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import com.microuseraccount.model.Account;
 import com.microuseraccount.model.UserAccount;
 
-
+//port
 @RestController
 @RequestMapping("/cuentas")
 public class AccountController {
@@ -35,10 +35,10 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/cuentas/usuario/{userId}")
+    @GetMapping("/usuario/{userId}")
     public ResponseEntity<?> getCuentasByUserId(@PathVariable long userId){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(userAccountService.getCuentasByUserId(userId));
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getCuentasByUserId(userId));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
