@@ -15,10 +15,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.microtravel.dto.UserDTO;
 import com.microtravel.dto.AccountDTO;
+import com.microtravel.dto.FareDTO;
 import com.microtravel.dto.NewBillDTO;
 import com.microtravel.dto.TravelDTO;
 import com.microtravel.dto.ScooterDTO;
 import com.microtravel.dto.StationDTO;
+import com.microtravel.model.Fare;
 import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
@@ -69,7 +71,7 @@ public class TravelService{
 			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
 		}
 		boolean hasCredit = false;
-		for(AccountDTO account : accounts.getBody()) {
+		for(AccountDTO account : Objects.requireNonNull(accounts.getBody())) {
 			if (account.isHabilitada() && account.getBalance() > 0)
 			hasCredit = true;
 		}
@@ -83,7 +85,7 @@ public class TravelService{
 		if (!updateScooterState(idScooter, scooter.getBody(), "Ocupado")) {
 			throw new IllegalArgumentException("El monopatin no se pudo actualizar");
 		}
-		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, fareRepository.getCurrentFlatRate(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
+		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, getCurrentFlatFare(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
 		
 		return res;
 	}
@@ -105,14 +107,16 @@ public class TravelService{
 		return scooterResponse.getStatusCode() == HttpStatus.OK;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
-		return fareRepository.getCurrentFlatRate();
+		List<Fare> fare = fareRepository.findAll();
+		return fare.get(fare.size() - 1).getFlatRate();
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
-		return fareRepository.getCurrentFullRate();
+		List<Fare> fare = fareRepository.findAll();
+		return fare.get(fare.size() - 1).getFullRate();
 	}
 
 	@Transactional

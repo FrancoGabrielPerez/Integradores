@@ -1,6 +1,7 @@
 package com.microadministration.service;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +15,7 @@ import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
 import com.microadministration.dto.ScooterReporteKilometrosDTO;
 import com.microadministration.dto.StationDTO;
+import com.microadministration.dto.TravelDTO;
 import com.microadministration.model.AdminStaff;
 import com.microadministration.repository.AdminStaffRepository;
 
@@ -156,5 +158,37 @@ public class AdminService{
 		}
 		return response.getBody();	
     }	
+
+	@Transactional(readOnly = true)
+	public Object getScootersWithMoreTravelsInYear(Long travelQuantity, Integer year) throws Exception {
+		String travelUrl = "http://localhost:8003/viajes";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<TravelDTO> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<List<TravelDTO>> response = restTemplate.exchange(travelUrl, 
+								HttpMethod.GET, 
+								requestEntity, 
+								ParameterizedTypeReference.forType(List.class));
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new Exception("Error al obtener los datos.");
+		}
+		List<TravelDTO> travels = response.getBody();
+		if (travels == null) {
+			throw new Exception("Error al obtener los datos.");
+		}
+		return  travels;/* travels.stream()
+				.filter(travel -> travel.getEndTime().toLocalDateTime().getYear() == year)
+				.map(travel -> travel.getScooterId())
+				.distinct()
+				.map(scooterId -> {
+					return travels.stream()
+							.filter(travel -> travel.getScooterId() == scooterId)
+							.count();
+				})
+				.filter(travelQuantity::equals)
+				.count(); */
+	}
 
 }

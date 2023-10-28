@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 @Table(name = "fare")
 
 public class Fare {
+    @Id
     @Column(name = "fareId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long fareId;

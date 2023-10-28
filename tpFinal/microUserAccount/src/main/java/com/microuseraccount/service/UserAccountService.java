@@ -16,7 +16,7 @@ public class UserAccountService{
     
     @Transactional(readOnly = true)
     public List<Account> getCuentasByUserId(long userId) {
-        return this.userAccountRepository.findByUserId(userId);    
-    }	
+        return this.userAccountRepository.find(userId);    
+    }
 	
 }

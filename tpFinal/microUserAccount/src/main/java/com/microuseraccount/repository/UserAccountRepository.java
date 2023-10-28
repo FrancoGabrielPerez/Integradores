@@ -20,7 +20,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, UserAc
     Optional<UserAccount> findByUser(User user);
 
     @Query("SELECT a FROM Account a WHERE a.id IN (SELECT ua.account.id FROM UserAccount ua WHERE ua.user.id = ?1)")
-    List<Account> findByUserId(long userId);
+    List<Account> find(long userId);
 }
 
 
