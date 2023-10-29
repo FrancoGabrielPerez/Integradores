@@ -10,8 +10,5 @@ import com.microuseraccount.model.User;
 
 @Repository ("accountRepository")
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    
-	
-    List<Account> findByUser(User user);
 }
 
