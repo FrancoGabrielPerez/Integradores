@@ -188,7 +188,7 @@ public class TravelService{
 	}
 
 	@Transactional(readOnly = true)
-	public List<AccountDTO> getUserAccounts(long userId) throws Exception {//TODO eca se rompe todo
+	public List<AccountDTO> getUserAccounts(long userId) throws Exception {//TODO eca se rompe todo, esto devuelte List<AccountDTO>
         String url = "http://localhost:8013/cuentas/usuario/" + userId;
         ResponseEntity<List<AccountDTO>> response = restTemplate.getForEntity(url, ParameterizedTypeReference.forType(List.class));
         if (response.getStatusCode() == HttpStatus.OK) {
