@@ -26,7 +26,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_id")
-	private long id;
+	private long userId;
 
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

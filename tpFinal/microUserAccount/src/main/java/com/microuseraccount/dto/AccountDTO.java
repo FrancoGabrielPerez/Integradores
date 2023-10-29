@@ -10,12 +10,14 @@ import com.microuseraccount.model.Account;
 @Getter
 @RequiredArgsConstructor
 public class AccountDTO {
+	private long accountId;
     private Timestamp fechaAlta;
 	private boolean habilitada;
 	private String idMPago;
 	private Double saldo;
 
 	public AccountDTO(Account account) {
+		this.accountId = account.getAccountId();
 		this.fechaAlta = account.getFechaAlta();
 		this.habilitada = account.isHabilitada();
 		this.saldo = account.getSaldo();
