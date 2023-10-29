@@ -61,11 +61,11 @@ public class TravelService{
 	
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) throws IllegalArgumentException, RestClientException {
-		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8080/usuarios/buscar/" + idUsuario, UserDTO.class);
+		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8013/usuarios/buscar/" + idUsuario, UserDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario invalido: " + idUsuario);
 		}
-		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8080/cuentas/usuario/" + idUsuario, 
+		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8013/cuentas/usuario/" + idUsuario, 
 											HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountDTO>>() {});
 		if (accounts.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
@@ -91,32 +91,35 @@ public class TravelService{
 	}
 
 	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado) {
-		String scooterUpdateUrl = "http://localhost:8002/monopatines/" + idScooter;
+		String scooterUpdateUrl = "http://localhost:8002/monopatines/actualizar/" + idScooter;
 		scooter.setEstado(estado);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooter, headers);
-
-		ResponseEntity<ScooterDTO> scooterResponse = restTemplate.exchange(
+		System.out.println("llego a linea 100");
+		ResponseEntity<?> scooterResponse = restTemplate.exchange(
 			scooterUpdateUrl,
 			HttpMethod.PUT,
 			requestEntity,
-			ScooterDTO.class
-		);
+			Void.class
+			);
+		System.out.println("llego a linea 107");
 		return scooterResponse.getStatusCode() == HttpStatus.OK;
 	}
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
 		List<Fare> fare = fareRepository.findAll();
-		return fare.get(fare.size() - 1).getFlatRate();
+		return 12.45;
+		//return fare.get(fare.size() - 1).getFlatRate();//TODO hacer la consulta por jpql pidiendo la mayor fecha que sea menor a la fecha actual
 	}
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
 		List<Fare> fare = fareRepository.findAll();
-		return fare.get(fare.size() - 1).getFullRate();
+		return 15.45;
+		//return fare.get(fare.size() - 1).getFullRate();
 	}
 
 	@Transactional
@@ -144,8 +147,11 @@ public class TravelService{
 			
 		travelRepository.save(travel);
 		updateScooterState(travel.getScooterId(), scooter.getBody(), "Disponible");
+		System.out.println("llego a linea 150");
 		updateUserAccount(travel.getUserId(), travel.getFare());
+		System.out.println("llego a linea 152");
 		sendBill(travel);
+		System.out.println("llego a linea 154");
 	}
 
 	@Transactional
@@ -182,9 +188,9 @@ public class TravelService{
 	}
 
 	@Transactional(readOnly = true)
-	public List<AccountDTO> getUserAccounts(long userId) throws Exception {
-        String url = "localhost:8080/usuarios/cuentas/" + userId;
-        ResponseEntity<AccountDTO[]> response = restTemplate.getForEntity(url, AccountDTO[].class);
+	public List<AccountDTO> getUserAccounts(long userId) throws Exception {//TODO eca se rompe todo
+        String url = "http://localhost:8013/cuentas/usuario/" + userId;
+        ResponseEntity<List<AccountDTO>> response = restTemplate.getForEntity(url, ParameterizedTypeReference.forType(List.class));
         if (response.getStatusCode() == HttpStatus.OK) {
             return Arrays.asList(response.getBody());
         } else {
@@ -194,7 +200,7 @@ public class TravelService{
 
 	@Transactional
 	public void updateAccountBalance(AccountDTO account) throws Exception {
-        String accountUrl = "http://localhost:8080/usuarios/actualizar/" + account.getAccountId();
+        String accountUrl = "http://localhost:8013/usuarios/actualizar/" + account.getAccountId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
