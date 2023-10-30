@@ -1,5 +1,7 @@
 package com.microtravel.service;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpResponse;
 import java.sql.Timestamp;
@@ -10,6 +12,8 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -72,7 +76,7 @@ public class TravelService{
 		}
 		boolean hasCredit = false;
 		for(AccountDTO account : Objects.requireNonNull(accounts.getBody())) {
-			if (account.isHabilitada() && account.getBalance() > 0)
+			if (account.isHabilitada() && account.getSaldo() > 0)
 			hasCredit = true;
 		}
 		if (!hasCredit) {
@@ -102,7 +106,7 @@ public class TravelService{
 			scooterUpdateUrl,
 			HttpMethod.PUT,
 			requestEntity,
-			Void.class
+			String.class
 			);
 		System.out.println("llego a linea 107");
 		return scooterResponse.getStatusCode() == HttpStatus.OK;
@@ -156,7 +160,7 @@ public class TravelService{
 
 	@Transactional
 	public void sendBill(Travel travel) throws Exception {
-		String accountUrl = "http://localhost:8006/adminiastracion/facturacion/nueva";
+		String accountUrl = "http://localhost:8006/administracion/facturacion/nueva";
 		
 		String billDescription = "Viaje realizado el " + travel.getEndTime() + " en el monopatin " + travel.getScooterId() + " por el usuario " + travel.getUserId();
 		NewBillDTO bill = new NewBillDTO(travel.getEndTime(), travel.getFare(), billDescription);
@@ -175,11 +179,11 @@ public class TravelService{
 	@Transactional
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
-		AccountDTO account = accounts.stream().filter(a -> a.getBalance() > 0).findFirst().orElse(null);
+		AccountDTO account = accounts.stream().filter(a -> a.getSaldo() > 0).findFirst().orElse(null);
 		if (Objects.isNull(account)) { //TODO: si no tiene saldo, se usa la primer cuenta que encuentre
 			 account = accounts.get(0);
 		}
-		account.setBalance(account.getBalance() - fare);
+		account.setSaldo(account.getSaldo() - fare);
 		try {
 			updateAccountBalance(account);
 		} catch (Exception e) {
@@ -189,13 +193,33 @@ public class TravelService{
 
 	@Transactional(readOnly = true)
 	public List<AccountDTO> getUserAccounts(long userId) throws Exception {//TODO eca se rompe todo, esto devuelte List<AccountDTO>
-        String url = "http://localhost:8013/cuentas/usuario/" + userId;
-        ResponseEntity<List<AccountDTO>> response = restTemplate.getForEntity(url, ParameterizedTypeReference.forType(List.class));
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return Arrays.asList(response.getBody());
-        } else {
-			throw new Exception("Error al obtener las cuentas del usuario");
-        }
+		String url = "http://localhost:8013/cuentas/usuario/" + userId;
+
+		try {
+			ResponseEntity<List<AccountDTO>> response = restTemplate.exchange(
+				url,
+				HttpMethod.GET,
+				null,
+				new ParameterizedTypeReference<List<AccountDTO>>() {}
+			);
+
+			if (response.getStatusCode() == HttpStatus.OK) {
+				return response.getBody();
+			} else {
+				// Handle non-OK status codes here
+				throw new RuntimeException("Error al obtener las cuentas del usuario con ID " + userId + ". El servidor respondió con el código de estado " + response.getStatusCode());
+			}
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			// Handle specific exceptions here
+			String errorMessage = "Error al obtener las cuentas del usuario con ID " + userId + ". Se produjo una excepción de tipo " + 
+			e.getClass().getSimpleName() + ": " + e.getMessage() + "\n" + "Causa: " + e.getResponseBodyAsString();
+			throw new RuntimeException(errorMessage, e);
+		} catch (Exception e) {
+			// Handle all other exceptions here
+			String errorMessage = "Error al obtener las cuentas del usuario con ID " + userId + ". Se produjo una excepción de tipo " + 
+			e.getClass().getSimpleName() + ": " + e.getMessage() + "\n" + "Causa: " + e.getCause();
+			throw new RuntimeException(errorMessage, e);
+		}
     }
 
 	@Transactional

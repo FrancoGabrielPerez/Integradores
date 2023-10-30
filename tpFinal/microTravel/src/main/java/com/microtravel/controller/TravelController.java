@@ -77,7 +77,7 @@ public class TravelController {
             travelService.travelEnd(travelId);
             return ResponseEntity.status(HttpStatus.OK).body("Se finalizo correctamente el viaje con travelId: " + travelId);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo finalizar el viaje, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo finalizar el viaje, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");
         }
     }   
    

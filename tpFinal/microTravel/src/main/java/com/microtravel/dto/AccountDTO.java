@@ -10,15 +10,15 @@ public class AccountDTO {
     private Timestamp fechaAlta;
 	private boolean habilitada;
 	private String idMPago;
-	private Double balance;
+	private Double saldo;
 
-	public AccountDTO(long accountId, Timestamp fechaAlta, boolean habilitada, String idMPago, Double balance) {
+	public AccountDTO() {}
+
+	public AccountDTO(long accountId, Timestamp fechaAlta, boolean habilitada, String idMPago, Double saldo) {
         this.accountId = accountId;
 		this.fechaAlta = fechaAlta;
 		this.habilitada = habilitada;
-		this.balance = balance;
+		this.saldo = saldo;
 		this.idMPago = idMPago;
 	}
-
-
 }
