@@ -1,12 +1,6 @@
 package com.microtravel.service;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpResponse;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,15 +18,11 @@ import com.microtravel.dto.NewBillDTO;
 import com.microtravel.dto.TravelDTO;
 import com.microtravel.dto.ScooterDTO;
 import com.microtravel.dto.StationDTO;
-import com.microtravel.model.Fare;
 import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -116,12 +106,12 @@ public class TravelService{
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
-		return fareRepository.getCurrentFlatRate();
+		return fareRepository.FlatRate();
 	}
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
-		return fareRepository.getCurrentFullRate();
+		return fareRepository.FullRate();
 	}
 
 	@Transactional

@@ -1,6 +1,5 @@
 package com.microtravel.dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
@@ -8,7 +7,8 @@ import java.sql.Timestamp;
 
 import com.microtravel.model.Fare;
 
-@Getter
+
+@Data
 public class FareDTO {   
     private long fareId;
     private Timestamp date;

@@ -1,8 +1,6 @@
 package com.microtravel.dto;
 
 import java.sql.Timestamp;
-import java.time.Duration;
-
 import com.microtravel.model.Travel;
 
 import lombok.Getter;
@@ -14,12 +12,10 @@ public class TravelDTO {
 	
 	private long userId;
 	private long scooterId;
-	// private Timestamp startTime;
 	private Timestamp endTime;
 	private double useTime;
 	private double pauseTime;
 	private double kilometers;
-	//private Double pause;
 	private Double fare;
 
 	public TravelDTO(Travel travel) {

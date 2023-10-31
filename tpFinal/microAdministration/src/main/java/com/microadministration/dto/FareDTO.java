@@ -1,9 +1,6 @@
 package com.microadministration.dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-
 import java.sql.Timestamp;
 
 @Data

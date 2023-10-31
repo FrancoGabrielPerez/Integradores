@@ -1,17 +1,11 @@
 package com.microscooter.repository;
 
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.microscooter.dto.ScooterDTO;
-import com.microscooter.dto.ScooterReporteKmsTiempoUsoDTO;
 import com.microscooter.model.Scooter;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Repository ("scooterRepository")
 public interface ScooterRepository extends ScooterRepositoryCustom, JpaRepository<Scooter, Long> {

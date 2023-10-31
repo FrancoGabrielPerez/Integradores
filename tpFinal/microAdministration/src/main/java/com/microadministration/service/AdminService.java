@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,26 +185,30 @@ public class AdminService{
 			throw new Exception("Error al obtener los datos.");
 		}
 		//return  travels;
-		travels.stream()
-				.filter((travel) -> {
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTimeInMillis(travel.getEndTime().getTime());
-					return calendar.get(Calendar.YEAR) == year;
-					})
-				.map(travel -> travel.getScooterId())
-				.distinct()
-				.map(scooterId -> { //TODO aca iria el scooterDTO
-					HashMap<Integer, Integer> res = new HashMap<>();
-					traves.stream()
-						.filter(travel -> travel.getScooterId() == scooterId)
-						.
-						.filter()
-					return travels.stream()
-							.filter(travel -> travel.getScooterId() == scooterId)
-							.count();
-				})
-				.filter(travelQuantity::equals)
-				.count();
+		List<ScooterDTO> filteredScooters = travels.stream()
+		.filter((travel) -> {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(travel.getEndTime().getTime());
+			return calendar.get(Calendar.YEAR) == year;
+		})
+		.collect(Collectors.groupingBy(TravelDTO::getScooterId, Collectors.counting()))
+		.entrySet().stream()
+		.filter(entry -> entry.getValue() > travelQuantity)
+		.map(entry -> {
+			String scooterUrl = "http://localhost:8002/monopatines/" + entry.getKey();
+			HttpEntity<StationDTO> requestEntity2 = new HttpEntity<>(headers);
+			ResponseEntity<ScooterDTO> response2 = restTemplate.exchange(scooterUrl,
+					HttpMethod.GET,
+					requestEntity2,
+					ParameterizedTypeReference.forType(ScooterDTO.class));
+			if (response2.getStatusCode() != HttpStatus.OK) {
+				throw new IllegalArgumentException("Error al obtener los datos.");
+			}
+			return response2.getBody();
+		})
+		.filter(Objects::nonNull)  // Remove null responses
+		.collect(Collectors.toList());
+		return filteredScooters;
 	}
 
 	@Transactional

@@ -18,7 +18,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, UserAc
     Optional<UserAccount> findByUserAndAccount(User user, Account account);
     void deleteByUserAndAccount(User user, Account account);
     UserAccount save(UserAccount userAccount);
-    List<UserAccount> findByUser(User user);
+    List<UserAccount> findByUser(User user);    
 
     /*
     @Query("SELECT a FROM Account a WHERE a.id IN (SELECT ua.account_id FROM UserAccount ua WHERE ua.user_id = :userId)")

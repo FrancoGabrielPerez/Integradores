@@ -5,12 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.microadministration.dto.AdminStaffDTO;
-import com.microadministration.dto.BillDTO;
 import com.microadministration.dto.NewBillDTO;
 import com.microadministration.service.BillService;
-import com.microadministration.service.AdminStaffService;
-
 import io.swagger.v3.oas.annotations.Operation;
 
 

@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 public class UserAccountPK implements Serializable {
+
     @JoinColumn(name="user_id")    
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(cascade = CascadeType.ALL)	

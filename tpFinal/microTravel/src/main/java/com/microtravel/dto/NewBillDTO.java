@@ -1,18 +1,10 @@
 package com.microtravel.dto;
 
-import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
-import java.sql.Time;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Getter

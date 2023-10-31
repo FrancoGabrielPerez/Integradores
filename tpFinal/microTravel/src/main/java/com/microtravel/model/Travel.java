@@ -2,17 +2,7 @@ package com.microtravel.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.microtravel.dto.TravelDTO;
-
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -33,8 +23,6 @@ public class Travel {
 	private Timestamp endTime;
 	@Column(name = "kilometers")
 	private double kilometers;
-	// @Column(name = "scooter_end_kms")
-	// private double scooterEndKms;
 	@Column(name = "pause_time")
 	private int pauseTime;
 	@Column(name = "fare")
@@ -43,17 +31,6 @@ public class Travel {
 	public Travel(){
 		super();
 	}	
-
-	// public Travel(long userId, long scooterId, Double fare, double scooterStartKms) {
-	// 	this.userId = userId;
-	// 	this.scooterId = scooterId;
-	// 	this.startTime = new Timestamp(System.currentTimeMillis());
-	// 	this.endTime = null;
-	// 	this.scooterStartKms = scooterStartKms;
-	// 	this.scooterEndKms = 0;
-	// 	this.pause = Duration.ZERO;
-	// 	this.fare = fare;
-	// }
 
 	public Travel(long userId, long scooterId, int pauseTime, Double fare, int useTime, double scooterInitKms) {
 		this.userId = userId;

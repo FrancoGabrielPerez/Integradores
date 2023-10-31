@@ -9,17 +9,8 @@ import com.microscooter.dto.ScooterReporteTiempoTotalDTO;
 import com.microscooter.dto.ScooterReporteKilometrosDTO;
 import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.stream.Collectors;
-
 import com.microscooter.dto.InformeEstadoMonopatinesDTO;
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;

@@ -1,7 +1,5 @@
 package com.microuseraccount.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 

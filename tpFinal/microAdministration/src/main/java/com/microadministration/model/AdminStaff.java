@@ -2,13 +2,7 @@ package com.microadministration.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import com.microadministration.dto.AdminStaffDTO;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data

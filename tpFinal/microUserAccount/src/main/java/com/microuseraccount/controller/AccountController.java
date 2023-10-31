@@ -7,23 +7,16 @@ import org.springframework.web.bind.annotation.*;
 
 import com.microuseraccount.dto.AccountDTO;
 import com.microuseraccount.service.AccountService;
-import com.microuseraccount.service.UserAccountService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-import com.microuseraccount.model.Account;
-import com.microuseraccount.model.UserAccount;
 
-//port
 @RestController
 @RequestMapping("/cuentas")
 public class AccountController {
     
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private UserAccountService userAccountService;
 
     @Operation(summary = "Obtiene todos las cuentas.", description = "Obtiene todas las cuentas")
     @GetMapping("")
