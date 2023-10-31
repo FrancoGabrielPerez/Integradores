@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.microscooter.dto.ScooterReporteKmsTiempoUsoDTO;
+import com.microscooter.dto.ScooterReporteTiempoTotalDTO;
 import com.microscooter.dto.ScooterReporteKilometrosDTO;
 import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
 
+import com.microscooter.dto.InformeEstadoMonopatinesDTO;
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;
 import com.microscooter.repository.ScooterRepository;
@@ -69,7 +71,7 @@ public class ScooterService{
 		return this.scooterRepository.findAllByOrderByTiempoDeUsoDesc().stream().map(ScooterReporteTiempoUsoDTO::new).collect(Collectors.toList());
 	}
 	
-
+	@Transactional(readOnly = true)
     public List<ScooterReporteKmsTiempoUsoDTO> findByKilometrosConTiempoUso() {
         List<ScooterDTO> scooters = scooterRepository.findAll().stream().map(ScooterDTO::new).collect(Collectors.toList());
 		List<ScooterReporteKmsTiempoUsoDTO> scootersRes = new ArrayList<>();
@@ -79,16 +81,28 @@ public class ScooterService{
 		}
 		return scootersRes;
 	}
-    
-	
-	/*
+
 	@Transactional(readOnly = true)
-	public List<InformeScooterDTO> informeScooters() {
-		return this.inscriptos.informeScooters();
+	public List<ScooterReporteTiempoTotalDTO> findByTiempoTotal() {
+		return this.scooterRepository.getTiempoTotal().stream().map(ScooterReporteTiempoTotalDTO::new).collect(Collectors.toList());
+	}
+    
+	@Transactional(readOnly = true)
+	public InformeEstadoMonopatinesDTO findOperativosMantenimiento(){
+		return this.scooterRepository.getCantidadOperativosMantenimiento();
 	}
 
 	@Transactional(readOnly = true)
-	public List<InformeScooterCantEstudiantesDTO> scootersOrdenadas() {
-		return this.scooterRepository.scootersOrdenadas();
-	} */
+	public List<Scooter> getScootersCercanos(Double latitud, Double longitud){
+		List<Scooter> scooters = this.scooterRepository.findAll();
+		List<Scooter> resultado = new ArrayList<Scooter>();
+		for(Scooter s:scooters){
+			System.out.println(s.calcularDistancia(latitud, longitud));
+			if(s.calcularDistancia(latitud,longitud) <= 5){//mayor a 5 kilometros
+				resultado.add(s);
+			}
+		}
+		System.out.println(scooters.size());
+		return resultado;
+	}
 }

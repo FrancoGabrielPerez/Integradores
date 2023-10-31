@@ -3,6 +3,7 @@ package com.microadministration.service;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,9 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.microadministration.dto.AdminStaffDTO;
+import com.microadministration.dto.FareDTO;
 import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
 import com.microadministration.dto.ScooterReporteKilometrosDTO;
+import com.microadministration.dto.ScooterReporteTiempoTotalDTO;
 import com.microadministration.dto.StationDTO;
 import com.microadministration.dto.TravelDTO;
 import com.microadministration.model.AdminStaff;
@@ -21,6 +24,7 @@ import com.microadministration.repository.AdminStaffRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -178,17 +182,59 @@ public class AdminService{
 		if (travels == null) {
 			throw new Exception("Error al obtener los datos.");
 		}
-		return  travels;/* travels.stream()
-				.filter(travel -> travel.getEndTime().toLocalDateTime().getYear() == year)
+		//return  travels;
+		travels.stream()
+				.filter((travel) -> {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTimeInMillis(travel.getEndTime().getTime());
+					return calendar.get(Calendar.YEAR) == year;
+					})
 				.map(travel -> travel.getScooterId())
 				.distinct()
-				.map(scooterId -> {
+				.map(scooterId -> { //TODO aca iria el scooterDTO
+					HashMap<Integer, Integer> res = new HashMap<>();
+					traves.stream()
+						.filter(travel -> travel.getScooterId() == scooterId)
+						.
+						.filter()
 					return travels.stream()
 							.filter(travel -> travel.getScooterId() == scooterId)
 							.count();
 				})
 				.filter(travelQuantity::equals)
-				.count(); */
+				.count();
+	}
+
+	@Transactional
+	public Object saveNewFare(FareDTO fareDTO) throws Exception {
+		String fareUrl = "http://localhost:8003/tarifas/alta";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<FareDTO> requestEntity = new HttpEntity<>(fareDTO, headers);
+
+		ResponseEntity<Void> response = restTemplate.exchange(fareUrl, HttpMethod.PUT, requestEntity, Void.class);
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new Exception("Error al guardar la nueva tarifa");
+		}
+		return response;
+	}
+
+	@Transactional(readOnly = true)
+	public List<ScooterReporteTiempoTotalDTO> getReportScootersByUseTime() {
+		String scooterUrl = "http://localhost:8002/monopatines/reporte/tiempoTotal";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<ScooterReporteTiempoTotalDTO> requestEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<List<ScooterReporteTiempoTotalDTO>> response = restTemplate.exchange(scooterUrl, 
+								HttpMethod.GET, 
+								requestEntity, 
+								ParameterizedTypeReference.forType(ScooterReporteTiempoTotalDTO.class));
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("Error al obtener los datos.");
+		}
+		return response.getBody();
 	}
 
 }

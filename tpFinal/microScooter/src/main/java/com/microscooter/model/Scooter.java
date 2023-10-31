@@ -71,4 +71,19 @@ public class Scooter{
 		this.tiempoDeUso = dto.getTiempoDeUso();
 		this.tiempoEnpausa = dto.getTiempoEnpausa();
 	}
+
+	public double calcularDistancia(double latitudDestino, double longitudDestino) {
+        int radioTierra = 6371; // Radio de la Tierra en kilómetros
+
+        double dLat = Math.toRadians(latitudDestino - Double.parseDouble(latitud));
+        double dLon = Math.toRadians(longitudDestino - Double.parseDouble(longitud));
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                   Math.cos(Math.toRadians(Double.parseDouble(latitud))) * Math.cos(Math.toRadians(latitudDestino)) *
+                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		System.out.println(radioTierra * c);
+        return radioTierra * c; // Distancia en kilómetros
+    }
 }

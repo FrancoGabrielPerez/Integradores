@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.microadministration.dto.BillDTO;
+import com.microadministration.dto.FareDTO;
 import com.microadministration.dto.StationDTO;
 import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
@@ -73,6 +74,16 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "Obtiene un informe de los monopatines ordenasdos por tiempo de uso", description = "Se comunica con el microservicio de monopatines para obtener un informe de los monopatines ordenasdos por tiempo de uso.")
+    @GetMapping("informes/reporteDeMonopatinesPor/tiempoTotalDeUso")
+    public ResponseEntity<?> getReportScootersByUseTime() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByUseTime());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
     @Operation(summary = "Agrega una nueva parada.", description = "Se comunica con el microservicios de estaciones para dar de alta una nueva parada.")
     @PostMapping("paradas/nueva")
     public ResponseEntity<?> save(@RequestBody StationDTO stationDTO) {
@@ -110,6 +121,16 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.activateAccount(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
+    @Operation(summary = "Agrega una nueva tarifa a aplicar desde la fecha dada.", description = "Se comunica con el microservicios de tarifas para agregar una nueva tarifa a aplicar desde la fecha dada.")  
+    @PostMapping("tarifas/nueva")
+    public ResponseEntity<?> saveNewFare(@RequestBody FareDTO fareDTO) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.saveNewFare(fareDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 }

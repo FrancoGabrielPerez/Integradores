@@ -29,6 +29,8 @@ import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties.Restclient;
 import org.springframework.core.ParameterizedTypeReference;
@@ -114,16 +116,12 @@ public class TravelService{
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
-		List<Fare> fare = fareRepository.findAll();
-		return 12.45;
-		//return fare.get(fare.size() - 1).getFlatRate();//TODO hacer la consulta por jpql pidiendo la mayor fecha que sea menor a la fecha actual
+		return fareRepository.getCurrentFlatRate();
 	}
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
-		List<Fare> fare = fareRepository.findAll();
-		return 15.45;
-		//return fare.get(fare.size() - 1).getFullRate();
+		return fareRepository.getCurrentFullRate();
 	}
 
 	@Transactional
@@ -255,15 +253,9 @@ public class TravelService{
 		travelRepository.save(travel);
 	}
 	
-	
-	/*
-	@Transactional(readOnly = true)
-	public List<InformeTravelDTO> informeTravels() {
-		return this.inscriptos.informeTravels();
+	@Transactional
+	public FareDTO saveFare(FareDTO entity) {
+		return new FareDTO(this.fareRepository.save(entity));
 	}
-
-	@Transactional(readOnly = true)
-	public List<InformeTravelCantEstudiantesDTO> travelsOrdenadas() {
-		return this.travelRepository.travelsOrdenadas();
-	} */
+		
 }

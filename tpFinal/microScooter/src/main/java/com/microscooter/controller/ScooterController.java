@@ -100,4 +100,35 @@ public class ScooterController {
         }
     }   
 
+    @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)", description = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)")
+    @GetMapping("/reporte/tiempoTotal")
+    public ResponseEntity<?> getReporteByTiempoTotal(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByTiempoTotal());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }  
+
+    @Operation(summary = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento", description = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento")
+    @GetMapping("/reporte/cantidadOperativosMantenimiento")
+    public ResponseEntity<?> getReporteOperativosMantenimiento(){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.findOperativosMantenimiento());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }  
+
+    @Operation(summary = "Obtiene todos los monopatines.", 
+                description = "Obtiene todos los monopatines cerca de una coordenada (ejemplo que funciona latitud -37.327754, longitud -59.138998)")
+    @GetMapping("/{latitud}/{longitud}")
+    public ResponseEntity<?> getAllCercanos(@PathVariable Double latitud, @PathVariable Double longitud){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScootersCercanos(latitud,longitud));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
+
 }

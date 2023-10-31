@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository ("scooterRepository")
-public interface ScooterRepository extends JpaRepository<Scooter, Long> {
+public interface ScooterRepository extends ScooterRepositoryCustom, JpaRepository<Scooter, Long> {
     List<Scooter> findAllByOrderByKilometrosDesc();
 
     List<Scooter> findAllByOrderByTiempoDeUsoDesc();

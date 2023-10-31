@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.microtravel.dto.TravelDTO;
+import com.microtravel.dto.FareDTO;
 import com.microtravel.service.TravelService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,6 +80,16 @@ public class TravelController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo finalizar el viaje, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");
         }
-    }   
+    }
+    
+    @Operation(summary = "Guarda una tarifa nueva a aplicar desde la fecha dada.", description = "Guarda una tarifa nueva a aplicar desde la fecha dada")   
+    @PostMapping("/tarifas/alta")
+    public ResponseEntity<?> saveFare(@RequestBody FareDTO entity) {
+        try{            
+            return ResponseEntity.status(HttpStatus.OK).body(travelService.saveFare(entity));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
    
 }
