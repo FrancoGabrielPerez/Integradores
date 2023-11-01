@@ -31,7 +31,7 @@ public class TravelController {
     
     @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje")
     @PostMapping("/alta/usuario/{idUsuario}/scooter/{idScooter}")
-    public ResponseEntity<?> save(@RequestBody long idUsuario, long idScooter) {
+    public ResponseEntity<?> save(@PathVariable long idUsuario, @PathVariable long idScooter) {
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(travelService.save(idUsuario, idScooter));
         }catch (Exception e){

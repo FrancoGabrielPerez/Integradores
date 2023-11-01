@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository ("scooterRepository")
 public interface ScooterRepository extends ScooterRepositoryCustom, JpaRepository<Scooter, Long> {
+    
     List<Scooter> findAllByOrderByKilometrosDesc();
 
     List<Scooter> findAllByOrderByTiempoDeUsoDesc();

@@ -226,7 +226,7 @@ public class AdminService{
 		ResponseEntity<List<ScooterReporteTiempoTotalDTO>> response = restTemplate.exchange(scooterUrl, 
 								HttpMethod.GET, 
 								requestEntity, 
-								ParameterizedTypeReference.forType(ScooterReporteTiempoTotalDTO.class));
+								ParameterizedTypeReference.forType(List.class));
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener los datos.");
 		}

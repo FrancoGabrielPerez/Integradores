@@ -98,3 +98,8 @@ insert into travel (travel_id, user_id, scooter_id, use_time, end_time, kilomete
 insert into travel (travel_id, user_id, scooter_id, use_time, end_time, kilometers, pause_time, fare) values (98, 10, 5, 32, '2023-01-29 15:38:53', 442, 7, 30369.9);
 insert into travel (travel_id, user_id, scooter_id, use_time, end_time, kilometers, pause_time, fare) values (99, 44, 14, 54, '2023-08-03 03:21:09', 331, 8, 30028.46);
 insert into travel (travel_id, user_id, scooter_id, use_time, end_time, kilometers, pause_time, fare) values (100, 18, 11, 66, '2023-01-07 09:30:55', 219, 0, 9356.72);
+
+insert into fare (fare_id, date, flat_rate, full_rate) values (1, '2022-10-01', 123, 432);
+insert into fare (fare_id, date, flat_rate, full_rate) values (2, '2023-05-02', 523, 932);
+insert into fare (fare_id, date, flat_rate, full_rate) values (3, '2023-12-03', 1023, 1232);
+insert into fare (fare_id, date, flat_rate, full_rate) values (4, '2024-03-03', 12300, 92432);

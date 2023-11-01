@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TravelDTO {
 	
+	private long travelId;
 	private long userId;
 	private long scooterId;
 	private Timestamp endTime;
@@ -19,6 +20,7 @@ public class TravelDTO {
 	private Double fare;
 
 	public TravelDTO(Travel travel) {
+		this.travelId = travel.getTravelId();
 		this.userId = travel.getUserId();
 		this.scooterId = travel.getScooterId();
 		this.useTime = travel.getUseTime();

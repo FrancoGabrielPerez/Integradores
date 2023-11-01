@@ -11,11 +11,9 @@ import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
 import com.microscooter.dto.StationDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,6 @@ import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;
 import com.microscooter.repository.ScooterRepository;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpStatus;
 
 
 @Service("scooterService")
@@ -48,7 +45,7 @@ public class ScooterService{
 	
 	@Transactional
 	public ScooterDTO save(ScooterDTO entity) {
-		return new ScooterDTO(this.scooterRepository.save(new Scooter(entity)));
+		return new ScooterDTO(this.scooterRepository.save(new Scooter(entity.getLatitud(), entity.getLongitud())));
 	}
 
 	@Transactional

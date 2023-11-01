@@ -62,6 +62,16 @@ public class Scooter{
 		this.tiempoEnpausa = dto.getTiempoEnpausa();
 	}
 
+	public Scooter(@NonNull String latitud, @NonNull String longitud){
+		super();
+		this.latitud = latitud;
+		this.longitud = longitud;
+		this.estado = "disponible";
+		this.kilometros = 0;
+		this.tiempoDeUso = 0;
+		this.tiempoEnpausa = 0;
+	}
+
 	public double calcularDistancia(double latitudDestino, double longitudDestino) {
         int radioTierra = 6371; // Radio de la Tierra en kilómetros
 

@@ -58,11 +58,11 @@ public class TravelService{
 	
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) throws IllegalArgumentException, RestClientException {
-		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8013/usuarios/buscar/" + idUsuario, UserDTO.class);
+		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8004/usuarios/buscar/" + idUsuario, UserDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario invalido: " + idUsuario);
 		}
-		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8013/cuentas/usuario/" + idUsuario, 
+		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8004/cuentas/usuario/" + idUsuario, 
 											HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountDTO>>() {});
 		if (accounts.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
@@ -79,12 +79,15 @@ public class TravelService{
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
 		}
-		if (!updateScooterState(idScooter, scooter.getBody(), "ocupado")) {
-			throw new IllegalArgumentException("El estado del monopatin no se pudo actualizar");
-		}
 		ScooterDTO scooterBody = scooter.getBody();
 		if (scooterBody == null) {
 			throw new IllegalArgumentException("El cuerpo de la respuesta del monopatin es nulo");
+		}
+		if (scooterBody.getEstado().equals("ocupado")) {
+			throw new IllegalArgumentException("El monopatin ya se encuentra en uso");
+		}
+		if (!updateScooterState(idScooter, scooterBody, "ocupado")) {
+			throw new IllegalArgumentException("El estado del monopatin no se pudo actualizar");
 		}
 		Integer scooterTiempoDeUso = scooterBody.getTiempoDeUso();
 		Double scooterKilometros = scooterBody.getKilometros();
@@ -132,6 +135,7 @@ public class TravelService{
 		if (scooterBody == null) {
 			throw new IllegalArgumentException("El cuerpo de la respuesta del monopatin es nulo");
 		}
+		addRandomTravelData(scooterBody); //simula datos de viaje
 		String scooterLatitudStr = scooterBody.getLatitud();
 		String scooterLongitudStr = scooterBody.getLongitud();
 		if (scooterLatitudStr == null || scooterLongitudStr == null) {
@@ -166,9 +170,16 @@ public class TravelService{
 		sendBill(travel);
 	}
 
+	//Simula datos de viaje
+	private void addRandomTravelData(ScooterDTO scooterBody) {
+		scooterBody.setTiempoDeUso(scooterBody.getTiempoDeUso() + (int) (Math.random() * 20));
+		scooterBody.setTiempoEnpausa(scooterBody.getTiempoEnpausa() + (int) (Math.random() * 15));
+		scooterBody.setKilometros(scooterBody.getKilometros() + Math.random() * 100);
+	}
+
 	@Transactional
 	public void sendBill(Travel travel) throws Exception {
-		String accountUrl = "http://localhost:8006/administracion/facturacion/nueva";
+		String accountUrl = "http://localhost:8005/administracion/facturacion/nueva";
 		
 		String billDescription = "Viaje realizado el " + travel.getEndTime() + " en el monopatin " + travel.getScooterId() + " por el usuario " + travel.getUserId();
 		NewBillDTO bill = new NewBillDTO(travel.getEndTime(), travel.getFare(), billDescription);
@@ -201,7 +212,7 @@ public class TravelService{
 
 	@Transactional(readOnly = true)
 	public List<AccountDTO> getUserAccounts(long userId) throws Exception {
-		String url = "http://localhost:8013/cuentas/usuario/" + userId;
+		String url = "http://localhost:8004/cuentas/usuario/" + userId;
 
 		try {
 			ResponseEntity<List<AccountDTO>> response = restTemplate.exchange(
@@ -232,7 +243,7 @@ public class TravelService{
 
 	@Transactional
 	public void updateAccountBalance(AccountDTO account) throws Exception {
-        String accountUrl = "http://localhost:8013/usuarios/actualizar/" + account.getAccountId();
+        String accountUrl = "http://localhost:8004/usuarios/actualizar/" + account.getAccountId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
