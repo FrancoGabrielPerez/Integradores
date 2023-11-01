@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.sql.Timestamp;
 
+import com.microtravel.dto.FareDTO;
+
 @Entity
 @Data
 @Table(name = "fare")
@@ -32,5 +34,9 @@ public class Fare {
         this.flatRate = flatRate;
         this.fullRate = fullRate;
         this.date = date;
+    }
+
+    public Fare(FareDTO fareDTO) {
+        this(fareDTO.getFlatRate(), fareDTO.getFullRate(), fareDTO.getDate());
     }
 }
