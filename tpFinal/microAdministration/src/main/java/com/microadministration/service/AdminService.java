@@ -1,11 +1,7 @@
 package com.microadministration.service;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -13,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.microadministration.dto.AdminStaffDTO;
 import com.microadministration.dto.FareDTO;
 import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
@@ -21,12 +16,8 @@ import com.microadministration.dto.ScooterReporteKilometrosDTO;
 import com.microadministration.dto.ScooterReporteTiempoTotalDTO;
 import com.microadministration.dto.StationDTO;
 import com.microadministration.dto.TravelDTO;
-import com.microadministration.model.AdminStaff;
-import com.microadministration.repository.AdminStaffRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

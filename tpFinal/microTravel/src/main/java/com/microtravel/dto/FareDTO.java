@@ -1,7 +1,6 @@
 package com.microtravel.dto;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.sql.Timestamp;
 

@@ -50,6 +50,7 @@ public class Account {
     public Account(AccountDTO entity) {
         this.fechaAlta = new Timestamp(System.currentTimeMillis());
         this.habilitada = entity.isHabilitada();
+        this.usuarios = new HashSet<>();
     } 
 
 }

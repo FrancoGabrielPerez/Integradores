@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Data
-public class UserAccountPK implements Serializable {
+public class UserAccountID implements Serializable {
 
     @JoinColumn(name="user_id")    
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -24,12 +24,12 @@ public class UserAccountPK implements Serializable {
     @JoinColumn(name="account_id")
     private Account account;
 
-    public UserAccountPK(User user, Account account) {
+    public UserAccountID(User user, Account account) {
         this.user = user;
         this.account = account;
     }
 
-    public UserAccountPK() {
+    public UserAccountID() {
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserAccountPK implements Serializable {
         if ( o == null || getClass() != o.getClass() ) {
             return false;
         }
-        UserAccountPK pk = (UserAccountPK) o;
+        UserAccountID pk = (UserAccountID) o;
         return Objects.equals( user, pk.user ) &&
                 Objects.equals( account, pk.account );
     }

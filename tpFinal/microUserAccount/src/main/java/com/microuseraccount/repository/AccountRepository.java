@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.microuseraccount.dto.AccountDTO;
 import com.microuseraccount.model.Account;
-import com.microuseraccount.model.User;
 
 @Repository ("accountRepository")
 public interface AccountRepository extends JpaRepository<Account, Long> {

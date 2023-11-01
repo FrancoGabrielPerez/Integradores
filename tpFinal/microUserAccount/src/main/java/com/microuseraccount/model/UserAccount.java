@@ -2,15 +2,12 @@ package com.microuseraccount.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_account")
 @Data
-@IdClass(UserAccountPK.class)
+@IdClass(UserAccountID.class)
 public class UserAccount {	
 	@Id
 	private User user;

@@ -28,6 +28,7 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Obtiene todas las cuentas de un usuario.", description = "Obtiene todas las cuentas de un usuario")
     @GetMapping("/usuario/{userId}")
     public ResponseEntity<?> getCuentasByUserId(@PathVariable long userId){
         try{

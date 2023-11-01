@@ -78,10 +78,16 @@ public class TravelService{
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
 		}
-		if (!updateScooterState(idScooter, scooter.getBody(), "Ocupado")) {
-			throw new IllegalArgumentException("El monopatin no se pudo actualizar");
+		if (!updateScooterState(idScooter, scooter.getBody(), "ocupado")) {
+			throw new IllegalArgumentException("El estado del monopatin no se pudo actualizar");
 		}
-		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, getCurrentFlatFare(), -scooter.getBody().getTiempoDeUso(), -scooter.getBody().getKilometros())));
+		ScooterDTO scooterBody = scooter.getBody();
+		if (scooterBody == null) {
+			throw new IllegalArgumentException("El cuerpo de la respuesta del monopatin es nulo");
+		}
+		Integer scooterTiempoDeUso = scooterBody.getTiempoDeUso();
+		Double scooterKilometros = scooterBody.getKilometros();
+		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, getCurrentFlatFare(), -scooterTiempoDeUso, -scooterKilometros)));
 		
 		return res;
 	}
@@ -122,13 +128,30 @@ public class TravelService{
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + travel.getScooterId());
 		}
-		ResponseEntity<StationDTO> station = restTemplate.getForEntity("http://localhost:8001/estaciones/verificar/latitud/" + scooter.getBody().getLatitud() + "/longitud/" + scooter.getBody().getLongitud(), StationDTO.class);
+		ScooterDTO scooterBody = scooter.getBody();
+		if (scooterBody == null) {
+			throw new IllegalArgumentException("El cuerpo de la respuesta del monopatin es nulo");
+		}
+		String scooterLatitudStr = scooterBody.getLatitud();
+		String scooterLongitudStr = scooterBody.getLongitud();
+		if (scooterLatitudStr == null || scooterLongitudStr == null) {
+			throw new IllegalArgumentException("La latitud o longitud del monopatin es nula");
+		}
+		Double scooterLatitud = Double.parseDouble(scooterLatitudStr);
+		Double scooterLongitud = Double.parseDouble(scooterLongitudStr);
+		ResponseEntity<StationDTO> station = restTemplate.getForEntity("http://localhost:8001/estaciones/verificar/latitud/" + scooterLatitud + "/longitud/" + scooterLongitud, StationDTO.class);
 		if (station.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("No se encuentra una estacion valida para el monopatin: " + travel.getScooterId());
 		}
-		travel.setPauseTime(scooter.getBody().getTiempoEnpausa() + scooter.getBody().getTiempoEnpausa());
-		travel.setUseTime(scooter.getBody().getTiempoDeUso() + scooter.getBody().getTiempoDeUso());
-		travel.setKilometers(scooter.getBody().getKilometros() + scooter.getBody().getKilometros());
+		Integer scooterTiempoEnpausa = scooterBody.getTiempoEnpausa();
+		Integer scooterTiempoDeUso = scooterBody.getTiempoDeUso();
+		Double scooterKilometros = scooterBody.getKilometros();
+		if (scooterTiempoEnpausa == null || scooterTiempoDeUso == null || scooterKilometros == null) {
+			throw new IllegalArgumentException("El tiempo en pausa, el tiempo de uso o los kilometros del monopatin son nulos");
+		}
+		travel.setPauseTime(scooterTiempoEnpausa * 2);
+		travel.setUseTime(scooterTiempoDeUso * 2);
+		travel.setKilometers(scooterKilometros * 2);
 		travel.setEndTime(new Timestamp(System.currentTimeMillis()));
 		if (travel.getPauseTime() < TIEMPOLIMITE) {
 			travel.setFare(travel.getUseTime() * getCurrentFlatFare());
@@ -138,12 +161,12 @@ public class TravelService{
 		}	
 			
 		travelRepository.save(travel);
-		updateScooterState(travel.getScooterId(), scooter.getBody(), "Disponible");
-		System.out.println("llego a linea 150");
+		updateScooterState(travel.getScooterId(), scooter.getBody(), "disponible");
+		//System.out.println("llego a linea 150");
 		updateUserAccount(travel.getUserId(), travel.getFare());
-		System.out.println("llego a linea 152");
+		//System.out.println("llego a linea 152");
 		sendBill(travel);
-		System.out.println("llego a linea 154");
+		//System.out.println("llego a linea 154");
 	}
 
 	@Transactional
