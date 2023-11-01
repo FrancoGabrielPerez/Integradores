@@ -15,11 +15,5 @@ import com.microuseraccount.model.UserAccountID;
 public interface UserAccountRepository extends JpaRepository<UserAccount, UserAccountID> {
     Optional<UserAccount> findByUserAndAccount(User user, Account account);
     void deleteByUserAndAccount(User user, Account account);
-    UserAccount save(UserAccount userAccount);
     List<UserAccount> findByUser(User user);    
-
-    
-    
 }
-
-

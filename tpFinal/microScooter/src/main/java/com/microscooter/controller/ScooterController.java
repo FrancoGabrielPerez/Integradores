@@ -70,6 +70,7 @@ public class ScooterController {
         }
     }
 
+
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
     @GetMapping("/reporte/kilometros/sinTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometros(){

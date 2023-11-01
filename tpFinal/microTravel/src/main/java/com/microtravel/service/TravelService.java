@@ -88,7 +88,8 @@ public class TravelService{
 		}
 		Integer scooterTiempoDeUso = scooterBody.getTiempoDeUso();
 		Double scooterKilometros = scooterBody.getKilometros();
-		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, 0, getCurrentFlatFare(), -scooterTiempoDeUso, -scooterKilometros)));
+		Integer scooterTiempoEnpausa = scooterBody.getTiempoEnpausa();
+		TravelDTO res = new TravelDTO(this.travelRepository.save(new Travel(idUsuario, idScooter, -scooterTiempoEnpausa, getCurrentFlatFare(), -scooterTiempoDeUso, -scooterKilometros)));
 		
 		return res;
 	}
@@ -148,9 +149,9 @@ public class TravelService{
 		if (scooterTiempoEnpausa == null || scooterTiempoDeUso == null || scooterKilometros == null) {
 			throw new IllegalArgumentException("El tiempo en pausa, el tiempo de uso o los kilometros del monopatin son nulos");
 		}
-		travel.setPauseTime(scooterTiempoEnpausa * 2);
-		travel.setUseTime(scooterTiempoDeUso * 2);
-		travel.setKilometers(scooterKilometros * 2);
+		travel.setPauseTime(travel.getPauseTime() + scooterTiempoEnpausa);
+		travel.setUseTime(travel.getUseTime() + scooterTiempoDeUso);
+		travel.setKilometers(travel.getKilometers() + scooterKilometros);
 		travel.setEndTime(new Timestamp(System.currentTimeMillis()));
 		if (travel.getPauseTime() < TIEMPOLIMITE) {
 			travel.setFare(travel.getUseTime() * getCurrentFlatFare());
@@ -187,7 +188,7 @@ public class TravelService{
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
 		AccountDTO account = accounts.stream().filter(a -> a.getSaldo() > 0).findFirst().orElse(null);
-		if (Objects.isNull(account)) { //TODO: si no tiene saldo, se usa la primer cuenta que encuentre
+		if (Objects.isNull(account)) { //si no tiene saldo, se usa la primer cuenta que encuentre
 			 account = accounts.get(0);
 		}
 		account.setSaldo(account.getSaldo() - fare);
