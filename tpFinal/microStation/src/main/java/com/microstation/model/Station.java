@@ -12,7 +12,6 @@ public class Station {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="station_id")
 	private long stationId;
-
 	@Column(name = "latitud")
 	private String latitud;
 	@Column(name = "longitud")

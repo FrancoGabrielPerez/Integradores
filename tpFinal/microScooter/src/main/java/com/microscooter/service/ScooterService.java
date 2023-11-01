@@ -88,12 +88,10 @@ public class ScooterService{
 		List<Scooter> scooters = this.scooterRepository.findAll();
 		List<Scooter> resultado = new ArrayList<Scooter>();
 		for(Scooter s:scooters){
-			System.out.println(s.calcularDistancia(latitud, longitud));
 			if(s.calcularDistancia(latitud,longitud) <= 5){//mayor a 5 kilometros
 				resultado.add(s);
 			}
 		}
-		System.out.println(scooters.size());
 		return resultado;
 	}
 }

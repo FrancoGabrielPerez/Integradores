@@ -12,14 +12,4 @@ public interface ScooterRepository extends ScooterRepositoryCustom, JpaRepositor
     List<Scooter> findAllByOrderByKilometrosDesc();
 
     List<Scooter> findAllByOrderByTiempoDeUsoDesc();
-
-    // @Query("SELECT e.scooterId, e.kilometros, e.tiempoDeUso FROM Scooter e ORDER BY e.kilometros DESC")
-    // List<Object> searchScootersByKilometrosAndTiempoDeUso();
-
-    // @Query("SELECT s.scooterId, s.kilometros, s.tiempoDeUso FROM Scooter s ORDER BY s.kilometros DESC")
-    // List<Scooter> findAll();
-    /*
-    @Query("SELECT e FROM Scooter e ORDER BY SUM(e.tiempoDeUso + e.tiempoEnPausa)")
-    List<Scooter> tiempoUsoYPausa();
-    */
 }

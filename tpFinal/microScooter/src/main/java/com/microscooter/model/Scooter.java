@@ -43,16 +43,6 @@ public class Scooter{
 		this.longitud = "0";
     }
 
-//    public Scooter(String latitud,String longitud){
-//        super();
-//        this.latitud = latitud;
-//        this.longitud = longitud;
-//        this.estado = "Libre";
-//        this.kilometros = 0;
-//        this.tiempoDeUso = 0;
-//        this.tiempoEnpausa = 0;
-//    }
-
     public Scooter(@NonNull ScooterDTO dto){ //dejamos el notnull?
 		super();
 		this.latitud = dto.getLatitud();
@@ -83,7 +73,6 @@ public class Scooter{
                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		System.out.println(radioTierra * c);
         return radioTierra * c; // Distancia en kilómetros
     }
 }

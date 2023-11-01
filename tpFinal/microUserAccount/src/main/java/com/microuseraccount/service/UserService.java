@@ -15,17 +15,6 @@ import com.microuseraccount.repository.UserAccountRepository;
 import com.microuseraccount.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-// import com.integrador3.dto.UserDTO;
-// import com.integrador3.dto.InformeUserCantEstudiantesDTO;
-// import com.integrador3.dto.InformeUserDTO;
-// import com.integrador3.model.User;
-// import com.integrador3.model.Estudiante;
-// import com.integrador3.model.EstudianteUser;
-// import com.integrador3.repository.UserRepository;
-// import com.integrador3.repository.EstudianteUserRepository;
-// import com.integrador3.repository.EstudianteRepository;
-
 @Service("userService")
 public class UserService{
 	@Autowired
@@ -100,18 +89,6 @@ public class UserService{
 		Account account = accountRepository.findById(accountId)
 				.orElseThrow(() -> new IllegalArgumentException("ID de cuenta invalido: " + accountId));
 
-
 		userAccountRepository.deleteByUserAndAccount(user, account);
 	}
-
-	/*
-	@Transactional(readOnly = true)
-	public List<InformeUserDTO> informeUsers() {
-		return this.inscriptos.informeUsers();
-	}
-
-	@Transactional(readOnly = true)
-	public List<InformeUserCantEstudiantesDTO> usersOrdenadas() {
-		return this.userRepository.usersOrdenadas();
-	} */
 }

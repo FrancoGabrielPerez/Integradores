@@ -100,14 +100,12 @@ public class TravelService{
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooter, headers);
-		System.out.println("llego a linea 100");
 		ResponseEntity<?> scooterResponse = restTemplate.exchange(
 			scooterUpdateUrl,
 			HttpMethod.PUT,
 			requestEntity,
 			String.class
 			);
-		System.out.println("llego a linea 107");
 		return scooterResponse.getStatusCode() == HttpStatus.OK;
 	}
 
@@ -163,11 +161,8 @@ public class TravelService{
 			
 		travelRepository.save(travel);
 		updateScooterState(travel.getScooterId(), scooter.getBody(), "disponible");
-		//System.out.println("llego a linea 150");
 		updateUserAccount(travel.getUserId(), travel.getFare());
-		//System.out.println("llego a linea 152");
 		sendBill(travel);
-		//System.out.println("llego a linea 154");
 	}
 
 	@Transactional
@@ -204,7 +199,7 @@ public class TravelService{
 	}
 
 	@Transactional(readOnly = true)
-	public List<AccountDTO> getUserAccounts(long userId) throws Exception {//TODO eca se rompe todo, esto devuelte List<AccountDTO>
+	public List<AccountDTO> getUserAccounts(long userId) throws Exception {
 		String url = "http://localhost:8013/cuentas/usuario/" + userId;
 
 		try {

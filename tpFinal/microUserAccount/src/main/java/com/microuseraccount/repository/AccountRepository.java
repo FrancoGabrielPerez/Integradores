@@ -11,10 +11,7 @@ import com.microuseraccount.model.Account;
 
 @Repository ("accountRepository")
 public interface AccountRepository extends JpaRepository<Account, Long> {
-	//List<Account> findByUsuarios(User user);
-	// @Query("SELECT NEW com.microuseraccount.dto.AccountDTO(a) FROM Account a JOIN a.usuarios u WHERE u.userId = ?1")
-	// public List<AccountDTO> findByUserId(Long id);
-
+	
 	@Query("SELECT NEW com.microuseraccount.dto.AccountDTO(a) FROM Account a JOIN a.usuarios ua JOIN ua.user u WHERE u.userId = ?1")
 	public List<AccountDTO> findByUserId(Long id);
 }
