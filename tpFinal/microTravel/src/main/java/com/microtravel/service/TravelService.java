@@ -18,6 +18,7 @@ import com.microtravel.dto.NewBillDTO;
 import com.microtravel.dto.TravelDTO;
 import com.microtravel.dto.ScooterDTO;
 import com.microtravel.dto.StationDTO;
+import com.microtravel.model.Fare;
 import com.microtravel.model.Travel;
 import com.microtravel.repository.FareRepository;
 import com.microtravel.repository.TravelRepository;
@@ -112,12 +113,12 @@ public class TravelService{
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
-		return fareRepository.FlatRate();
+		return fareRepository.findFirstFlatRate();
 	}
 
 	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
-		return fareRepository.FullRate();
+		return fareRepository.findFirstFullRate();
 	}
 
 	@Transactional
@@ -267,8 +268,8 @@ public class TravelService{
 	}
 	
 	@Transactional
-	public FareDTO saveFare(FareDTO entity) {
-		return new FareDTO(this.fareRepository.save(entity));
+	public FareDTO saveFare(FareDTO fare) {
+		return new FareDTO(this.fareRepository.save(new Fare(fare)));
 	}
 		
 }

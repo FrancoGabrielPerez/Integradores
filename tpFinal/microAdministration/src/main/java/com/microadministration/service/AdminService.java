@@ -167,7 +167,7 @@ public class AdminService{
 		ResponseEntity<List<TravelDTO>> response = restTemplate.exchange(travelUrl, 
 								HttpMethod.GET, 
 								requestEntity, 
-								ParameterizedTypeReference.forType(List.class));
+								new ParameterizedTypeReference<List<TravelDTO>>() {});
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al obtener los datos.");
 		}
@@ -175,7 +175,6 @@ public class AdminService{
 		if (travels == null) {
 			throw new Exception("Error al obtener los datos.");
 		}
-		//return  travels;
 		List<ScooterDTO> filteredScooters = travels.stream()
 		.filter((travel) -> {
 			Calendar calendar = Calendar.getInstance();
@@ -187,7 +186,7 @@ public class AdminService{
 		.filter(entry -> entry.getValue() > travelQuantity)
 		.map(entry -> {
 			String scooterUrl = "http://localhost:8002/monopatines/" + entry.getKey();
-			HttpEntity<StationDTO> requestEntity2 = new HttpEntity<>(headers);
+			HttpEntity<ScooterDTO> requestEntity2 = new HttpEntity<>(headers);
 			ResponseEntity<ScooterDTO> response2 = restTemplate.exchange(scooterUrl,
 					HttpMethod.GET,
 					requestEntity2,
