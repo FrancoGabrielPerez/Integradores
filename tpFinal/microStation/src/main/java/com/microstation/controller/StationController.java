@@ -2,6 +2,7 @@ package com.microstation.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +76,8 @@ public class StationController {
     public ResponseEntity<?> verify(@PathVariable String latitud, @PathVariable String longitud){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(stationService.findByLatitudAndLongitud(latitud, longitud));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.noContent().build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo verificar la estacion, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

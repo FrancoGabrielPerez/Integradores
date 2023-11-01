@@ -19,9 +19,9 @@ public class AppConfig {
     public OpenAPI customOpenAPI(@Value("${application-description}") String description,
                                  @Value("${application-version}") String version) {
         return new OpenAPI()
-                .info(new Info().title("UserAccount API")
+                .info(new Info().title("Scooters API")
                         .version(version)
                         .description(description)
-                        .license(new License().name("UserAccount API Licence")));
+                        .license(new License().name("Scooters API Licence")));
     }
 }

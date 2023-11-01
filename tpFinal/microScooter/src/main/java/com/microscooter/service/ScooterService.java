@@ -24,6 +24,7 @@ import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;
 import com.microscooter.repository.ScooterRepository;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 
 
 @Service("scooterService")
@@ -42,7 +43,7 @@ public class ScooterService{
 	@Transactional(readOnly = true)
 	public ScooterDTO findById(Long id) {
 		return this.scooterRepository.findById(id).map(ScooterDTO::new).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
+			() -> new IllegalArgumentException("ID de monopatin invalido: " + id));
 	}
 	
 	@Transactional
@@ -53,13 +54,13 @@ public class ScooterService{
 	@Transactional
 	public void delete(Long id) {
 		scooterRepository.delete(scooterRepository.findById(id).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id)));
+			() -> new IllegalArgumentException("ID de monopatin invalido: " + id)));
 	}
 
 	@Transactional
 	public void update(Long id, ScooterDTO entity) {
 		Scooter scooter = scooterRepository.findById(id).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
+			() -> new IllegalArgumentException("ID de monopatin invalido: " + id));
 		scooter.setFromDTO(entity);
 		scooterRepository.save(scooter);
 	}
@@ -100,7 +101,7 @@ public class ScooterService{
 		List<Scooter> scooters = this.scooterRepository.findAll();
 		List<Scooter> resultado = new ArrayList<Scooter>();
 		for(Scooter s:scooters){
-			if(s.calcularDistancia(latitud,longitud) <= 5){//mayor a 5 kilometros
+			if(s.calcularDistancia(latitud,longitud) <= 1){//mayor a 5 kilometros
 				resultado.add(s);
 			}
 		}
@@ -108,6 +109,7 @@ public class ScooterService{
 	}
 
 	public StationDTO scooterEnEstacion(long scooterId) throws Exception {
+
 		ScooterDTO scooter = this.findById(scooterId);
 
 		String estacionUrl = "http://localhost:8001/estaciones/verificar/latitud/" + scooter.getLatitud() +  "/longitud/" + scooter.getLongitud();
@@ -115,14 +117,16 @@ public class ScooterService{
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
 		ResponseEntity<StationDTO> response = restTemplate.exchange(estacionUrl, 
-								HttpMethod.GET, 
-								requestEntity, 
-								ParameterizedTypeReference.forType(StationDTO.class));
-		if (response.getStatusCode() == HttpStatus.OK) {
-			return response.getBody();
-		}
-		else {
-			throw new Exception("Error al obtener los datos." + response.getStatusCode() + response.getBody());
+									HttpMethod.GET, 
+									requestEntity, 
+									ParameterizedTypeReference.forType(StationDTO.class));
+		switch (response.getStatusCode().value()) {
+			case 200:
+				return response.getBody();
+			case 204:
+				return null;
+			default:
+				throw new Exception("Error al obtener los datos." + response.getStatusCode() + response.getBody());
 		}
 	}
 }

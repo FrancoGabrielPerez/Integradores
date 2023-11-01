@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.microscooter.dto.ScooterDTO;
+import com.microscooter.dto.StationDTO;
 import com.microscooter.service.ScooterService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,7 +75,13 @@ public class ScooterController {
     @GetMapping("/estacion/{scooterId}")
     public ResponseEntity<?> scooterEnEstacion(@PathVariable long scooterId){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(scooterService.scooterEnEstacion(scooterId));
+            StationDTO estacion = scooterService.scooterEnEstacion(scooterId);
+            if (estacion != null) {
+                return ResponseEntity.status(HttpStatus.OK).body("El monopatin se encuentra en la estacion ubicada en : " + estacion.getLatitud() + ", " + estacion.getLongitud());
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.OK).body("El monopatin no se encuentra en ninguna estacion.");
+            }
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
