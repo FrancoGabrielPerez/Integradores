@@ -3,24 +3,36 @@ package com.microscooter.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.web.client.RestTemplate;
 import com.microscooter.dto.ScooterReporteKmsTiempoUsoDTO;
 import com.microscooter.dto.ScooterReporteTiempoTotalDTO;
 import com.microscooter.dto.ScooterReporteKilometrosDTO;
 import com.microscooter.dto.ScooterReporteTiempoUsoDTO;
+import com.microscooter.dto.StationDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.microscooter.dto.InformeEstadoMonopatinesDTO;
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.model.Scooter;
 import com.microscooter.repository.ScooterRepository;
+import org.springframework.core.ParameterizedTypeReference;
 
 
 @Service("scooterService")
 public class ScooterService{
 	@Autowired
 	private ScooterRepository scooterRepository;
+
+	@Autowired
+	RestTemplate restTemplate = new RestTemplate();
 
 	@Transactional(readOnly = true)
 	public List<ScooterDTO> findAll() {
@@ -93,5 +105,24 @@ public class ScooterService{
 			}
 		}
 		return resultado;
+	}
+
+	public StationDTO scooterEnEstacion(long scooterId) throws Exception {
+		ScooterDTO scooter = this.findById(scooterId);
+
+		String estacionUrl = "http://localhost:8001/estaciones/verificar/latitud/" + scooter.getLatitud() +  "/longitud/" + scooter.getLongitud();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
+		ResponseEntity<StationDTO> response = restTemplate.exchange(estacionUrl, 
+								HttpMethod.GET, 
+								requestEntity, 
+								ParameterizedTypeReference.forType(StationDTO.class));
+		if (response.getStatusCode() == HttpStatus.OK) {
+			return response.getBody();
+		}
+		else {
+			throw new Exception("Error al obtener los datos." + response.getStatusCode() + response.getBody());
+		}
 	}
 }

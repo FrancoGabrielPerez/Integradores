@@ -70,6 +70,15 @@ public class ScooterController {
         }
     }
 
+    @Operation(summary = "Verifica si un monopatin esta en una parada.", description = "Verifica si un monopatin esta en una parada.")
+    @GetMapping("/estacion/{scooterId}")
+    public ResponseEntity<?> scooterEnEstacion(@PathVariable long scooterId){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.scooterEnEstacion(scooterId));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
+        }
+    }
 
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
     @GetMapping("/reporte/kilometros/sinTiempoDeUso")
