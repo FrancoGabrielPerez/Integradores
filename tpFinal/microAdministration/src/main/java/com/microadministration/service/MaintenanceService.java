@@ -21,7 +21,8 @@ public class MaintenanceService{
 
 	@Transactional
 	public void updateScooterState(long idScooter, String estado) {
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/buscar/" + idScooter, ScooterDTO.class);
+		System.out.println("hola!");
+		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de scooter invalido: " + idScooter);
 		}
@@ -29,6 +30,7 @@ public class MaintenanceService{
 		HttpEntity<ScooterDTO> requestEntity;
 		ScooterDTO scooterBody = scooter.getBody();
 		if (scooterBody != null) {
+			System.out.println(scooterBody); 
 			scooterBody.setEstado(estado);
 
 			HttpHeaders headers = new HttpHeaders();
@@ -40,12 +42,12 @@ public class MaintenanceService{
 		}
 
 		try {
-			ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8002/monopatines/actualizar/", HttpMethod.PUT, requestEntity, Void.class);
+			ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8002/monopatines/actualizar/" + idScooter, HttpMethod.PUT, requestEntity, Void.class);
 			if (response.getStatusCode() != HttpStatus.OK) {
 				throw new Exception("Error al actualizar el estado del monopatin" + idScooter);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error al actualizar el estado del monopatin. ", e);
+			throw new RuntimeException("Super Error al actualizar el estado del monopatin. ", e);
 		}
 	}
 

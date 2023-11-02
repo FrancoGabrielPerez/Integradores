@@ -17,7 +17,7 @@ public class BillController {
     @Autowired
     private BillService billService;
    
-    @Operation(summary = "Obtiene todos los integrantes del staff de administracion.", description = "Obtiene todos los integrantes del staff de administracion.")
+    @Operation(summary = "Obtiene todas las facturas.", description = "Obtiene todas las facturas.")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
@@ -47,7 +47,7 @@ public class BillController {
         }
     }
 
-    @Operation(summary = "Obtener facturacion en un rango de fechas.", description = "Obtener facturacion en un rango de fechas.")
+    @Operation(summary = "Obtener facturacion en un rango de fechas.", description = "Obtener facturacion en un rango de fechas. Formato de fecha: yyyy-mm-dd")
     @GetMapping("/fechaDesde/{fechaDesde}/fechaHasta/{fechaHasta}")   
     public ResponseEntity<?> getFacturacion(@PathVariable String fechaDesde, @PathVariable String fechaHasta) {
         try {

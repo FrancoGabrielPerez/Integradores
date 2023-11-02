@@ -16,7 +16,7 @@ public class ScooterRepositoryCustomImpl implements ScooterRepositoryCustom{
 
 	public InformeEstadoMonopatinesDTO getCantidadOperativosMantenimiento(){
 		int monopatinesOperativos = ((Number) entityManager.createNativeQuery(
-			"Select COUNT(*) From scooter WHERE estado Like 'libre' OR estado LIKE 'ocupado'"
+			"Select COUNT(*) From scooter WHERE estado Like 'disponible' OR estado LIKE 'ocupado'"
 		).getSingleResult()).intValue();
 		int monopatinesMantenimiento = ((Number) entityManager.createNativeQuery(
 			"Select COUNT(*) From scooter WHERE estado Like 'mantenimiento'"

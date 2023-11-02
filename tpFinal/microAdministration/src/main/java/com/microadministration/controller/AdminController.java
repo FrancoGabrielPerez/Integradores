@@ -112,7 +112,7 @@ public class AdminController {
     }
 
     @Operation(summary = "Activa una cuenta que estaba previamente desactivada.", description = "Se comunica con el microservicios de cuentas para activar una cuenta que estaba previamente desactivada.")
-    @PatchMapping("cuentas/activar/{id}")
+    @PutMapping("cuentas/activar/{id}")
     public ResponseEntity<?> activateAccount(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.activateAccount(id));

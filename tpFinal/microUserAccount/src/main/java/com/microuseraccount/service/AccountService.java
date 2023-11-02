@@ -56,6 +56,7 @@ public class AccountService{
 			account.setFechaAlta(entity.getFechaAlta());
 			account.setHabilitada(entity.isHabilitada());
 			account.setIdMPago(entity.getIdMPago());
+			account.setSaldo(entity.getSaldo());
 			accountRepository.save(account);
 		}
 		
@@ -133,16 +134,4 @@ public class AccountService{
     public List<AccountDTO> getCuentasByUserId(long userId) {
 		return this.accountRepository.findByUserId(userId);
     }
-
-
-	/*
-	@Transactional(readOnly = true)
-	public List<InformeAccountDTO> informeAccounts() {
-		return this.inscriptos.informeAccounts();
-	}
-
-	@Transactional(readOnly = true)
-	public List<InformeAccountCantEstudiantesDTO> accountsOrdenadas() {
-		return this.accountRepository.accountsOrdenadas();
-	} */
 }

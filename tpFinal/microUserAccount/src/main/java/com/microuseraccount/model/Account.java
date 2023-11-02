@@ -51,6 +51,8 @@ public class Account {
         this.fechaAlta = new Timestamp(System.currentTimeMillis());
         this.habilitada = entity.isHabilitada();
         this.usuarios = new HashSet<>();
+        this.idMPago = entity.getIdMPago();
+        this.saldo = entity.getSaldo();
     } 
 
 }

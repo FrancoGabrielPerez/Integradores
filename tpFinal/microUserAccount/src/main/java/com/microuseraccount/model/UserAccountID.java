@@ -8,19 +8,14 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Data
 public class UserAccountID implements Serializable {
 
     @JoinColumn(name="user_id")    
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToOne(cascade = CascadeType.ALL)	
+	@ManyToOne(cascade = CascadeType.PERSIST)	
     private User user;
     
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToOne(cascade = CascadeType.ALL)	
+	@ManyToOne(cascade = CascadeType.PERSIST)	
     @JoinColumn(name="account_id")
     private Account account;
 

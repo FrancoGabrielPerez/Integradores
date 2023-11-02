@@ -53,7 +53,7 @@ public class TravelService{
 	@Transactional(readOnly = true)
 	public TravelDTO findById(Long id) {
 		return this.travelRepository.findById(id).map(TravelDTO::new).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
+			() -> new IllegalArgumentException("ID de viaje invalido: " + id));
 	}
 	
 	@Transactional
@@ -127,6 +127,9 @@ public class TravelService{
 	public void travelEnd(Long id) throws Exception {
 		Travel travel = travelRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("No se encuentra el viaje con id: " + id));
+		if (travel.getEndTime() != null) {
+			throw new IllegalArgumentException("El viaje ya esta finalizado");
+		}
 		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + travel.getScooterId(), ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + travel.getScooterId());
@@ -199,7 +202,7 @@ public class TravelService{
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
 		AccountDTO account = accounts.stream().filter(a -> a.getSaldo() > 0).findFirst().orElse(null);
-		if (Objects.isNull(account)) { //si no tiene saldo, se usa la primer cuenta que encuentre
+		if (Objects.isNull(account)) {
 			 account = accounts.get(0);
 		}
 		account.setSaldo(account.getSaldo() - fare);
@@ -266,7 +269,7 @@ public class TravelService{
 	@Transactional
 	public void update(Long id, TravelDTO entity) {
 		Travel travel = travelRepository.findById(id).orElseThrow(
-			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
+			() -> new IllegalArgumentException("ID de viaje invalido: " + id));
 		travel.setUserId(entity.getUserId());
 		travel.setScooterId(entity.getScooterId());
 		travel.setFare(entity.getFare());

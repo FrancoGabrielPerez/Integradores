@@ -39,7 +39,7 @@ public class AdminService{
 
         HttpEntity<NewScooterDTO> requestEntity = new HttpEntity<>(scooterDTO, headers);
 
-        ResponseEntity<Void> response = restTemplate.exchange(stationUrl, HttpMethod.PUT, requestEntity, Void.class);
+        ResponseEntity<Void> response = restTemplate.exchange(stationUrl, HttpMethod.POST, requestEntity, Void.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new Exception("Error al guardar el nuevo monopatin");
         }
@@ -70,7 +70,7 @@ public class AdminService{
 
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(stationDTO, headers);
 
-		ResponseEntity<Void> response = restTemplate.exchange(stationUrl, HttpMethod.PUT, requestEntity, Void.class);
+		ResponseEntity<Void> response = restTemplate.exchange(stationUrl, HttpMethod.POST, requestEntity, Void.class);
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al guardar la nueva estacion");
 		}
@@ -94,7 +94,7 @@ public class AdminService{
 
 	@Transactional
 	public ResponseEntity<?> suspendAccount(long accountId) throws Exception {
-		String accountUrl = "http://localhost:8003/cuentas/suspender/" + accountId;
+		String accountUrl = "http://localhost:8004/cuentas/suspender/" + accountId;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -109,13 +109,13 @@ public class AdminService{
 
 	@Transactional
 	public ResponseEntity<?> activateAccount(long accountId) throws Exception {
-		String accountUrl = "http://localhost:8003/cuentas/activar/" + accountId;
+		String accountUrl = "http://localhost:8004/cuentas/activar/" + accountId;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PATCH, requestEntity, Void.class);
+		ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PUT, requestEntity, Void.class);
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al activar la cuenta " + accountId);
 		}
@@ -203,13 +203,13 @@ public class AdminService{
 
 	@Transactional
 	public Object saveNewFare(FareDTO fareDTO) throws Exception {
-		String fareUrl = "http://localhost:8003/tarifas/alta";
+		String fareUrl = "http://localhost:8003/viajes/tarifas/alta";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<FareDTO> requestEntity = new HttpEntity<>(fareDTO, headers);
 
-		ResponseEntity<Void> response = restTemplate.exchange(fareUrl, HttpMethod.PUT, requestEntity, Void.class);
+		ResponseEntity<Void> response = restTemplate.exchange(fareUrl, HttpMethod.POST, requestEntity, Void.class);
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Error al guardar la nueva tarifa");
 		}
