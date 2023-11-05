@@ -40,7 +40,7 @@ public class StationController {
     
     @Operation(summary = "Obtiene una estacion por su id.", description = "Obtiene un estacion por su stationId")
     @GetMapping("/buscar/{stationId}")
-    public ResponseEntity<?> getById(@PathVariable long stationId) {
+    public ResponseEntity<?> getById(@PathVariable String stationId) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(stationService.findById(stationId));
         }catch (Exception e){
@@ -50,7 +50,7 @@ public class StationController {
 
     @Operation(summary = "Eliminia una estacion por su id.", description = "Elimina una estacion por su stationId")
     @DeleteMapping("/eliminar/{stationId}")
-    public ResponseEntity<?> delete(@PathVariable long stationId){
+    public ResponseEntity<?> delete(@PathVariable String stationId){
         try{
             stationService.delete(stationId);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente la estacion con stationId: " + stationId);
@@ -61,7 +61,7 @@ public class StationController {
 
     @Operation(summary = "Actualiza los datos de una estacion por su id.", description = "Actualiza una estacion por su stationId")
     @PutMapping("/actualizar/{stationId}")
-    public ResponseEntity<?> update(@PathVariable long stationId, @RequestBody StationDTO entity){
+    public ResponseEntity<?> update(@PathVariable String stationId, @RequestBody StationDTO entity){
         try{
             stationService.update(stationId, entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos de la estacion con stationId: " + stationId);

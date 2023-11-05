@@ -5,50 +5,56 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.microstation.dto.StationDTO;
-import com.microstation.model.Station;
-import com.microstation.repository.StationRepository;
+//import com.microstation.model.Station;
+import com.microstation.model.StationMongo;
+import com.microstation.repository.StationMongoRepository;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service("stationService")
 public class StationService{
 	@Autowired
-	private StationRepository stationRepository;
+	private StationMongoRepository stationMongoRepository;
+	
 	@Transactional(readOnly = true)
 	public List<StationDTO> findAll() {
-		return this.stationRepository.findAll().stream().map(StationDTO::new ).toList();
+		return this.stationMongoRepository.findAll().stream().map(StationDTO::new ).toList();
 	}
 
 	@Transactional(readOnly = true)
-	public StationDTO findById(Long id) {
-		return this.stationRepository.findById(id).map(StationDTO::new).orElseThrow(
+	public StationDTO findById(String id) {
+		return this.stationMongoRepository.findById(id).map(StationDTO::new).orElseThrow(
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
 	}
 	
 	@Transactional
 	public StationDTO save(StationDTO entity) {
-		return new StationDTO(this.stationRepository.save(new Station(entity)));
+		return new StationDTO(this.stationMongoRepository.save(new StationMongo(entity)));
 	}
 
 	@Transactional
-	public void delete(Long id) {
-		stationRepository.delete(stationRepository.findById(id).orElseThrow(
+	public void delete(String id){
+		stationMongoRepository.delete(stationMongoRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id)));
 	}
 
 	@Transactional
-	public void update(Long id, StationDTO entity) {
-		Station station = stationRepository.findById(id).orElseThrow(
+	public void update(String id, StationDTO entity) throws Exception{
+		StationMongo station = stationMongoRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de estacion invalido: " + id));
 		station.setLatitud(entity.getLatitud());
 		station.setLongitud(entity.getLongitud());
-		stationRepository.save(station);
+		station.setName(entity.getName());
+		stationMongoRepository.save(station);
 	}
 	
 	@Transactional(readOnly = true)
-	public StationDTO findByLatitudAndLongitud(String latitud, String longitud) {
-		return this.stationRepository.findByLatitudAndLongitud(latitud, longitud).map(StationDTO::new).orElseThrow(
-			() -> new IllegalArgumentException("Latitud y longitud invalidos: " + latitud + " " + longitud));
+	public StationDTO findByLatitudAndLongitud(String latitud, String longitud) throws Exception{
+		StationMongo station = this.stationMongoRepository.findByLatitudAndLongitud(latitud, longitud);
+		StationDTO stationDTO = new StationDTO(station);
+	 // Copia los atributos de Station a StationDTOBeanUtils.copyProperties(station, stationDTO); // Copia los atributos de Station a StationDTO
+		return stationDTO;
 	}
 
 }
