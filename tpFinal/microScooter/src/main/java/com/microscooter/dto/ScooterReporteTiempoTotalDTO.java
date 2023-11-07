@@ -5,6 +5,13 @@ import com.microscooter.model.Scooter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterReporteTiempoTotalDTO
+ * 
+ * DTO que contiene los atributos necesarios para devolver un reporte de tiempo total de uso de un monopatin.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class ScooterReporteTiempoTotalDTO {

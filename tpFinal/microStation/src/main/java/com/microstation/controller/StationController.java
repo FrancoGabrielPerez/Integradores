@@ -10,7 +10,13 @@ import com.microstation.service.StationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * StationController
+ * 
+ * Clase que contiene los endpoints de la API.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @RestController
 @RequestMapping("/estaciones")
 public class StationController {
@@ -18,6 +24,10 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+    /**
+     * Obtiene todas las estaciones.
+     * @return ResponseEntity
+     */
     @Operation(summary = "Obtiene todas las estaciones.", description = "Obtiene todos las estaciones")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -28,6 +38,10 @@ public class StationController {
         }
     }
     
+    /**
+     * Agrega una estacion.
+     * @param entity
+     */
     @Operation(summary = "Agrega una estacion.", description = "Agrega una estacion")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody StationDTO entity){
@@ -38,6 +52,11 @@ public class StationController {
         }
     }
     
+    /**
+     * Obtiene una estacion por su id.
+     * @param stationId
+     * @return ResponseEntity
+     */
     @Operation(summary = "Obtiene una estacion por su id.", description = "Obtiene un estacion por su stationId")
     @GetMapping("/buscar/{stationId}")
     public ResponseEntity<?> getById(@PathVariable String stationId) {
@@ -48,6 +67,11 @@ public class StationController {
         }
     }
 
+    /**
+     * Elimina una estacion por su id.
+     * @param stationId
+     * @return ResponseEntity
+     */
     @Operation(summary = "Eliminia una estacion por su id.", description = "Elimina una estacion por su stationId")
     @DeleteMapping("/eliminar/{stationId}")
     public ResponseEntity<?> delete(@PathVariable String stationId){
@@ -59,6 +83,12 @@ public class StationController {
         }
     }
 
+    /**
+     * Actualiza los datos de una estacion por su id.
+     * @param stationId
+     * @param entity
+     * @return ResponseEntity
+     */
     @Operation(summary = "Actualiza los datos de una estacion por su id.", description = "Actualiza una estacion por su stationId")
     @PutMapping("/actualizar/{stationId}")
     public ResponseEntity<?> update(@PathVariable String stationId, @RequestBody StationDTO entity){
@@ -70,6 +100,12 @@ public class StationController {
         }
     } 
    
+    /**
+     * Verifica si las coordenadas pertenecen a una estacion valida.
+     * @param latitud
+     * @param longitud
+     * @return ResponseEntity
+     */
     @Operation(summary = "Verifica si las coordenadas son validas.", description = "Verifica que las coordenadas proveidas coinciden con als coordenadas de una estacion")
     @GetMapping("/verificar/latitud/{latitud}/longitud/{longitud}")
     public ResponseEntity<?> verify(@PathVariable String latitud, @PathVariable String longitud){

@@ -7,7 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.microadministration.service.MaintenanceService;
 
-
+/**
+ * MaintenanceAppController
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Mantenimiento.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @RestController
 @RequestMapping("/mantenimiento")
 public class MaintenanceAppController {
@@ -15,6 +21,13 @@ public class MaintenanceAppController {
     @Autowired
     private MaintenanceService maintenanceService;
     
+    /**
+     * actualizarEstado()
+     * Actualiza el estado de un monopatin.
+     * @param id
+     * @param estado
+     * @return
+     */
     @PutMapping("/monopatines/actualizarEstado/{id}/estado/{estado}")
     public ResponseEntity<?> actualizarEstado(@PathVariable long id, @PathVariable String estado){
         try{

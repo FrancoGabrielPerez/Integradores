@@ -3,6 +3,12 @@ package com.microtravel.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * UserDTO
+ * 
+ * DTO que contiene los atributos de un usuario.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Getter
 @RequiredArgsConstructor
 public class UserDTO {

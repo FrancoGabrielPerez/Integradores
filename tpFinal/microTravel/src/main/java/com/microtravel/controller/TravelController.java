@@ -11,7 +11,12 @@ import com.microtravel.service.TravelService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * TravelController
+ * 
+ * Controlador de la entidad Travel.
+ * @Author Luciano Melluso, Franco Perez, Lautaro Liuzzi, Ruben Marchiori
+ */
 @RestController
 @RequestMapping("/viajes")
 public class TravelController {
@@ -19,6 +24,11 @@ public class TravelController {
     @Autowired
     private TravelService travelService;
 
+    /**
+     * getAll
+     * Obtiene todos los viajes.
+     * @return
+     */
     @Operation(summary = "Obtiene todos los viajes.", description = "Obtiene todos los viajes")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -29,6 +39,12 @@ public class TravelController {
         }
     }
     
+    /**
+     * save
+     * Agrega un viaje.
+     * @param entity
+     * @return
+     */
     @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje")
     @PostMapping("/alta/usuario/{idUsuario}/scooter/{idScooter}")
     public ResponseEntity<?> save(@PathVariable long idUsuario, @PathVariable long idScooter) {
@@ -39,6 +55,12 @@ public class TravelController {
         }
     }
     
+    /**
+     * getById
+     * Obtiene un viaje por su id.
+     * @param travelId
+     * @return
+     */
     @Operation(summary = "Obtiene una estacion viaje por su id.", description = "Obtiene un viaje por su travelId")
     @GetMapping("/buscar/{travelId}")
     public ResponseEntity<?> getById(@PathVariable long travelId) {
@@ -49,6 +71,12 @@ public class TravelController {
         }
     }
 
+    /**
+     * delete
+     * Elimina un viaje por su id.
+     * @param travelId
+     * @return
+     */
     @Operation(summary = "Eliminia un viaje por su id.", description = "Elimina un viaje por su travelId")
     @DeleteMapping("/eliminar/{travelId}")
     public ResponseEntity<?> delete(@PathVariable long travelId){
@@ -60,6 +88,13 @@ public class TravelController {
         }
     }
 
+    /**
+     * update
+     * Actualiza los datos de un viaje por su id.
+     * @param travelId
+     * @param entity
+     * @return
+     */
     @Operation(summary = "Actualiza los datos de un viaje por su id.", description = "Actualiza los datos de un viaje por su travelId")
     @PutMapping("/actualizar/{travelId}")
     public ResponseEntity<?> update(@PathVariable long travelId, @RequestBody TravelDTO entity){
@@ -71,6 +106,12 @@ public class TravelController {
         }
     } 
 
+    /**
+     * travelEnd
+     * Finaliza un viaje por su id.
+     * @param travelId
+     * @return
+     */
     @Operation(summary = "Finaliza un viaje por su id.", description = "Finaliza un viaje por su travelId")
     @PutMapping("/finalizar/{travelId}")
     public ResponseEntity<?> travelEnd(@PathVariable long travelId){
@@ -82,6 +123,12 @@ public class TravelController {
         }
     }
     
+    /**
+     * saveFare
+     * Guarda una tarifa nueva a aplicar desde la fecha dada.
+     * @param entity
+     * @return
+     */
     @Operation(summary = "Guarda una tarifa nueva a aplicar desde la fecha dada.", description = "Guarda una tarifa nueva a aplicar desde la fecha dada")   
     @PostMapping("/tarifas/alta")
     public ResponseEntity<?> saveFare(@RequestBody FareDTO entity) {
@@ -90,6 +137,5 @@ public class TravelController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
-    }
-   
+    }   
 }

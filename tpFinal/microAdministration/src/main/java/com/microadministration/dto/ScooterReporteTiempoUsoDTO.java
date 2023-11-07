@@ -3,6 +3,13 @@ package com.microadministration.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterReporteTiempoUsoDTO
+ * 
+ * DTO para devolver el reporte de uso un scooter por tiempo de uso.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class ScooterReporteTiempoUsoDTO {

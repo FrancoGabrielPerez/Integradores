@@ -3,6 +3,13 @@ package com.microadministration.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * NewScooterDTO
+ * 
+ * DTO que contiene los atributos de una nueva scooter.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Data
 @RequiredArgsConstructor
 public class NewScooterDTO {

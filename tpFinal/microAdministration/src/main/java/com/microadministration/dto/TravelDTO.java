@@ -5,6 +5,13 @@ import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * TravelDTO
+ * 
+ * DTO que contiene los atributos de un viaje.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class TravelDTO {

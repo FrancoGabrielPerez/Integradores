@@ -8,12 +8,23 @@ import jakarta.persistence.PersistenceContext;
 import com.microscooter.dto.InformeEstadoMonopatinesDTO;
 import com.microscooter.model.Scooter;
 
+/**
+ * ScooterRepositoryCustomImpl
+ * 
+ * Repositorio custom de la entidad Scooter.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ 
+ */
 @Repository
 public class ScooterRepositoryCustomImpl implements ScooterRepositoryCustom{
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	/**
+	 * getCantidadOperativosMantenimiento
+	 * Devuelve un informe de la cantidad de monopatines operativos y en mantenimiento.
+	 */
 	public InformeEstadoMonopatinesDTO getCantidadOperativosMantenimiento(){
 		int monopatinesOperativos = ((Number) entityManager.createNativeQuery(
 			"Select COUNT(*) From scooter WHERE estado Like 'disponible' OR estado LIKE 'ocupado'"
@@ -24,6 +35,10 @@ public class ScooterRepositoryCustomImpl implements ScooterRepositoryCustom{
 		return new InformeEstadoMonopatinesDTO(monopatinesMantenimiento,monopatinesOperativos);
 	}
 
+	/**
+	 * getTiempoTotal
+	 * Devuelve una lista de monopatines ordenados por tiempo total de uso.
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Scooter> getTiempoTotal() {

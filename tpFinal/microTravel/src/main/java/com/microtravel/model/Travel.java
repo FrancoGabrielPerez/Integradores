@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.sql.Timestamp;
 
+/**
+ * Travel
+ * 
+ * Clase que contiene los atributos de un viaje.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Data
 @Table(name = "travel")

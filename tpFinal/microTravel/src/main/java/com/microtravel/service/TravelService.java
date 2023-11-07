@@ -32,6 +32,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * TravelService
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Travel.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Service("travelService")
 public class TravelService{
 	public static final int TIEMPOLIMITE = 15;
@@ -45,17 +51,35 @@ public class TravelService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();
 
+	/**
+	 * findAll
+	 * Devuelve una lista de todos los viajes.
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	public List<TravelDTO> findAll() {
 		return this.travelRepository.findAll().stream().map(TravelDTO::new ).toList();
 	}
 
+	/**
+	 * findById
+	 * Devuelve un viaje por id.
+	 * @param id
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	public TravelDTO findById(Long id) {
 		return this.travelRepository.findById(id).map(TravelDTO::new).orElseThrow(
 			() -> new IllegalArgumentException("ID de viaje invalido: " + id));
 	}
 	
+	/**
+	 * save
+	 * Agrega un nuevo viaje.
+	 * @param idUsuario
+	 * @param idScooter
+	 * @return
+	 */
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) throws IllegalArgumentException, RestClientException {
 		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8004/usuarios/buscar/" + idUsuario, UserDTO.class);
@@ -97,6 +121,14 @@ public class TravelService{
 		return res;
 	}
 
+	/**
+	 * updateScooterState
+	 * Actualiza el estado de un monopatin.
+	 * @param idScooter
+	 * @param scooter
+	 * @param estado
+	 * @return
+	 */
 	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado) {
 		String scooterUpdateUrl = "http://localhost:8002/monopatines/actualizar/" + idScooter;
 		scooter.setEstado(estado);
@@ -113,16 +145,32 @@ public class TravelService{
 		return scooterResponse.getStatusCode() == HttpStatus.OK;
 	}
 
+	/**
+	 * getCurrentFlatFare
+	 * Devuelve la tarifa plana actual.
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	private Double getCurrentFlatFare() {
 		return fareRepository.findFirstFlatRate();
 	}
 
+	/**
+	 * getCurrentFullRate
+	 * Devuelve la tarifa completa actual.
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	private Double getCurrentFullRate() {
 		return fareRepository.findFirstFullRate();
 	}
 
+	/**
+	 * travelEnd
+	 * Finaliza un viaje.
+	 * @param id
+	 * @throws Exception
+	 */
 	@Transactional
 	public void travelEnd(Long id) throws Exception {
 		Travel travel = travelRepository.findById(id).orElseThrow(
@@ -173,13 +221,23 @@ public class TravelService{
 		sendBill(travel);
 	}
 
-	//Simula datos de viaje
+	/**
+	 * addRandomTravelData
+	 * Simula datos de viaje.
+	 * @param scooterBody
+	 */
 	private void addRandomTravelData(ScooterDTO scooterBody) {
 		scooterBody.setTiempoDeUso(scooterBody.getTiempoDeUso() + (int) (Math.random() * 20));
 		scooterBody.setTiempoEnpausa(scooterBody.getTiempoEnpausa() + (int) (Math.random() * 15));
 		scooterBody.setKilometros(scooterBody.getKilometros() + Math.random() * 100);
 	}
 
+	/**
+	 * sendBill
+	 * Envia una factura.
+	 * @param travel
+	 * @throws Exception
+	 */
 	@Transactional
 	public void sendBill(Travel travel) throws Exception {
 		String accountUrl = "http://localhost:8005/administracion/facturacion/nueva";
@@ -198,6 +256,13 @@ public class TravelService{
         }
 	}
 
+	/**
+	 * updateUserAccount
+	 * Actualiza la cuenta de un usuario.
+	 * @param userId
+	 * @param fare
+	 * @throws Exception
+	 */	
 	@Transactional
 	public void updateUserAccount(long userId, double fare) throws Exception {
 		List<AccountDTO> accounts = getUserAccounts(userId);
@@ -213,6 +278,13 @@ public class TravelService{
 		}
 	}
 
+	/**
+	 * getUserAccounts
+	 * Devuelve las cuentas asociadas a un usuario.
+	 * @param userId
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional(readOnly = true)
 	public List<AccountDTO> getUserAccounts(long userId) throws Exception {
 		String url = "http://localhost:8004/cuentas/usuario/" + userId;
@@ -244,6 +316,12 @@ public class TravelService{
 		}
     }
 
+	/**
+	 * updateAccountBalance
+	 * Actualiza el saldo de una cuenta.
+	 * @param account
+	 * @throws Exception
+	 */
 	@Transactional
 	public void updateAccountBalance(AccountDTO account) throws Exception {
         String accountUrl = "http://localhost:8004/usuarios/actualizar/" + account.getAccountId();
@@ -260,12 +338,23 @@ public class TravelService{
     }
 
 
+	/**
+	 * delete
+	 * Elimina un viaje por id.
+	 * @param id
+	 */
 	@Transactional
 	public void delete(Long id) {
 		travelRepository.delete(travelRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de viaje invalido: " + id)));
 	}
 
+	/**
+	 * update
+	 * Actualiza los datos de un viaje por id.
+	 * @param id
+	 * @param entity
+	 */
 	@Transactional
 	public void update(Long id, TravelDTO entity) {
 		Travel travel = travelRepository.findById(id).orElseThrow(
@@ -276,10 +365,15 @@ public class TravelService{
 		travel.setEndTime(entity.getEndTime());		
 		travelRepository.save(travel);
 	}
-	
+
+	/**
+	 * saveFare
+	 * Agrega una nueva tarifa.
+	 * @param fare
+	 * @return
+	 */
 	@Transactional
 	public FareDTO saveFare(FareDTO fare) {
 		return new FareDTO(this.fareRepository.save(new Fare(fare)));
-	}
-		
+	}		
 }

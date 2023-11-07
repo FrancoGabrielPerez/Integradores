@@ -5,6 +5,13 @@ import com.microstation.model.StationMongo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * StationDTO
+ * 
+ * Clase que contiene los atributos de una estacion.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ *  
+ */
 @Getter
 @RequiredArgsConstructor
 public class StationDTO {
@@ -12,7 +19,7 @@ public class StationDTO {
 	private String longitud;
 	private String name;
 	private String id;
-
+	
 	public StationDTO(StationMongo station) {
 		this.id = station.getId();
 		this.name = station.getName();

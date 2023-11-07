@@ -10,15 +10,32 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
+/**
+ * AppConfig
+ *
+ * Esta clase contiene la configuración de la aplicación
+ * @author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.microuseraccount.repository")
 public class AppConfig {
 
+    /**
+     * Bean que permite realizar llamadas a servicios REST
+     * @return RestTemplate
+     */
     @Bean("RestClient")
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * Bean que permite la documentación de la API
+     * @param description
+     * @param version
+     * @return OpenAPI
+     */
     @Bean("OpenAPI")
     public OpenAPI customOpenAPI(@Value("${application-description}") String description,
                                  @Value("${application-version}") String version) {

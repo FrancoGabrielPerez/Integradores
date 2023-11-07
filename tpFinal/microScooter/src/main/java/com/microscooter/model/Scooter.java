@@ -6,6 +6,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * Scooter
+ * 
+ * Clase que contiene los atributos de un monopatin.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Entity
 @Data
 @Table(name = "scooter")

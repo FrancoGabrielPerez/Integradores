@@ -10,7 +10,13 @@ import com.microadministration.service.AdminStaffService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * AdminStaffController
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Staff.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @RestController
 @RequestMapping("/administracion/staff")
 public class AdminStaffController {
@@ -18,6 +24,10 @@ public class AdminStaffController {
     @Autowired
     private AdminStaffService adminService;
 
+    /**
+     * getAll
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene todos los integrantes del staff de administracion.", description = "Obtiene todos los integrantes del staff de administracion.")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -28,6 +38,12 @@ public class AdminStaffController {
         }
     }
 
+    /**
+     * getByRol
+     * Obtiene todos los integrantes del staff de administracion por rol.
+     * @param rol
+     * @return ResponseEntity<?>
+     */
     @GetMapping("/buscar/rol/{rol}")
     public ResponseEntity<?> getByRol(@PathVariable String rol){
         try{
@@ -37,16 +53,27 @@ public class AdminStaffController {
         }
     }
     
+    /**
+     * save
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Agrega un nuevo intregrante al staff.", description = "Agrega un nuevo intregrante al staff")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody AdminStaffDTO entity){
         try{            
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.save(entity));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.createUser(entity));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
     
+    /**
+     * getById
+     * Obtiene un integrante del staff por su id.
+     * @param staffId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene un integrante por su id.", description = "Obtiene un integrante del staff por su staffId")
     @GetMapping("/buscar/id/{staffId}")
     public ResponseEntity<?> getById(@PathVariable long staffId) {
@@ -57,6 +84,12 @@ public class AdminStaffController {
         }
     }
 
+    /**
+     * delete
+     * Elimina un integrante del staff por su id.
+     * @param staffId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Elimina un integrante del staff por su id.", description = "Elimina un integrante del staff por su Id")
     @DeleteMapping("/eliminar/{staffId}")
     public ResponseEntity<?> delete(@PathVariable long staffId){
@@ -68,6 +101,13 @@ public class AdminStaffController {
         }
     }
 
+    /**
+     * update
+     * Actualiza los datos de un integrante del staff por su id.
+     * @param staffId
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Actualiza los datos de un integrante del staff por su id.", description = "Actualiza un integrante del staff por su id")
     @PutMapping("/actualizar/{staffId}")
     public ResponseEntity<?> update(@PathVariable long staffId, @RequestBody AdminStaffDTO entity){
@@ -77,7 +117,5 @@ public class AdminStaffController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo actualizar el usuario, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
-    }
-
-    
+    }    
 }

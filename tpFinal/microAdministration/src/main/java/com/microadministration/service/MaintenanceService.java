@@ -14,11 +14,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * MaintenanceService
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Mantenimiento.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Service("maintenanceService")
 public class MaintenanceService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();	
 
+	/**
+	 * updateScooterState
+	 * Actualiza el estado de un monopatin.
+	 * @param idScooter
+	 * @param estado
+	 */
 	@Transactional
 	public void updateScooterState(long idScooter, String estado) {
 		System.out.println("hola!");
@@ -49,8 +62,5 @@ public class MaintenanceService{
 		} catch (Exception e) {
 			throw new RuntimeException("Super Error al actualizar el estado del monopatin. ", e);
 		}
-	}
-
-		
-	
+	}	
 }

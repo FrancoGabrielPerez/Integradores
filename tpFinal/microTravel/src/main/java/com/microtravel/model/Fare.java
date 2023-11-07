@@ -6,6 +6,12 @@ import java.sql.Timestamp;
 
 import com.microtravel.dto.FareDTO;
 
+/**
+ * Fare
+ * 
+ * Clase que contiene los atributos de una tarifa.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Data
 @Table(name = "fare")

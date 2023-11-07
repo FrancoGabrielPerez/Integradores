@@ -25,11 +25,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * AdminService
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Administracion.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Service("adminService")
 public class AdminService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();	
 
+	/**
+	 * saveNewScooter
+	 * Crea un nuevo monopatin.
+	 * @param scooterDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional
 	public ResponseEntity<?> saveNewScooter(NewScooterDTO scooterDTO) throws Exception {
 		String stationUrl = "http://localhost:8002/monopatines/alta";
@@ -46,6 +60,13 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * deleteScooter
+	 * Elimina un monoatatin.
+	 * @param scooterId
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional
 	public ResponseEntity<?> deleteScooter(long scooterId) throws Exception {
 		String stationUrl = "http://localhost:8002/monopatines/eliminar/" + scooterId;
@@ -61,6 +82,12 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * saveNewStation
+	 * Crea una nueva estacion.
+	 * @param stationDTO
+	 * @return ResponseEntity<?>
+	 */
 	@Transactional
 	public ResponseEntity<?> saveNewStation(StationDTO stationDTO) throws Exception {
 		String stationUrl = "http://localhost:8001/estaciones/alta";
@@ -77,6 +104,12 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * deleteStation
+	 * Elimina una estacion.
+	 * @param stationId
+	 * @return ResponseEntity<?>
+	 */
 	@Transactional
 	public ResponseEntity<?> deleteStation(long stationId) throws Exception {
 		String accountUrl = "http://localhost:8001/estaciones/eliminar/" + stationId;
@@ -92,6 +125,13 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * suspendAccount
+	 * Suspende temporalmente una cuenta.
+	 * @param accountId
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional
 	public ResponseEntity<?> suspendAccount(long accountId) throws Exception {
 		String accountUrl = "http://localhost:8004/cuentas/suspender/" + accountId;
@@ -107,6 +147,13 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * activateAccount
+	 * Activa una cuenta que estaba previamente desactivada.
+	 * @param accountId
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional
 	public ResponseEntity<?> activateAccount(long accountId) throws Exception {
 		String accountUrl = "http://localhost:8004/cuentas/activar/" + accountId;
@@ -122,6 +169,12 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * getReportScootersByKms
+	 * Obtiene el reporte de monopatines por kilometros.	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional(readOnly = true)
 	public List<ScooterReporteKilometrosDTO> getReportScootersByKms() throws Exception {
 		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros/sinTiempoDeUso";
@@ -139,6 +192,12 @@ public class AdminService{
 		return response.getBody();		
 	}
 
+	/**
+	 * getReportScootersByKmsAndUseTime
+	 * Obtiene el reporte de monopatines por kilometros y tiempo de uso.
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional
     public Object getReportScootersByKmsAndUseTime() throws Exception {
 		String scooterUrl = "http://localhost:8002/monopatines/reporte/kilometros/conTiempoDeUso";
@@ -156,6 +215,13 @@ public class AdminService{
 		return response.getBody();	
     }	
 
+	/**
+	 * getScootersWithMoreTravelsInYear
+	 * Obtiene los monopatines que hicieron X cantidad de viajes en determinado año.
+	 * @param travelQuantity
+	 * @param year
+	 * @return ResponseEntity<?>
+	*/
 	@Transactional(readOnly = true)
 	public Object getScootersWithMoreTravelsInYear(Long travelQuantity, Integer year) throws Exception {
 		String travelUrl = "http://localhost:8003/viajes";
@@ -201,6 +267,13 @@ public class AdminService{
 		return filteredScooters;
 	}
 
+	/**
+	 * saveNewFare
+	 * Crea una nueva tarifa.
+	 * @param fareDTO
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional
 	public Object saveNewFare(FareDTO fareDTO) throws Exception {
 		String fareUrl = "http://localhost:8003/viajes/tarifas/alta";
@@ -216,6 +289,12 @@ public class AdminService{
 		return response;
 	}
 
+	/**
+	 * getReportScootersByUseTime
+	 * Obtiene el reporte de monopatines por tiempo de uso.
+	 * @return ResponseEntity<?>
+	 * @throws Exception
+	 */
 	@Transactional(readOnly = true)
 	public List<ScooterReporteTiempoTotalDTO> getReportScootersByUseTime() {
 		String scooterUrl = "http://localhost:8002/monopatines/reporte/tiempoTotal";

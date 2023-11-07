@@ -11,7 +11,13 @@ import com.microscooter.service.ScooterService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * ScooterController
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de Monopatines.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @RestController
 @RequestMapping("/monopatines")
 public class ScooterController {
@@ -19,6 +25,11 @@ public class ScooterController {
     @Autowired
     private ScooterService scooterService;
 
+    /**
+     * getAll
+     * Obtiene todos los monopatines.
+     * @return List<ScooterDTO>
+     */
     @Operation(summary = "Obtiene todas los monopatines.", description = "Obtiene todos los monopatines")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -29,6 +40,12 @@ public class ScooterController {
         }
     }
     
+    /**
+     * save
+     * Agrega un monopatin. 
+     * @param entity
+     * @return ScooterDTO
+     */
     @Operation(summary = "Agrega un monopatin.", description = "Agrega un monopatin")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody ScooterDTO entity){
@@ -39,6 +56,12 @@ public class ScooterController {
         }
     }
     
+    /**
+     * getById
+     * Obtiene un monopatin por su id.
+     * @param scooterId
+     * @return ScooterDTO
+     */
     @Operation(summary = "Obtiene un monopatin por su id.", description = "Obtiene un monopatin por su scooterId")
     @GetMapping("/{scooterId}")
     public ResponseEntity<?> getById(@PathVariable long scooterId) {
@@ -49,6 +72,12 @@ public class ScooterController {
         }
     }
 
+    /**
+     * delete
+     * Elimina un monopatin por su id.
+     * @param scooterId
+     * @return
+     */
     @Operation(summary = "Eliminia un monopatin por su id.", description = "Elimina una monopatin por su scooterId")
     @DeleteMapping("/eliminar/{scooterId}")
     public ResponseEntity<?> delete(@PathVariable long scooterId){
@@ -60,6 +89,13 @@ public class ScooterController {
         }
     }
 
+    /**
+     * update
+     * Actualiza los datos de un monopatin por su id.
+     * @param scooterId
+     * @param entity
+     * @return
+     */
     @Operation(summary = "Actualiza los datos de un monopatin por su id.", description = "Actualiza un monopatin por su scooterId")
     @PutMapping("/actualizar/{scooterId}")
     public ResponseEntity<?> update(@PathVariable long scooterId, @RequestBody ScooterDTO entity){
@@ -71,6 +107,12 @@ public class ScooterController {
         }
     }
 
+    /**
+     * scooterEnEstacion
+     * Verifica si un monopatin esta en una parada.
+     * @param scooterId
+     * @return
+     */
     @Operation(summary = "Verifica si un monopatin esta en una parada.", description = "Verifica si un monopatin esta en una parada.")
     @GetMapping("/estacion/{scooterId}")
     public ResponseEntity<?> scooterEnEstacion(@PathVariable long scooterId){
@@ -87,6 +129,11 @@ public class ScooterController {
         }
     }
 
+    /**
+     * getReporteByKilometros
+     * Obtiene un reporte de monopatines ordenados por kilometros.
+     * @return
+     */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
     @GetMapping("/reporte/kilometros/sinTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometros(){
@@ -97,6 +144,11 @@ public class ScooterController {
         }
     }
 
+    /**
+     * getReporteByKilometrosConTiempoUso
+     * Obtiene un reporte de monopatines por kilometros y tiempo de uso.
+     * @return
+     */
     @Operation(summary = "Obtiene un reporte de monopatines por kilometros y tiempo de uso.", description = "Obtiene un reporte de monopatines por kilometros y tiempo de uso")
     @GetMapping("/reporte/kilometros/conTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometrosConTiempoUso(){
@@ -107,6 +159,11 @@ public class ScooterController {
         }
     }
 
+    /**
+     * getReporteByTiempoUso
+     * Obtiene un reporte de monopatines ordenados por tiempo de uso.
+     * @return
+     */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo de uso", description = "Obtengo un reporte de monopatines ordenados por tiempo de uso")
     @GetMapping("/reporte/tiempoUso")
     public ResponseEntity<?> getReporteByTiempoUso(){
@@ -117,6 +174,11 @@ public class ScooterController {
         }
     }   
 
+    /**
+     * getReporteByTiempoTotal
+     * Obtiene un reporte de monopatines ordenados por tiempo total (En uso + En pausa).
+     * @return
+     */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)", description = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)")
     @GetMapping("/reporte/tiempoTotal")
     public ResponseEntity<?> getReporteByTiempoTotal(){
@@ -127,6 +189,11 @@ public class ScooterController {
         }
     }  
 
+    /**
+     * getReporteOperativosMantenimiento
+     * Obtiene un reporte de cantidad de monopatines operativos vs en mantenimiento.
+     * @return
+     */
     @Operation(summary = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento", description = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento")
     @GetMapping("/reporte/cantidadOperativosMantenimiento")
     public ResponseEntity<?> getReporteOperativosMantenimiento(){
@@ -137,6 +204,13 @@ public class ScooterController {
         }
     }  
 
+    /**
+     * getAllCercanos
+     * Obtiene todos los monopatines cerca de una coordenada.
+     * @param latitud
+     * @param longitud
+     * @return
+     */
     @Operation(summary = "Obtiene todos los monopatines.", 
                 description = "Obtiene todos los monopatines cerca de una coordenada (ejemplo que funciona latitud -37.327754, longitud -59.138998)")
     @GetMapping("/{latitud}/{longitud}")
@@ -147,5 +221,4 @@ public class ScooterController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
-
 }

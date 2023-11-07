@@ -5,6 +5,13 @@ import com.microscooter.model.Scooter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterReporteKilometrosDTO
+ * 
+ * DTO que contiene los atributos necesarios para delver un reporte de scooters por kilometros.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class ScooterReporteKilometrosDTO {

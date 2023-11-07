@@ -3,6 +3,12 @@ package com.microtravel.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterDTO
+ * 
+ * DTO que contiene los atributos de un scooter.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 @RequiredArgsConstructor
 public class ScooterDTO {

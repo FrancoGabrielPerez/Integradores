@@ -6,7 +6,12 @@ import java.sql.Timestamp;
 
 import com.microtravel.model.Fare;
 
-
+/**
+ * FareDTO
+ * 
+ * DTO que contiene los atributos de una tarifa.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 public class FareDTO {   
     private long fareId;

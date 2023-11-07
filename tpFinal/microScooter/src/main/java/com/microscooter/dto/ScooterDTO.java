@@ -5,6 +5,13 @@ import com.microscooter.model.Scooter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterDTO
+ * 
+ * DTO que contiene los atributos de un monopatin.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class ScooterDTO {

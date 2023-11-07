@@ -7,6 +7,12 @@ import com.microadministration.dto.NewBillDTO;
 
 import java.sql.Timestamp;
 
+/**
+ * Bill
+ * 
+ * Clase que contiene los atributos de una factura.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Data
 @Table(name = "factura")
@@ -15,7 +21,6 @@ public class Bill {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="factura_id")
 	private long billId;
-
 	@Column(name="fecha_factura")
 	private Timestamp billDate;
 	@Column(name="monto")

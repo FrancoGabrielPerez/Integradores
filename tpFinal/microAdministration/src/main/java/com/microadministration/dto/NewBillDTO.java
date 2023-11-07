@@ -8,7 +8,13 @@ import com.microadministration.model.Bill;
 
 import java.sql.Timestamp;
 
-
+/**
+ * BillDTO
+ * 
+ * DTO que contiene los atributos de una factura.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Getter
 @RequiredArgsConstructor
 public class NewBillDTO {

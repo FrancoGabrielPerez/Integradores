@@ -9,7 +9,14 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 
-
+/**
+ * StationMongo
+ * 
+ * Clase que contiene los atributos de representacion de una estacion para una
+ * base de datos Mongo.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Document(collection = "station")
 @Data
 public class StationMongo {

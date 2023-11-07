@@ -7,14 +7,31 @@ import org.springframework.web.client.RestTemplate;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+/**
+ * AppConfig
+ * 
+ * Clase que contiene la configuracion de la aplicacion.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Configuration
 public class AppConfig {
 
+    /**
+     * Bean que permite realizar peticiones HTTP.
+     * @return RestTemplate
+     */
     @Bean("RestClient")
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * Bean que permite la documentacion de la API.
+     * @param description
+     * @param version
+     * @return OpenAPI
+     */
     @Bean("OpenAPI")
     public OpenAPI customOpenAPI(@Value("${application-description}") String description,
                                  @Value("${application-version}") String version) {

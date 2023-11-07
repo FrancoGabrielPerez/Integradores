@@ -3,6 +3,13 @@ package com.microadministration.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * ScooterDTO
+ * 
+ * DTO para devolver los atributos de un scooter.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Data
 @RequiredArgsConstructor
 public class ScooterDTO {

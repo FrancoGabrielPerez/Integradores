@@ -9,14 +9,31 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
+/**
+ * AppConfig
+ * 
+ * Configuracion de la aplicacion.
+ * @Author Luciano Melluso, Franco Perez, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Configuration
 public class AppConfig {
 
+    /**
+     * RestTemplate
+     * Bean para realizar peticiones HTTP.
+     * @return
+     */
     @Bean("RestClient")
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
+    /**
+     * customOpenAPI
+     * Bean para la documentacion de la API.
+     * @param description
+     * @param version
+     */
     @Bean("OpenAPI")
     public OpenAPI customOpenAPI(@Value("${application-description}") String description,
                                  @Value("${application-version}") String version) {

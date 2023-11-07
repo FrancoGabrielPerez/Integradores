@@ -3,6 +3,13 @@ package com.microadministration.dto;
 import lombok.Data;
 import java.sql.Timestamp;
 
+/**
+ * FareDTO
+ * 
+ * DTO que contiene los atributos de una tarifa.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Data
 public class FareDTO {   
     private long fareId;

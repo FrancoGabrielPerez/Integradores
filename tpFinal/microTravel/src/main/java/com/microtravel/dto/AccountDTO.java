@@ -4,6 +4,12 @@ import java.sql.Timestamp;
 
 import lombok.Data;
 
+/**
+ * AccountDTO
+ * 
+ * DTO que contiene los atributos de una cuenta.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 public class AccountDTO {
     private long accountId;
