@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Objects;
 
+/**
+ * UserAccount
+ * 
+ * Clase que contiene los atributos de una cuenta de usuario.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Table(name = "user_account")
 @Data

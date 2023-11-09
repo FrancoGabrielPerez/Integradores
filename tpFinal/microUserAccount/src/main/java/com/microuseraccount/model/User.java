@@ -10,6 +10,12 @@ import com.microuseraccount.dto.UserDTO;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * User
+ * 
+ * Clase que contiene los atributos de un usuario.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Data
 @Table(name = "user")

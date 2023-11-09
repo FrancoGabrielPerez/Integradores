@@ -5,6 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 import com.microuseraccount.model.User;
 
+/**
+ * UserDTO
+ * 
+ * DTO que contiene los atributos de un usuario.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Getter
 @RequiredArgsConstructor
 public class UserDTO {

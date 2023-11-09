@@ -68,11 +68,11 @@ public class SecurityConfiguration {
      * Para la carga de datos
      */
 
-    @Bean
-    public ResourceDatabasePopulator databasePopulator() {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("db_auth.sql"));
-        return populator;
-    }
+    // @Bean
+    // public ResourceDatabasePopulator databasePopulator() {
+    //     ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+    //     populator.addScript(new ClassPathResource("db_auth.sql"));
+    //     return populator;
+    // }
 
 }

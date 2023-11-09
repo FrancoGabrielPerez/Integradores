@@ -10,7 +10,12 @@ import com.microuseraccount.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * UserController
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de usuarios.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @RestController
 @RequestMapping("/usuarios")
 public class UserController {
@@ -18,6 +23,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * getAll
+     * Obtiene todos los usuarios.
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene todos los usuarios.", description = "Obtiene todos los usuarios")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -28,6 +38,12 @@ public class UserController {
         }
     }
     
+    /**
+     * save
+     * Crea un nuevo usuario.
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Agrega un nuevo usuario.", description = "Crea un usuario")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody UserDTO entity){
@@ -38,6 +54,12 @@ public class UserController {
         }
     }
     
+    /**
+     * getById
+     * Obtiene un usuario por su id.
+     * @param userId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene un usuario por su id.", description = "Obtiene un usuario por su userId")
     @GetMapping("/buscar/{userId}")
     public ResponseEntity<?> getById(@PathVariable long userId) {
@@ -48,6 +70,12 @@ public class UserController {
         }
     }
 
+    /**
+     * delete
+     * Elimina un usuario por su id.
+     * @param userId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Elimina un usuario por su id.", description = "Elimina un usuario por su userId")
     @DeleteMapping("/eliminar/{userId}")
     public ResponseEntity<?> delete(@PathVariable long userId){
@@ -59,6 +87,13 @@ public class UserController {
         }
     }
 
+    /**
+     * update
+     * Actualiza los datos de un usuario por su id.
+     * @param userId
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Actualiza los datos de un usuario por su id.", description = "Actualiza un usuario por su userId")
     @PutMapping("/actualizar/{userId}")
     public ResponseEntity<?> update(@PathVariable long userId, @RequestBody UserDTO entity){
@@ -70,6 +105,13 @@ public class UserController {
         }
     }
 
+    /**
+     * asociarCuenta
+     * Vincula una cuenta a un usuario.
+     * @param userId
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula una cuenta a un usuario")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarCuenta(@PathVariable long userId, @PathVariable long accountId){
@@ -81,6 +123,13 @@ public class UserController {
         }
     }
 
+    /**
+     * desvincularCuenta
+     * Desvincula una cuenta de un usuario.
+     * @param userId
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula una cuenta de un usuario")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularCuenta(@PathVariable long userId, @PathVariable long accountId){

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * InformeEstadoMonopatinesDTO
  * 
- * Clase que contiene los atributos de un informe de estado de monopatines.
+ * DTO que contiene los atributos de un informe de estado de monopatines.
  * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  * 
  */

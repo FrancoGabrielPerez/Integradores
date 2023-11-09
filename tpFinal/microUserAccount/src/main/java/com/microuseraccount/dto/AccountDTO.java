@@ -7,6 +7,12 @@ import java.sql.Timestamp;
 
 import com.microuseraccount.model.Account;
 
+/**
+ * AccountDTO
+ * 
+ * DTO que contiene los atributos de una cuenta.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Getter
 @RequiredArgsConstructor
 public class AccountDTO {

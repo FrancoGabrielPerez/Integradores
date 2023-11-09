@@ -10,7 +10,12 @@ import com.microuseraccount.service.AccountService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
+/**
+ * AccountController
+ * 
+ * Clase que contiene los metodos de acceso a la base de datos de cuentas.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @RestController
 @RequestMapping("/cuentas")
 public class AccountController {
@@ -18,6 +23,11 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    /**
+     * getAll
+     * Obtiene todas las cuentas.
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene todos las cuentas.", description = "Obtiene todas las cuentas")
     @GetMapping("")
     public ResponseEntity<?> getAll(){
@@ -28,6 +38,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * getCuentasByUserId
+     * Obtiene todas las cuentas de un usuario.
+     * @param userId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene todas las cuentas de un usuario.", description = "Obtiene todas las cuentas de un usuario")
     @GetMapping("/usuario/{userId}")
     public ResponseEntity<?> getCuentasByUserId(@PathVariable long userId){
@@ -38,6 +54,12 @@ public class AccountController {
         }
     }
     
+    /**
+     * save
+     * Crea una nueva cuenta.
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Crea una nueva cuenta.", description = "Crea una cuenta")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody AccountDTO entity){
@@ -48,6 +70,12 @@ public class AccountController {
         }
     }
     
+    /**
+     * getById
+     * Obtiene una cuenta por su id.
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene una cuenta por su id.", description = "Obtiene una cuenta por su accountId")
     @GetMapping("/buscar/{accountId}")
     public ResponseEntity<?> getById(@PathVariable long accountId) {
@@ -58,6 +86,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * delete
+     * Elimina una cuenta por su id.
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Elimina una cuenta por su id.", description = "Elimina una cuenta por su accountId")    
     @DeleteMapping("/eliminar/{accountId}")
     public ResponseEntity<?> delete(@PathVariable long accountId){
@@ -69,6 +103,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * suspend
+     * Suspende tempooralmente una cuenta por su id.
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Desactiva una cuenta por su id.", description = "Desactiva una cuenta por su accountId")
     @PutMapping("/suspender/{accountId}")
     public ResponseEntity<?> suspend(@PathVariable long accountId){
@@ -80,6 +120,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * activate
+     * Activa una cuenta por su id.
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Activa una cuenta por su id.", description = "Activa una cuenta por su accountId")
     @PutMapping("/activar/{accountId}")
     public ResponseEntity<?> activate(@PathVariable long accountId){
@@ -91,6 +137,13 @@ public class AccountController {
         }
     }
 
+    /**
+     * update
+     * Actualiza una cuenta por su id.
+     * @param accountId
+     * @param entity
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Actualiza una cuenta por su id.", description = "Actualiza una cuenta por su accountId")
     @PutMapping("/actualizar/{accountId}")
     public ResponseEntity<?> update(@PathVariable long accountId, @RequestBody AccountDTO entity){
@@ -102,6 +155,13 @@ public class AccountController {
         }
     }
 
+    /**
+     * asociarUsuario
+     * Vincula un usuario a una cuenta.
+     * @param userId
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula un usuario a una cuenta")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarUsuario(@PathVariable long userId, @PathVariable long accountId){
@@ -113,6 +173,13 @@ public class AccountController {
         }
     }
 
+    /**
+     * desvincularUsuario
+     * Desvincula un usuario de una cuenta.
+     * @param userId
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula un usuario de una cuenta")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularUsuario(@PathVariable long userId, @PathVariable long accountId){
@@ -124,6 +191,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * getSaldo
+     * Obtiene el saldo de una cuenta.
+     * @param accountId
+     * @return ResponseEntity<?>
+     */
     @Operation(summary = "Obtiene el saldo de una cuenta.", description = "Obtiene el saldo de una cuenta")
     @GetMapping("/saldo/obtener/{accountId}")
     public ResponseEntity<?> getSaldo(@PathVariable long accountId) {
@@ -134,6 +207,12 @@ public class AccountController {
         }
     }
 
+    /**
+     * updateSaldo
+     * Actualiza el saldo de una cuenta.
+     * @param accountId
+     * @param saldo
+     */
     @Operation(summary = "Actualiza el saldo de una cuenta.", description = "Actualiza el saldo de una cuenta")
     @PutMapping("/saldo/actualizar/{accountId}")
     public void updateSaldo(@PathVariable long accountId, @RequestBody Double saldo) {

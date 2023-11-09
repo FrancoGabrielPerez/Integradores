@@ -27,7 +27,6 @@ public class DomainUserDetailsService implements UserDetailsService {
                     .orElseThrow(() -> new UsernameNotFoundException("No existe el usuario con email " + email ));
     }
 
-
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(AdminStaff user) {
         List<GrantedAuthority> grantedAuthorities = user
                 .getAuthorities()

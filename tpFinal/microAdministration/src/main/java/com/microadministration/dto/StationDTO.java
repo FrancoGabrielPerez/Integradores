@@ -3,6 +3,13 @@ package com.microadministration.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * StationDTO
+ * 
+ * DTO que contiene los atributos de una estacion.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ * 
+ */
 @Data
 @RequiredArgsConstructor
 public class StationDTO {

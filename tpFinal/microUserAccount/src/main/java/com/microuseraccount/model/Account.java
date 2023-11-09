@@ -11,6 +11,12 @@ import com.microuseraccount.dto.AccountDTO;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Account
+ * 
+ * Clase que contiene los atributos de una cuenta.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Entity
 @Data
 @Table(name = "account")

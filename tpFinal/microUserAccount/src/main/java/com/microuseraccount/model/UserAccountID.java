@@ -8,6 +8,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * UserAccountID
+ * 
+ * Clase que contiene los atributos para crear una la clave primaria compuesta de una cuenta de usuario.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 public class UserAccountID implements Serializable {
 

@@ -9,6 +9,12 @@ import org.springframework.stereotype.Repository;
 import com.microuseraccount.dto.AccountDTO;
 import com.microuseraccount.model.Account;
 
+/**
+ * AccountRepository
+ * 
+ * Repositorio de la entidad Account.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Repository ("accountRepository")
 public interface AccountRepository extends JpaRepository<Account, Long> {
 	

@@ -33,3 +33,5 @@ insert into factura (factura_id, fecha_factura, descripcion, monto) values (27, 
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (28, '2022-12-31 10:39:46', 'odio porttitor id consequat in consequat ut nulla', 5775.18);
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (29, '2023-05-11 11:55:44', 'potenti in eleifend quam a odio in hac habitasse platea', 4038.3);
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (30, '2023-08-13 10:27:35', 'consequat ut nulla sed accumsan felis ut at dolor', 6815.27);
+INSERT INTO authority(name) VALUES ('Lindi');
+INSERT INTO authority(name) VALUES ('Cymbri');

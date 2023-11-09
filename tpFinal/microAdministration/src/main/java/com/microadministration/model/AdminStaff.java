@@ -23,7 +23,6 @@ public class AdminStaff {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="admin_id")
 	private long adminId;
-
 	@Column(name="rol")
 	private String rol;
 	@Column(name="nombre")
@@ -37,6 +36,12 @@ public class AdminStaff {
 	@Column(name="password")
 	private String password;
 
+	@ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+    @JoinTable(
+            name = "rel_adminStaff_authority",
+            joinColumns = @JoinColumn(name = "admin_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
 	private Set<Authority> authorities;
 
 	public AdminStaff(){

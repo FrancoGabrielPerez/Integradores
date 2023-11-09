@@ -16,6 +16,11 @@ import com.microuseraccount.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * AccountService
+ * Servicio de la entidad Account.
+ * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Service("accountService")
 public class AccountService{
 	@Autowired
@@ -27,28 +32,56 @@ public class AccountService{
 	@Autowired
 	private UserAccountRepository userAccountRepository;
 		
+	/**
+	 * findAll
+	 * Devuelve todas las cuentas.
+	 * @return List<AccountDTO>
+	 */
 	@Transactional(readOnly = true)
 	public List<AccountDTO> findAll() {
 		return this.accountRepository.findAll().stream().map(AccountDTO::new ).toList();
 	}
 
+	/**
+	 * findById
+	 * Devuelve una cuenta por id.
+	 * @param id
+	 * @return AccountDTO
+	 */
 	@Transactional(readOnly = true)
 	public AccountDTO findById(Long id) {
 		return this.accountRepository.findById(id).map(AccountDTO::new).orElseThrow(
 			() -> new IllegalArgumentException("ID de Cuenta invalido: " + id));
 	}
 	
+	/**
+	 * save
+	 * Crea una nueva cuenta.
+	 * @param entity
+	 * @return AccountDTO
+	 */
 	@Transactional
 	public AccountDTO save(AccountDTO entity) {
 		return new AccountDTO(this.accountRepository.save(new Account(entity)));
 	}
 
+	/**
+	 * delete
+	 * Elimina una cuenta por id.
+	 * @param id
+	 */
 	@Transactional
 	public void delete(Long id) {
 		accountRepository.delete(accountRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de Cuenta invalido: " + id)));
 	}
 
+	/**
+	 * update
+	 * Actualiza una cuenta por id.
+	 * @param id
+	 * @param entity
+	 */
 	@Transactional
 	public void update(Long id, AccountDTO entity) {
 		Account account = accountRepository.findById(id).orElseThrow(
@@ -60,6 +93,12 @@ public class AccountService{
 			accountRepository.save(account);
 		}
 		
+	/**
+	 * asociarUsuario
+	 * Vincula una cuenta a un usuario.
+	 * @param userId
+	 * @param accountId
+	 */
 	@Transactional
 	public void asociarUsuario(long userId, long accountId) {
 		Objects.requireNonNull(userId);
@@ -79,6 +118,12 @@ public class AccountService{
 		userAccountRepository.save(nuevo);
 	}
 	
+	/**
+	 * desvincularUsuario
+	 * Desvincula una cuenta de un usuario.
+	 * @param userId
+	 * @param accountId
+	 */
 	@Transactional
 	public void desvincularUsuario(long userId, long accountId) {
 		Objects.requireNonNull(userId);
@@ -93,6 +138,12 @@ public class AccountService{
 		userAccountRepository.deleteByUserAndAccount(user, account);
 	}
 
+	/**
+	 * updateSaldo
+	 * Actualiza el saldo de una cuenta.
+	 * @param saldo
+	 * @param accountId
+	 */
 	@Transactional
 	public void updateSaldo(Double saldo, long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
@@ -101,6 +152,12 @@ public class AccountService{
 		accountRepository.save(account);
 	}
 
+	/**
+	 * getSaldo
+	 * Metodo que obtiene el saldo de una cuenta.
+	 * @param accountId
+	 * @return Double
+	 */
 	@Transactional(readOnly = true)
 	public Double getSaldo(long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
@@ -108,6 +165,11 @@ public class AccountService{
 		return accountRepository.findById(account.getAccountId()).orElseThrow().getSaldo();
 	}
 	
+	/**
+	 * suspendAccount
+	 * Suspende temporalmente una cuenta.
+	 * @param accountId
+	 */
 	@Transactional
 	public void suspendAccount(long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
@@ -119,6 +181,11 @@ public class AccountService{
 		accountRepository.save(account);
 	}
 
+	/**
+	 * activateAccount
+	 * Activa una cuenta previamente suspendida.
+	 * @param accountId
+	 */
 	@Transactional
 	public void activateAccount(long accountId) {
 		Account account = accountRepository.findById(accountId).orElseThrow(
@@ -130,6 +197,12 @@ public class AccountService{
 		accountRepository.save(account);
 	}
 
+	/**
+	 * getCuentasByUserId
+	 * Devuelve las cuentas de un usuario.
+	 * @param userId
+	 * @return List<AccountDTO>
+	 */
 	@Transactional(readOnly = true)
     public List<AccountDTO> getCuentasByUserId(long userId) {
 		return this.accountRepository.findByUserId(userId);

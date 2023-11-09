@@ -34,6 +34,7 @@ public class AdminStaffService{
 	
 	/**
 	 * findAll
+	 * Devuelve una lista con todos los integrantes del staff.
 	 * @return
 	 */
 	@Transactional(readOnly = true)
@@ -43,6 +44,7 @@ public class AdminStaffService{
 
 	/**
 	 * findById
+	 * Devuelve un integrante del staff por su id.
 	 * @param id
 	 */
 	@Transactional(readOnly = true)
@@ -53,6 +55,7 @@ public class AdminStaffService{
 	
 	/**
 	 * save
+	 * Guarda un integrante del staff en la base de datos.
 	 * @param entity
 	 * @return
 	 */
@@ -73,6 +76,7 @@ public class AdminStaffService{
 
 	/**
 	 * update
+	 * Actualiza los datos de un integrante del staff
 	 * @param id
 	 * @param entity
 	 */
@@ -99,6 +103,7 @@ public class AdminStaffService{
 
 	/**
 	 * createUser
+	 * Crea un usuario en la base de datos.
 	 * @param request
 	 * @return AdminStaffDTO
 	 */

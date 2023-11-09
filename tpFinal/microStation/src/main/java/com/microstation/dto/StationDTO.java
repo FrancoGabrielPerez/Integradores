@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * StationDTO
  * 
- * Clase que contiene los atributos de una estacion.
+ * DTO que contiene los atributos de una estacion.
  * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  *  
  */
