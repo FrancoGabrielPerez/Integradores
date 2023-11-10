@@ -34,15 +34,7 @@ public class AdminStaff {
 	@Column(name="email")
 	private String email;
 	@Column(name="password")
-	private String password;
-
-	@ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
-    @JoinTable(
-            name = "rel_adminStaff_authority",
-            joinColumns = @JoinColumn(name = "admin_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id")
-    )
-	private Set<Authority> authorities;
+	private String password;	
 
 	public AdminStaff(){
 		super();
@@ -66,9 +58,5 @@ public class AdminStaff {
 		this.rol = dto.getRol();
 		this.password = dto.getPassword();
 	}
-
-    public void setAuthorities( Collection<Authority> authorities ){
-        this.authorities = new HashSet<>( authorities );
-    }
 }
 

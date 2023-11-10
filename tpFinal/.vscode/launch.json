@@ -1,0 +1,69 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MicroApiGatewayApp",
+            "request": "launch",
+            "mainClass": "com.microapigateway.MicroApiGatewayApp",
+            "projectName": "microApiGateway"
+        },
+        {
+            "type": "java",
+            "name": "MicroStationApp",
+            "request": "launch",
+            "mainClass": "com.microstation.MicroStationApp",
+            "projectName": "microStation"
+        },
+        {
+            "type": "java",
+            "name": "MicroUserAccountApp",
+            "request": "launch",
+            "mainClass": "com.microuseraccount.MicroUserAccountApp",
+            "projectName": "microUserAccount"
+        },
+        {
+            "type": "java",
+            "name": "SecurityPruebaApp",
+            "request": "launch",
+            "mainClass": "com.micropruebasecurity.SecurityPruebaApp"
+        },
+        {
+            "type": "java",
+            "name": "MicroAdministrationApp",
+            "request": "launch",
+            "mainClass": "com.microadministration.MicroAdministrationApp",
+            "projectName": "microAdministration"
+        },
+        {
+            "type": "java",
+            "name": "SecurityApp",
+            "request": "launch",
+            "mainClass": "com.microsecurity.SecurityApp",
+            "projectName": "microSecurity"
+        },
+        {
+            "type": "java",
+            "name": "MicroTravelApp",
+            "request": "launch",
+            "mainClass": "com.microtravel.MicroTravelApp",
+            "projectName": "microTravel"
+        },
+        {
+            "type": "java",
+            "name": "MicroScooterApplication",
+            "request": "launch",
+            "mainClass": "com.microscooter.MicroScooterApplication",
+            "projectName": "microScooter"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SecurityPruebaApp<microPruebaSecurity>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.micropruebasecurity.SecurityPruebaApp",
+            "projectName": "microPruebaSecurity",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

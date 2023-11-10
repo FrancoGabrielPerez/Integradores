@@ -7,11 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.microadministration.dto.AdminStaffDTO;
 import com.microadministration.model.AdminStaff;
 import com.microadministration.repository.AdminStaffRepository;
-import com.microadministration.repository.AuthorityRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.microadministration.exception.NotFoundException;
 import java.util.stream.Collectors;
 
 /**
@@ -25,12 +22,6 @@ import java.util.stream.Collectors;
 public class AdminStaffService{
 	@Autowired
 	private AdminStaffRepository adminStaffRepository;
-	
-	@Autowired	
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private AuthorityRepository authorityRepository;
 	
 	/**
 	 * findAll
@@ -59,10 +50,10 @@ public class AdminStaffService{
 	 * @param entity
 	 * @return
 	 */
-	/* @Transactional
+	@Transactional
 	public AdminStaffDTO save(AdminStaffDTO entity) {
 		return new AdminStaffDTO(this.adminStaffRepository.save(new AdminStaff(entity)));
-	} */
+	}
 
 	/**
 	 * delete
@@ -99,30 +90,6 @@ public class AdminStaffService{
 	 */
 	public List<AdminStaffDTO> findByRol(String rol) {
 		return this.adminStaffRepository.findByRol(rol).stream().map(AdminStaffDTO::new).toList();
-	}
-
-	/**
-	 * createUser
-	 * Crea un usuario en la base de datos.
-	 * @param request
-	 * @return AdminStaffDTO
-	 */
-	@Transactional
-	public AdminStaffDTO createUser(AdminStaffDTO request ) {
-		if( this.adminStaffRepository.existsUsersByEmailIgnoreCase( request.getEmail() ) )
-			throw new IllegalArgumentException("Ya existe un usuario con email %s" + request.getEmail() );		
-		final var authorities = request.getAuthorities()
-				.stream()
-				.map( string -> this.authorityRepository.findById( string ).orElseThrow( () -> new NotFoundException("Authority", string ) ) )
-				.collect(Collectors.toList());
-		if( authorities.isEmpty() )
-			throw new IllegalArgumentException("No se encontro ninguna autoridad con id " + request.getAuthorities().toString() );
-		final var encryptedPassword = passwordEncoder.encode(request.getPassword());
-		final var user = new AdminStaff( request );
-		user.setPassword( encryptedPassword );
-		user.setAuthorities( authorities );
-		final var createdUser = this.adminStaffRepository.save( user );
-		return new AdminStaffDTO( createdUser );
 	}
 }
        

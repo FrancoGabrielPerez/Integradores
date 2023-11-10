@@ -39,16 +39,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity http ) throws Exception {
         // AGREGAMOS NUESTRA CONFIG DE JWT.
-        http
-                .apply( securityConfigurerAdapter() );
+        // http
+        //     .apply( securityConfigurerAdapter() );
         http
             .csrf( AbstractHttpConfigurer::disable )
+            
             // MANEJAMOS LOS PERMISOS A LOS ENDPOINTS.
             .authorizeHttpRequests( auth -> auth
-                .requestMatchers("/api/monopatines/**").permitAll()
+                .requestMatchers("/monopatines").permitAll()
                 .requestMatchers("/api/register").permitAll()
                 .requestMatchers("/api/authenticate").permitAll()
-                .requestMatchers("/api/prueba").hasAuthority(AuthorityConstant.ADMIN)
+                //.requestMatchers("/api/prueba").hasAuthority(AuthorityConstant.ADMIN)
             )
             .anonymous( AbstractHttpConfigurer::disable )
             .sessionManagement( s -> s.sessionCreationPolicy( SessionCreationPolicy.STATELESS ) );
@@ -63,19 +64,4 @@ public class SecurityConfiguration {
     private JwtConfigurer securityConfigurerAdapter() {
         return new JwtConfigurer(tokenProvider);
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    /**
-     * Para la carga de datos
-     */
-
-    // @Bean
-    // public ResourceDatabasePopulator databasePopulator() {
-    //     ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-    //     populator.addScript(new ClassPathResource("db_auth.sql"));
-    //     return populator;
-    // }
-
 }

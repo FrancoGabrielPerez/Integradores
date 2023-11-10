@@ -62,7 +62,7 @@ public class AdminStaffController {
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestBody AdminStaffDTO entity){
         try{            
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.createUser(entity));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.save(entity));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

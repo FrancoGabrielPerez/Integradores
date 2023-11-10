@@ -33,15 +33,15 @@ public class AdminStaff {
 	private String email;
 	@Column(name="password")
 	private String password;
-
+	
 	@ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
     @JoinTable(
-            name = "rel_adminStaff_authority",
-            joinColumns = @JoinColumn(name = "admin_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id")
-    )
+		name = "rel_adminStaff_authority",
+		joinColumns = @JoinColumn(name = "admin_id"),
+		inverseJoinColumns = @JoinColumn(name = "authority_id")
+	)		
 	private Set<Authority> authorities;
-
+	
 	public AdminStaff(){
 		super();
 	}
