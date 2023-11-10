@@ -34,6 +34,7 @@ public class UserResource {
     // INICIAR SESION
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authenticate( @Valid @RequestBody AuthRequestDTO request ) {
+        System.out.println("llego al authenticate");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken( request.getEmail(), request.getPassword() );
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
