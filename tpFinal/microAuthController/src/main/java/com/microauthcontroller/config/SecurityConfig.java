@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("Configuring Spring Security");
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequests -> authRequests

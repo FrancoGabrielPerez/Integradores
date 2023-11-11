@@ -23,6 +23,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
+        System.out.println("LoginRequest: " + request.getEmail() + " " + request.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

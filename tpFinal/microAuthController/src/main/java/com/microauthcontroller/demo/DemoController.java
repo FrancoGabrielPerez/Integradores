@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class DemoController {
+public class DemoController { //TODO esto va?
     
         @RequestMapping(value = "demo")
         public String demo() {

@@ -1,6 +1,7 @@
 package com.microauthcontroller.auth;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,5 +23,15 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
-    }    
+    }
+
+    @GetMapping(value = "/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Hello World");
+    }
+    // @GetMapping(value="/validate")
+    // public ResponseEntity<AuthResponse> validate(@RequestBody ValidateRequest request) {
+    //     return null;
+    // }
+    
 }

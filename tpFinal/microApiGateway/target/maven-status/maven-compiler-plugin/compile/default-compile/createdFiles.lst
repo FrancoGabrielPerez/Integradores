@@ -1,2 +1,3 @@
-com\microapigateway\MicroApiGatewayApp.class
 com\microapigateway\config\ApiGatewayConfig.class
+com\microapigateway\config\TokenAuthenticationFilter.class
+com\microapigateway\MicroApiGatewayApp.class
