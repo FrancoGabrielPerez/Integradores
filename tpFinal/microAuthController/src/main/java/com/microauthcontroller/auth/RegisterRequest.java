@@ -1,6 +1,6 @@
-package com.microapigateway.auth;
+package com.microauthcontroller.auth;
 
-import com.microapigateway.user.Role;
+import com.microauthcontroller.user.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

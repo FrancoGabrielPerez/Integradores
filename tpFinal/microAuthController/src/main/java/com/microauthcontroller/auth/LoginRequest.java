@@ -1,4 +1,5 @@
-package com.microapigateway.auth;
+package com.microauthcontroller.auth;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class AuthResponse {
-    private String token;
+public class LoginRequest {
+    private String email;
+    private String password;    
 }

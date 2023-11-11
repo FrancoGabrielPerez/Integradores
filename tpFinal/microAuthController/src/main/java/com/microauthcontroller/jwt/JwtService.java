@@ -1,4 +1,4 @@
-package com.microapigateway.jwt;
+package com.microauthcontroller.jwt;
 
 import java.security.Key;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.microapigateway.jwt;
+package com.microauthcontroller.jwt;
 
 import java.io.IOException;
 

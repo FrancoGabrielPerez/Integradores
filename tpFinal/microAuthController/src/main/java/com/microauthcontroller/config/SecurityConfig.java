@@ -1,4 +1,4 @@
-package com.microapigateway.config;
+package com.microauthcontroller.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.microapigateway.jwt.JwtAuthenticationFilter;
+import com.microauthcontroller.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequests -> authRequests
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/viajes/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

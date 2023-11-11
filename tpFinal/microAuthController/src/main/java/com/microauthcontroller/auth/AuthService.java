@@ -1,4 +1,4 @@
-package com.microapigateway.auth;
+package com.microauthcontroller.auth;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.microapigateway.jwt.JwtService;
-import com.microapigateway.user.Role;
-import com.microapigateway.user.User;
-import com.microapigateway.user.UserRepository;
+import com.microauthcontroller.jwt.JwtService;
+import com.microauthcontroller.user.Role;
+import com.microauthcontroller.user.User;
+import com.microauthcontroller.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.microapigateway.user;
+package com.microauthcontroller.user;
 
 import java.util.Collection;
 import java.util.List;

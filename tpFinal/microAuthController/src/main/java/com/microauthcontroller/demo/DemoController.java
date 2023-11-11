@@ -1,4 +1,4 @@
-package com.microapigateway.demo;
+package com.microauthcontroller.demo;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
