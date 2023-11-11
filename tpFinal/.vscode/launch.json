@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MicroAuthControllerApp",
+            "request": "launch",
+            "mainClass": "com.microauthcontroller.MicroAuthControllerApp",
+            "projectName": "microAuthController"
+        },
+        {
+            "type": "java",
             "name": "MicroApiGatewayApp",
             "request": "launch",
             "mainClass": "com.microapigateway.MicroApiGatewayApp",

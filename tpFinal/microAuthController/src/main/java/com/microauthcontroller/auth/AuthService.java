@@ -32,14 +32,15 @@ public class AuthService {
             .build();
     }
 
-    public AuthResponse register(RegisterRequest request) {
-        User user = User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .nombre(request.getNombre())
-            .apellido(request.getApellido())
-            .role(Role.ADMIN)
-            .build();
+    public AuthResponse register(RegisterRequest request){
+        if (request.getRole() == null){
+            request.setRole(Role.ADMIN);
+        } 
+        User user = userRepository.findByEmail(request.getEmail()).orElse(
+            User.builder().email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).build());
+        user.setNombre(request.getNombre());
+        user.setApellido(request.getApellido());
+        user.setRole(request.getRole());
         userRepository.save(user);
        
         return AuthResponse.builder()
