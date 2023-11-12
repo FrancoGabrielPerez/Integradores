@@ -14,18 +14,8 @@ public class GatewayContoller {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-            // .route("auth-service", r -> r.path("/auth/**")
-            //     .uri("http://localhost:8080"))
             .route("auth-service", r -> r.path("/auth/**")
-            .filters(f -> f.filter((exchange, chain) -> {
-                // Log incoming request cookies
-                System.out.println("Incoming request cookies: " + exchange.getRequest().getCookies());
-                return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                    // Log outgoing request cookies
-                    System.out.println("Outgoing request cookies: " + exchange.getResponse().getCookies());
-                }));
-            }))
-            .uri("http://localhost:8080"))
+                .uri("http://localhost:8080"))
             .route("monopatines-service", r -> r.path("/monopatines/**")
                 .uri("http://localhost:8002"))
             .route("viajes-service", r -> r.path("/viajes/**")
