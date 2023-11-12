@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.dto.StationDTO;
 import com.microscooter.service.ScooterService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 /**
  * ScooterController
@@ -25,14 +27,33 @@ public class ScooterController {
     @Autowired
     private ScooterService scooterService;
 
+    // URL del servicio de validación de tokens
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+
+    /**
+     * Validar el token antes de realizar cualquier operación.
+     */
+    private boolean validarToken(String token) {
+        // Realizar una llamada al servicio de validación de tokens
+        System.out.println("Validando token: " + token);
+        ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
+        System.out.println("Respuesta: " + response);
+        return response.getStatusCode() == HttpStatus.OK;
+    }
+
     /**
      * getAll
      * Obtiene todos los monopatines.
      * @return List<ScooterDTO>
      */
     @Operation(summary = "Obtiene todas los monopatines.", description = "Obtiene todos los monopatines")
+    @SecurityRequirement(name = "Authorization")
     @GetMapping("")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findAll());
         }catch (Exception e){
@@ -48,7 +69,11 @@ public class ScooterController {
      */
     @Operation(summary = "Agrega un monopatin.", description = "Agrega un monopatin")
     @PostMapping("/alta")
-    public ResponseEntity<?> save(@RequestBody ScooterDTO entity){
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody ScooterDTO entity){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.save(entity));
         }catch (Exception e){
@@ -64,7 +89,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtiene un monopatin por su id.", description = "Obtiene un monopatin por su scooterId")
     @GetMapping("/{scooterId}")
-    public ResponseEntity<?> getById(@PathVariable long scooterId) {
+    public ResponseEntity<?> getById(@RequestHeader("Authorization") String token,@PathVariable long scooterId) {
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findById(scooterId));
         }catch (Exception e){
@@ -80,7 +109,11 @@ public class ScooterController {
      */
     @Operation(summary = "Eliminia un monopatin por su id.", description = "Elimina una monopatin por su scooterId")
     @DeleteMapping("/eliminar/{scooterId}")
-    public ResponseEntity<?> delete(@PathVariable long scooterId){
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String token,@PathVariable long scooterId){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             scooterService.delete(scooterId);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente el monopatin con scooterId: " + scooterId);
@@ -98,7 +131,11 @@ public class ScooterController {
      */
     @Operation(summary = "Actualiza los datos de un monopatin por su id.", description = "Actualiza un monopatin por su scooterId")
     @PutMapping("/actualizar/{scooterId}")
-    public ResponseEntity<?> update(@PathVariable long scooterId, @RequestBody ScooterDTO entity){
+    public ResponseEntity<?> update(@RequestHeader("Authorization") String token,@PathVariable long scooterId, @RequestBody ScooterDTO entity){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             scooterService.update(scooterId,entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos del monopatin con scooterId: " + entity.getScooterId());
@@ -115,7 +152,11 @@ public class ScooterController {
      */
     @Operation(summary = "Verifica si un monopatin esta en una parada.", description = "Verifica si un monopatin esta en una parada.")
     @GetMapping("/estacion/{scooterId}")
-    public ResponseEntity<?> scooterEnEstacion(@PathVariable long scooterId){
+    public ResponseEntity<?> scooterEnEstacion(@RequestHeader("Authorization") String token,@PathVariable long scooterId){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             StationDTO estacion = scooterService.scooterEnEstacion(scooterId);
             if (estacion != null) {
@@ -136,7 +177,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
     @GetMapping("/reporte/kilometros/sinTiempoDeUso")
-    public ResponseEntity<?> getReporteByKilometros(){
+    public ResponseEntity<?> getReporteByKilometros(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometros());
         }catch (Exception e){
@@ -151,7 +196,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtiene un reporte de monopatines por kilometros y tiempo de uso.", description = "Obtiene un reporte de monopatines por kilometros y tiempo de uso")
     @GetMapping("/reporte/kilometros/conTiempoDeUso")
-    public ResponseEntity<?> getReporteByKilometrosConTiempoUso(){
+    public ResponseEntity<?> getReporteByKilometrosConTiempoUso(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByKilometrosConTiempoUso());
         }catch (Exception e){
@@ -166,7 +215,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo de uso", description = "Obtengo un reporte de monopatines ordenados por tiempo de uso")
     @GetMapping("/reporte/tiempoUso")
-    public ResponseEntity<?> getReporteByTiempoUso(){
+    public ResponseEntity<?> getReporteByTiempoUso(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByTiempoUso());
         }catch (Exception e){
@@ -181,7 +234,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)", description = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)")
     @GetMapping("/reporte/tiempoTotal")
-    public ResponseEntity<?> getReporteByTiempoTotal(){
+    public ResponseEntity<?> getReporteByTiempoTotal(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findByTiempoTotal());
         }catch (Exception e){
@@ -196,7 +253,11 @@ public class ScooterController {
      */
     @Operation(summary = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento", description = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento")
     @GetMapping("/reporte/cantidadOperativosMantenimiento")
-    public ResponseEntity<?> getReporteOperativosMantenimiento(){
+    public ResponseEntity<?> getReporteOperativosMantenimiento(@RequestHeader("Authorization") String token){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findOperativosMantenimiento());
         }catch (Exception e){
@@ -214,7 +275,11 @@ public class ScooterController {
     @Operation(summary = "Obtiene todos los monopatines.", 
                 description = "Obtiene todos los monopatines cerca de una coordenada (ejemplo que funciona latitud -37.327754, longitud -59.138998)")
     @GetMapping("/{latitud}/{longitud}")
-    public ResponseEntity<?> getAllCercanos(@PathVariable Double latitud, @PathVariable Double longitud){
+    public ResponseEntity<?> getAllCercanos(@RequestHeader("Authorization") String token,@PathVariable Double latitud, @PathVariable Double longitud){
+        if (!validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScootersCercanos(latitud,longitud));
         }catch (Exception e){

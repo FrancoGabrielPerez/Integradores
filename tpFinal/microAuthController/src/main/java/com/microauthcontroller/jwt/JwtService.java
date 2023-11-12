@@ -19,9 +19,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private static final String SECRET_KEY = "QJeKx+s7XIv1WbBlj7vJ9CD3Ozj1rB3qjlNZY9ofWKJSaBNBo5r1q9Rru/OWlYb+UHV1n4/LJl1OBYYZZ7rhJEnn5peyHCd+eLJfRdArE37pc+QDIsJlabQtR7tYRa+SnvGRyL01uZsK33+gezV+/GPXBnPTj8fOojDUzJiPAvE";
+    private static final String SECRET_KEY = "pepeArgentoErroriojsonwebtokesecuritySignatureExceptionJWTpepeArgentoErroriojsonwebtokesecuritySignatureExceptionJWT";
 
     public String getToken(UserDetails user) {
+        HashMap<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", user.getAuthorities().stream().findFirst().get().getAuthority());
         return getToken(new HashMap<>(), user);             
     }
 
@@ -64,12 +66,12 @@ public class JwtService {
         return type.apply(claims);
     }
 
-    private Date getEspiration(String token) {
+    private Date getExpiration(String token) {
         return getClaims(token, Claims::getExpiration);
     }
 
     private boolean isTokenExpired(String token) {
-        final Date expiration = getEspiration(token);
+        final Date expiration = getExpiration(token);
         return expiration.before(new Date());
     }
 }

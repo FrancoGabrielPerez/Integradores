@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.microauthcontroller.MicroAuthControllerApp", "com.microAuthController.config"})
+// @ComponentScan(basePackages = {"com.microauthcontroller.MicroAuthControllerApp", "com.microAuthController.config"})
 public class MicroAuthControllerApp {
     public static void main(String[] args) {
         SpringApplication.run(MicroAuthControllerApp.class, args);

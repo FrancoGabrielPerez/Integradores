@@ -1,0 +1,18 @@
+openapi: 3.0.0
+info:
+  title: API con JWT Bearer Token
+  version: 1.0.0
+
+paths:
+  /monopatines:
+    get:
+      summary: Ejemplo de endpoint asegurado con JWT
+      security:
+        - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
