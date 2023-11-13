@@ -3,22 +3,25 @@ package com.microapigateway.config;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import com.microapigateway.services.JwtUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
+/**
+ * ApiGatewayConfig
+ * Se encarga de enrutar las peticiones a los microservicios correspondientes.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Configuration
 public class ApiGatewayConfig {
     @Autowired
     AuthenticationFilter filter;
 
-    @Autowired
-    JwtUtils jwtUtils;
-
+    /**
+     * customRouteLocator
+     * Enruta las peticiones a los microservicios correspondientes.
+     * @param builder
+     * @return
+     */
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()

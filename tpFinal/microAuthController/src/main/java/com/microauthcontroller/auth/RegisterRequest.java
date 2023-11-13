@@ -7,6 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * RegisterRequest
+ * Clase que representa los datos necesarios solicitados en el pedido de registro.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 @Builder
 @AllArgsConstructor

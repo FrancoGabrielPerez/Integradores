@@ -17,6 +17,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * JwtAuthenticationFilter
+ * Se encarga de filtrar las peticiones que requieren autenticacion.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -24,14 +29,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     
+    /**
+     * doFilterInternal
+     * Filtra las peticiones que requieren autenticacion.
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws ServletException, IOException {
-        
-
         final String token = getTokenFromRequest(request);
         final String username;
 
+        // Si no hay token, setea el contexto de seguridad y continua con la peticion
         if (token == null) {
             filterChain.doFilter(request, response);
             return;
@@ -39,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         username = jwtService.getUsernameFromToken(token);
 
+        // Si hay un usuario y no hay un contexto de seguridad, si el token es valido, setea el contexto de seguridad.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {
@@ -52,6 +65,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * getTokenFromRequest
+     * Obtiene el token de la peticion.
+     * @param request
+     * @return String
+     */
     private String getTokenFromRequest(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

@@ -4,6 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * AuthResponse
+ * Clase que representa la respuesta de autenticación.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 @Builder
 @AllArgsConstructor

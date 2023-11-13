@@ -15,17 +15,34 @@ import com.microauthcontroller.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AppConfig
+ * Se encarga de configurar la autenticacion de los usuarios.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
 
     private final UserRepository userRepository;    
     
+    /**
+     * authenticationManager
+     * Configura el AuthenticationManager.
+     * @param config
+     * @return AuthenticationManager
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config ) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * authenticationProvider
+     * Configura el AuthenticationProvider. Setea el UserDetailsService y el PasswordEncoder.
+     * @return AuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -34,11 +51,22 @@ public class AppConfig {
         return provider;
     }
 
+    /**
+     * passwordEncoder
+     * Configura el PasswordEncoder.
+     * @return PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * userDetailsService
+     * Configura el UserDetailsService, en caso de no encontrar el usuario lanza una excepcion.
+     * @return UserDetailsService
+     * @throws UsernameNotFoundException
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)

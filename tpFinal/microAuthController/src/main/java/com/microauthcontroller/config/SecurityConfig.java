@@ -13,14 +13,26 @@ import com.microauthcontroller.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * SecurityConfig
+ * Se encarga de configurar la autenticacion de los usuarios.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
 
+    /**
+     * securityFilterChain
+     * Configura el SecurityFilterChain. Devuelve un SecurityFilterChain que permite
+     * el acceso a /auth/** y requiere autenticación para cualquier otro request.
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Configuring Spring Security");

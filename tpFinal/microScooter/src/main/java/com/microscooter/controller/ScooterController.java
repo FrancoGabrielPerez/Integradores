@@ -31,13 +31,15 @@ public class ScooterController {
     private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
 
     /**
-     * Validar el token antes de realizar cualquier operación.
+     * validarToken
+     * Valida el token antes de realizar cualquier operación.
+     * @param token
      */
     private boolean validarToken(String token) {
         // Realizar una llamada al servicio de validación de tokens
-        System.out.println("Validando token: " + token);
+        // System.out.println("Validando token: " + token);
         ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
-        System.out.println("Respuesta: " + response);
+        // System.out.println("Respuesta: " + response);
         return response.getStatusCode() == HttpStatus.OK;
     }
 
@@ -53,7 +55,6 @@ public class ScooterController {
         if (!validarToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
-
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findAll());
         }catch (Exception e){
@@ -73,7 +74,6 @@ public class ScooterController {
         if (!validarToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
-
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.save(entity));
         }catch (Exception e){
@@ -93,7 +93,6 @@ public class ScooterController {
         if (!validarToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
-
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findById(scooterId));
         }catch (Exception e){
@@ -113,7 +112,6 @@ public class ScooterController {
         if (!validarToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
-
         try{
             scooterService.delete(scooterId);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente el monopatin con scooterId: " + scooterId);
@@ -135,7 +133,6 @@ public class ScooterController {
         if (!validarToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
         }
-
         try{
             scooterService.update(scooterId,entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizaron correctamente los datos del monopatin con scooterId: " + entity.getScooterId());

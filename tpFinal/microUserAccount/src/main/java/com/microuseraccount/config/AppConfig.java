@@ -13,7 +13,7 @@ import io.swagger.v3.oas.models.info.License;
 /**
  * AppConfig
  *
- * Este archivo contiene la configuración de la aplicación
+ * Configuración de la aplicación
  * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  *  
  */

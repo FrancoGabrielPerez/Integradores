@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * RouterValidator
+ * Se encarga de validar las rutas que requieren autenticación.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Service
 public class RouterValidator {
 
@@ -13,6 +18,12 @@ public class RouterValidator {
         "/auth"
     );
 
+    /**
+     * isSecured
+     * Valida si la ruta requiere autenticación.
+     * @param request
+     * @return boolean
+     */
     public Predicate<ServerHttpRequest> isSecured =
             request -> openEndpoints.stream()
                     .noneMatch(uri -> request.getURI().getPath().contains(uri));

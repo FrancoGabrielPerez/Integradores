@@ -2,9 +2,6 @@ package com.microapigateway.config;
 
 import com.microapigateway.services.JwtUtils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -15,9 +12,12 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * AuthenticationFilter
+ * Se encarga de filtrar las peticiones que requieren autenticación.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @RefreshScope
 @Component
 public class AuthenticationFilter implements GatewayFilter {
@@ -27,16 +27,22 @@ public class AuthenticationFilter implements GatewayFilter {
     @Autowired
     private JwtUtils jwtUtils;
 
+    /**
+     * filter
+     * Filtra las peticiones que requieren autenticación.
+     * @param exchange
+     * @param chain
+     * @return Mono<Void>
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("Executing MyFilter");
         ServerHttpRequest request = exchange.getRequest();
        
         // For testing purposes        
-        System.out.println("Request Path: " + request.getPath());
-        System.out.println("Request: " + request);
-        System.out.println("Request Headers: " + request.getHeaders());
-        System.out.println(validator.isSecured.test(request));
+        // System.out.println("Request Path: " + request.getPath());
+        // System.out.println("Request: " + request);
+        // System.out.println("Request Headers: " + request.getHeaders());
+        // System.out.println(validator.isSecured.test(request));
         // End testing purposes
 
         if (validator.isSecured.test(request)) {
@@ -45,7 +51,7 @@ public class AuthenticationFilter implements GatewayFilter {
             }
 
             final String tokenRequest = request.getHeaders().getOrEmpty("Authorization").get(0);
-            System.out.println("Token: " + tokenRequest);
+            // System.out.println("Token: " + tokenRequest);
             String token = null;
             if (tokenRequest != null && tokenRequest.startsWith("Bearer ")) {
                 token = tokenRequest.substring(7);
@@ -55,6 +61,8 @@ public class AuthenticationFilter implements GatewayFilter {
             if (jwtUtils.isExpired(token)) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
+
+            // Siguientes lineas para comprobar roles si es necesario.
             // if (!jwtUtils.isRoleInvalid(token, "ADMIN") || !jwtUtils.isRoleInvalid(token, "MAINTENER")) {
             //     return onError(exchange, HttpStatus.FORBIDDEN);
             // }
@@ -62,12 +70,25 @@ public class AuthenticationFilter implements GatewayFilter {
         return chain.filter(exchange);
     }
 
+    /**
+     * onError
+     * Devuelve un error en caso de que la petición no sea válida.
+     * @param exchange
+     * @param httpStatus
+     * @return Mono<Void>
+     */
     private Mono<Void> onError(ServerWebExchange exchange, HttpStatus httpStatus) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
         return response.setComplete();
     }
 
+    /**
+     * authMissing
+     * Devuelve true si la petición no contiene el header Authorization.
+     * @param request
+     * @return
+     */
     private boolean authMissing(ServerHttpRequest request) {
         return !request.getHeaders().containsKey("Authorization");
     }

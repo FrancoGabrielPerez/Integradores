@@ -13,6 +13,11 @@ import com.microauthcontroller.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AuthService
+ * Se encarga de procesar los pedidos de login y registro de usuarios.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -22,6 +27,12 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * login
+     * Procesa los pedidos de login.
+     * @param request
+     * @return AuthResponse
+     */
     public AuthResponse login(LoginRequest request) {
         //System.out.println("LoginRequest: " + request.getEmail() + " " + request.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -33,6 +44,12 @@ public class AuthService {
             .build();
     }
 
+    /**
+     * register
+     * Procesa los pedidos de registro.
+     * @param request
+     * @return AuthResponse
+     */
     public AuthResponse register(RegisterRequest request){
         if (request.getRole() == null){
             request.setRole(Role.ADMIN);

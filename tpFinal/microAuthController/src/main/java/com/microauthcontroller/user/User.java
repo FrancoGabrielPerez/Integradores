@@ -20,6 +20,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * User
+ * Clase que representa un usuario.
+ * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
+ */
 @Data
 @Builder
 @AllArgsConstructor
