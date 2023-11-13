@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/microTravel/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/microUserAccount/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/microUserAccount/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/microApiGateway/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
