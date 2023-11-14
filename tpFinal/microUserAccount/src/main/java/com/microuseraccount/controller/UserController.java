@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.microuseraccount.dto.UserDTO;
 import com.microuseraccount.service.UserService;
@@ -23,6 +24,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // URL del servicio de validación de tokens
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+
+    /**
+     * validarToken
+     * Valida el token antes de realizar cualquier operación.
+     * @param token
+     */
+    private ResponseEntity<String> validarToken(String token) {
+        // Realizar una llamada al servicio de validación de tokens
+        // System.out.println("Validando token: " + token);
+        ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
+        // System.out.println("Respuesta: " + response);
+        return response;
+    }
+
+
     /**
      * getAll
      * Obtiene todos los usuarios.
@@ -30,7 +48,12 @@ public class UserController {
      */
     @Operation(summary = "Obtiene todos los usuarios.", description = "Obtiene todos los usuarios")
     @GetMapping("")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
         }catch (Exception e){
@@ -46,7 +69,12 @@ public class UserController {
      */
     @Operation(summary = "Agrega un nuevo usuario.", description = "Crea un usuario")
     @PostMapping("/alta")
-    public ResponseEntity<?> save(@RequestBody UserDTO entity){
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody UserDTO entity){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(userService.save(entity));
         }catch (Exception e){
@@ -62,7 +90,12 @@ public class UserController {
      */
     @Operation(summary = "Obtiene un usuario por su id.", description = "Obtiene un usuario por su userId")
     @GetMapping("/buscar/{userId}")
-    public ResponseEntity<?> getById(@PathVariable long userId) {
+    public ResponseEntity<?> getById(@RequestHeader("Authorization") String token, @PathVariable long userId) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
         }catch (Exception e){
@@ -78,7 +111,12 @@ public class UserController {
      */
     @Operation(summary = "Elimina un usuario por su id.", description = "Elimina un usuario por su userId")
     @DeleteMapping("/eliminar/{userId}")
-    public ResponseEntity<?> delete(@PathVariable long userId){
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String token, @PathVariable long userId){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             userService.delete(userId);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al usuario con userId: " + userId);
@@ -96,7 +134,12 @@ public class UserController {
      */
     @Operation(summary = "Actualiza los datos de un usuario por su id.", description = "Actualiza un usuario por su userId")
     @PutMapping("/actualizar/{userId}")
-    public ResponseEntity<?> update(@PathVariable long userId, @RequestBody UserDTO entity){
+    public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @PathVariable long userId, @RequestBody UserDTO entity){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             userService.update(userId, entity);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizo correctamente al usuario con userId: " + userId);
@@ -114,7 +157,12 @@ public class UserController {
      */
     @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula una cuenta a un usuario")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
-    public ResponseEntity<?> asociarCuenta(@PathVariable long userId, @PathVariable long accountId){
+    public ResponseEntity<?> asociarCuenta(@RequestHeader("Authorization") String token, @PathVariable long userId, @PathVariable long accountId){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             userService.asociarCuenta(userId, accountId);
             return ResponseEntity.status(HttpStatus.OK).body("Se asocio correctamente la cuenta con accountId: " + accountId + " al usuario con userId: " + userId);
@@ -132,7 +180,12 @@ public class UserController {
      */
     @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula una cuenta de un usuario")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
-    public ResponseEntity<?> desvincularCuenta(@PathVariable long userId, @PathVariable long accountId){
+    public ResponseEntity<?> desvincularCuenta(@RequestHeader("Authorization") String token, @PathVariable long userId, @PathVariable long accountId){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             userService.desvincularCuenta(userId, accountId);
             return ResponseEntity.status(HttpStatus.OK).body("Se desvinculo correctamente la cuenta con accountId: " + accountId + " del usuario con userId: " + userId);

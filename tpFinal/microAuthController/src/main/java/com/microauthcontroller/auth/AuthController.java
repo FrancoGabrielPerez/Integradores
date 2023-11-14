@@ -1,5 +1,6 @@
 package com.microauthcontroller.auth;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class AuthController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/acceder")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
@@ -36,9 +37,18 @@ public class AuthController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/registrar")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }  
     
+    @PostMapping(value = "/validar")
+    public ResponseEntity<?> validar(@RequestBody String request) {
+        String response = authService.validar(request);
+        if (response == null) {
+            return new ResponseEntity<>("Invalid token", HttpStatus.UNAUTHORIZED);
+        } else {
+            return ResponseEntity.ok(response);
+        }
+    }
 }

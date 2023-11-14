@@ -2,14 +2,21 @@ package com.microapigateway.config;
 
 import com.microapigateway.services.JwtUtils;
 
+import io.netty.handler.codec.http.HttpMethod;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -26,6 +33,8 @@ public class AuthenticationFilter implements GatewayFilter {
     private RouterValidator validator;
     @Autowired
     private JwtUtils jwtUtils;
+    
+    private RestTemplate restTemplate = new RestTemplate();
 
     /**
      * filter
@@ -57,6 +66,18 @@ public class AuthenticationFilter implements GatewayFilter {
                 token = tokenRequest.substring(7);
             }      
 
+            /* HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> requestEntity = new HttpEntity<>(token, headers);
+            ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/auth/validar", HttpMethod.POST, requestEntity, String.class); */
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<String> entity = new HttpEntity<>(token, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/auth/validar", HttpMethod.POST, entity, String.class);
+            
             System.out.println("Token: " + token);
             if (jwtUtils.isExpired(token)) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);

@@ -1,8 +1,12 @@
 package com.microauthcontroller.auth;
 
+import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
 
     /**
      * login
@@ -65,4 +70,15 @@ public class AuthService {
             .token(jwtService.getToken(user))
             .build();
     }
+
+	public String validar(String token) {
+        String username = jwtService.getUsernameFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		if (jwtService.validateToken(token, userDetails)){
+            return userDetails.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.joining(", "));
+        }
+        return null;
+	}
 }

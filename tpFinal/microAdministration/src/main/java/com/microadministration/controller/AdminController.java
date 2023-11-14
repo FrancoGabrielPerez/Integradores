@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.microadministration.dto.FareDTO;
 import com.microadministration.dto.StationDTO;
@@ -25,6 +26,22 @@ public class AdminController {
     
     @Autowired
     private AdminService adminService;
+
+    // URL del servicio de validación de tokens
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+
+    /**
+     * validarToken
+     * Valida el token antes de realizar cualquier operación.
+     * @param token
+     */
+    private ResponseEntity<String> validarToken(String token) {
+        // Realizar una llamada al servicio de validación de tokens
+        // System.out.println("Validando token: " + token);
+        ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
+        // System.out.println("Respuesta: " + response);
+        return response;
+    }
    
     /**
      * save
@@ -34,7 +51,12 @@ public class AdminController {
      */
     @Operation(summary = "Da de alta un nuevo monopatin.", description = "Se comunica con el microservicios de monopatines para dar de alta un nuevo monopatin.")
     @PostMapping("monopatines/nuevo")
-    public ResponseEntity<?> save(@RequestBody NewScooterDTO scooterDTO) {
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody NewScooterDTO scooterDTO) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.saveNewScooter(scooterDTO));
         } catch (Exception e) {
@@ -50,7 +72,12 @@ public class AdminController {
      */
     @Operation(summary = "Da de baja un monopatin.", description = "Se comunica con el microservicios de monopatines para dar de baja un monopatin.")
     @DeleteMapping("monopatines/eliminar/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.deleteScooter(id));
         } catch (Exception e) {
@@ -66,7 +93,12 @@ public class AdminController {
     @Operation(summary = "Obtiene un informe de lo kilometros recorridos por todos los monopatines", 
                 description = "Se comunica con el microservicio de monopatines para obtener un informe de los kilometros recorridos por todos los monopatines.")
     @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/sinTiempoDeUso")
-    public ResponseEntity<?> getKilometros() {
+    public ResponseEntity<?> getKilometros(@RequestHeader("Authorization") String token) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByKms());
         } catch (Exception e) {
@@ -81,7 +113,12 @@ public class AdminController {
      */
     @Operation(summary = "Obtiene un informe con los kilometros recorridos y tiempo de uso de cada monopatin.", description = "Se comunica con el microservicio de monopatines para obtener un informe con los kilometros recorridos y tiempo de uso de cada monopatin.")   
     @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/conTiempoDeUso")
-    public ResponseEntity<?> getKilometrosTiempoUso() {
+    public ResponseEntity<?> getKilometrosTiempoUso(@RequestHeader("Authorization") String token) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByKmsAndUseTime());
         } catch (Exception e) {
@@ -98,7 +135,12 @@ public class AdminController {
      */
     @Operation(summary = "Obtiene un informe de los monopatines que hicieron X cantidad de viajes en determinado año", description = "Se comunica con el microservicio de monopatines para obtener un informe de los monopatines que hicieron X cantidad de viajes en determinado año.")    
     @GetMapping("informes/reporteDeMonopatinesPor/cantidadDeViajes/{travelsQuantity}/enElAnio/{year}")
-    public ResponseEntity<?> getReportScootersByTrips(@PathVariable Long travelsQuantity, @PathVariable Integer year) {
+    public ResponseEntity<?> getReportScootersByTrips(@RequestHeader("Authorization") String token, @PathVariable Long travelsQuantity, @PathVariable Integer year) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersWithMoreTravelsInYear(travelsQuantity, year));
         } catch (Exception e) {
@@ -113,7 +155,12 @@ public class AdminController {
      */
     @Operation(summary = "Obtiene un informe de los monopatines ordenasdos por tiempo de uso", description = "Se comunica con el microservicio de monopatines para obtener un informe de los monopatines ordenasdos por tiempo de uso.")
     @GetMapping("informes/reporteDeMonopatinesPor/tiempoTotalDeUso")
-    public ResponseEntity<?> getReportScootersByUseTime() {
+    public ResponseEntity<?> getReportScootersByUseTime(@RequestHeader("Authorization") String token) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.getReportScootersByUseTime());
         } catch (Exception e) {
@@ -128,7 +175,12 @@ public class AdminController {
      */
     @Operation(summary = "Agrega una nueva parada.", description = "Se comunica con el microservicios de estaciones para dar de alta una nueva parada.")
     @PostMapping("paradas/nueva")
-    public ResponseEntity<?> save(@RequestBody StationDTO stationDTO) {
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody StationDTO stationDTO) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.saveNewStation(stationDTO));
         } catch (Exception e) {
@@ -144,7 +196,12 @@ public class AdminController {
      */
     @Operation(summary = "Elimina una parada", description = "Se comunica con el microservicios de estaciones para eliminar una parada.")
     @DeleteMapping("paradas/eliminar/{id}")
-    public ResponseEntity<?> deleteStation(@PathVariable Long id) {
+    public ResponseEntity<?> deleteStation(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.deleteStation(id));
         } catch (Exception e) {
@@ -160,7 +217,12 @@ public class AdminController {
      */
     @Operation(summary = "Suspende temporalmente una cuenta.", description = "Se comunica con el microservicios de cuentas para suspender temporalmente una cuenta.")
     @PutMapping("cuentas/suspender/{id}")
-    public ResponseEntity<?> suspendAccount(@PathVariable Long id) {
+    public ResponseEntity<?> suspendAccount(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.suspendAccount(id));
         } catch (Exception e) {
@@ -176,7 +238,12 @@ public class AdminController {
      */
     @Operation(summary = "Activa una cuenta que estaba previamente desactivada.", description = "Se comunica con el microservicios de cuentas para activar una cuenta que estaba previamente desactivada.")
     @PutMapping("cuentas/activar/{id}")
-    public ResponseEntity<?> activateAccount(@PathVariable Long id) {
+    public ResponseEntity<?> activateAccount(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.activateAccount(id));
         } catch (Exception e) {
@@ -192,7 +259,12 @@ public class AdminController {
      */
     @Operation(summary = "Agrega una nueva tarifa a aplicar desde la fecha dada.", description = "Se comunica con el microservicios de tarifas para agregar una nueva tarifa a aplicar desde la fecha dada.")  
     @PostMapping("tarifas/nueva")
-    public ResponseEntity<?> saveNewFare(@RequestBody FareDTO fareDTO) {
+    public ResponseEntity<?> saveNewFare(@RequestHeader("Authorization") String token, @RequestBody FareDTO fareDTO) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.saveNewFare(fareDTO));
         } catch (Exception e) {

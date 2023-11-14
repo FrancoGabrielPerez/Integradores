@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.microadministration.dto.NewBillDTO;
 import com.microadministration.service.BillService;
@@ -22,6 +23,22 @@ public class BillController {
     
     @Autowired
     private BillService billService;
+
+    // URL del servicio de validación de tokens
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+
+    /**
+     * validarToken
+     * Valida el token antes de realizar cualquier operación.
+     * @param token
+     */
+    private ResponseEntity<String> validarToken(String token) {
+        // Realizar una llamada al servicio de validación de tokens
+        // System.out.println("Validando token: " + token);
+        ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
+        // System.out.println("Respuesta: " + response);
+        return response;
+    }
    
     /**
      * getAll
