@@ -46,7 +46,12 @@ public class MaintenanceAppController {
      * @return
      */
     @PutMapping("/monopatines/actualizarEstado/{id}/estado/{estado}")
-    public ResponseEntity<?> actualizarEstado(@PathVariable long id, @PathVariable String estado){
+    public ResponseEntity<?> actualizarEstado(@RequestHeader("Authorization") String token, @PathVariable long id, @PathVariable String estado){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             maintenanceService.updateScooterState(id, estado);
             return ResponseEntity.status(HttpStatus.OK).body("Se actualizo correctamente el estado del scooter: " + id);

@@ -47,7 +47,13 @@ public class BillController {
      */
     @Operation(summary = "Obtiene todas las facturas.", description = "Obtiene todas las facturas.")
     @GetMapping("")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(billService.findAll());
         }catch (Exception e){
@@ -63,7 +69,12 @@ public class BillController {
      */
     @Operation(summary = "Obtiene una factura por id.", description = "Obtiene una factura por id.")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOne(@PathVariable Long id){
+    public ResponseEntity<?> getOne(@RequestHeader("Authorization") String token, @PathVariable Long id){
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(billService.findById(id));
         }catch (Exception e){
@@ -78,7 +89,12 @@ public class BillController {
      */ 
     @Operation(summary = "Carga una nueva factura.", description = "Carga una nueva factura.")
     @PostMapping("/nueva")
-    public ResponseEntity<?> save(@RequestBody NewBillDTO NewBillDTO) {
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody NewBillDTO NewBillDTO) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(billService.save(NewBillDTO));
         } catch (Exception e) {
@@ -94,7 +110,12 @@ public class BillController {
      */
     @Operation(summary = "Obtener facturacion en un rango de fechas.", description = "Obtener facturacion en un rango de fechas. Formato de fecha: yyyy-mm-dd")
     @GetMapping("/fechaDesde/{fechaDesde}/fechaHasta/{fechaHasta}")   
-    public ResponseEntity<?> getFacturacion(@PathVariable String fechaDesde, @PathVariable String fechaHasta) {
+    public ResponseEntity<?> getFacturacion(@RequestHeader("Authorization") String token, @PathVariable String fechaDesde, @PathVariable String fechaHasta) {
+        ResponseEntity<String> response = validarToken(token);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
         try {
             return ResponseEntity.status(HttpStatus.OK).body(billService.getFacturacion(fechaDesde, fechaHasta));
         } catch (Exception e) {

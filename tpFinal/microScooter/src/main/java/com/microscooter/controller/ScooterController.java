@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.dto.StationDTO;
@@ -51,6 +52,7 @@ public class ScooterController {
     @Operation(summary = "Obtiene todas los monopatines.", description = "Obtiene todos los monopatines")
     @SecurityRequirement(name = "Authorization")
     @GetMapping("")
+    @PreAuthorize( "hasAuthority( ADMIN )" )
     public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
         ResponseEntity<String> response = validarToken(token);
 

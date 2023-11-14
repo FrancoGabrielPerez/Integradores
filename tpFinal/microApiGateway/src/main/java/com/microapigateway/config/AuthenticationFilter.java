@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -64,29 +65,20 @@ public class AuthenticationFilter implements GatewayFilter {
             String token = null;
             if (tokenRequest != null && tokenRequest.startsWith("Bearer ")) {
                 token = tokenRequest.substring(7);
-            }      
-
-            /* HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> requestEntity = new HttpEntity<>(token, headers);
-            ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/auth/validar", HttpMethod.POST, requestEntity, String.class); */
+            }  
             
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-
-            HttpEntity<String> entity = new HttpEntity<>(token, headers);
-
-            ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/auth/validar", HttpMethod.POST, entity, String.class);
-            
+            HttpEntity<String> entity = new HttpEntity<>(token, headers); 
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8081/auth/validar", entity, String.class);        
+           
             System.out.println("Token: " + token);
-            if (jwtUtils.isExpired(token)) {
+            if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
-
-            // Siguientes lineas para comprobar roles si es necesario.
-            // if (!jwtUtils.isRoleInvalid(token, "ADMIN") || !jwtUtils.isRoleInvalid(token, "MAINTENER")) {
-            //     return onError(exchange, HttpStatus.FORBIDDEN);
-            // }
+            exchange = responseEntity.getHeaders().get("Authorization") != null ? 
+                                    exchange.mutate().request(request.mutate().header("Authorization", 
+                                    responseEntity.getHeaders().get("Authorization").get(0)).build()).build() : exchange;
         }
         return chain.filter(exchange);
     }
