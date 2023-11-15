@@ -26,8 +26,10 @@ public class User {
 	private String apellido;
 	@Column(name="nro_celular")
 	private long nroCelular;
-	@Column(name="email")
+	@Column(name="email", nullable = false, unique = true)
 	private String email;
+	@Column(name="password", nullable = false)
+	private String password;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,11 +45,12 @@ public class User {
 		this.cuentas = new HashSet<>();
 	}
 
-	public User(String nombre, String apellido, long nroCelular, String email) {
+	public User(String nombre, String apellido, long nroCelular, String email, String password) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nroCelular = nroCelular;
 		this.email = email;		
+		this.password = password;
 		this.cuentas = new HashSet<>();
 	}
 
@@ -56,6 +59,7 @@ public class User {
 		this.apellido = dto.getApellido();
 		this.nroCelular = dto.getNroCelular();
 		this.email = dto.getEmail();
+		this.password = dto.getPassword();
 		this.cuentas = new HashSet<>();
 	}
 }

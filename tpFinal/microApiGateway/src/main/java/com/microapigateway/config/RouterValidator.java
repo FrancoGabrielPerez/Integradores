@@ -8,15 +8,13 @@ import java.util.function.Predicate;
 
 /**
  * RouterValidator
- * Se encarga de validar las rutas que requieren autenticación.
+ * Se encarga de verificar si la ruta ingresada requiere de autenticación.
  * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  */
 @Service
 public class RouterValidator {
 
-    public static final List<String> openEndpoints = List.of(
-       
-    );
+    public static final List<String> openEndpoints = List.of();
 
     /**
      * isSecured

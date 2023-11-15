@@ -1,11 +1,12 @@
 package com.microscooter.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.microscooter.dto.ScooterDTO;
 import com.microscooter.dto.StationDTO;
@@ -29,18 +30,23 @@ public class ScooterController {
     private ScooterService scooterService;
 
     // URL del servicio de validación de tokens
-    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
 
     /**
      * validarToken
      * Valida el token antes de realizar cualquier operación.
      * @param token
+     * @param roles Lista de roles validos para el endpoint
+     * @return ResponseEntity<String>
      */
-    private ResponseEntity<String> validarToken(String token) {
-        // Realizar una llamada al servicio de validación de tokens
-        // System.out.println("Validando token: " + token);
+    private ResponseEntity<String> validarToken(String token, List<String> roles) {
         ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
-        // System.out.println("Respuesta: " + response);
+        if (response.getStatusCode() != HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+        if(!(roles.contains(response.getBody()))){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tipo de usuario no valido");
+        }
         return response;
     }
 
@@ -52,15 +58,13 @@ public class ScooterController {
     @Operation(summary = "Obtiene todas los monopatines.", description = "Obtiene todos los monopatines")
     @SecurityRequirement(name = "Authorization")
     @GetMapping("")
-    @PreAuthorize( "hasAuthority( ADMIN )" )
     public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
-
-
+            
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findAll());
         }catch (Exception e){
@@ -77,10 +81,9 @@ public class ScooterController {
     @Operation(summary = "Agrega un monopatin.", description = "Agrega un monopatin")
     @PostMapping("/alta")
     public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody ScooterDTO entity){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{            
@@ -99,11 +102,10 @@ public class ScooterController {
     @Operation(summary = "Obtiene un monopatin por su id.", description = "Obtiene un monopatin por su scooterId")
     @GetMapping("/{scooterId}")
     public ResponseEntity<?> getById(@RequestHeader("Authorization") String token,@PathVariable long scooterId) {        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
-        } 
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
+        }
 
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.findById(scooterId));
@@ -121,10 +123,9 @@ public class ScooterController {
     @Operation(summary = "Eliminia un monopatin por su id.", description = "Elimina una monopatin por su scooterId")
     @DeleteMapping("/eliminar/{scooterId}")
     public ResponseEntity<?> delete(@RequestHeader("Authorization") String token,@PathVariable long scooterId){       
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -145,10 +146,9 @@ public class ScooterController {
     @Operation(summary = "Actualiza los datos de un monopatin por su id.", description = "Actualiza un monopatin por su scooterId")
     @PutMapping("/actualizar/{scooterId}")
     public ResponseEntity<?> update(@RequestHeader("Authorization") String token,@PathVariable long scooterId, @RequestBody ScooterDTO entity){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -168,10 +168,9 @@ public class ScooterController {
     @Operation(summary = "Verifica si un monopatin esta en una parada.", description = "Verifica si un monopatin esta en una parada.")
     @GetMapping("/estacion/{scooterId}")
     public ResponseEntity<?> scooterEnEstacion(@RequestHeader("Authorization") String token,@PathVariable long scooterId){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -195,10 +194,9 @@ public class ScooterController {
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por kilometros", description = "Obtengo un reporte de monopatines ordenados por kilometros")
     @GetMapping("/reporte/kilometros/sinTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometros(@RequestHeader("Authorization") String token){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -216,10 +214,9 @@ public class ScooterController {
     @Operation(summary = "Obtiene un reporte de monopatines por kilometros y tiempo de uso.", description = "Obtiene un reporte de monopatines por kilometros y tiempo de uso")
     @GetMapping("/reporte/kilometros/conTiempoDeUso")
     public ResponseEntity<?> getReporteByKilometrosConTiempoUso(@RequestHeader("Authorization") String token){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -237,10 +234,9 @@ public class ScooterController {
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo de uso", description = "Obtengo un reporte de monopatines ordenados por tiempo de uso")
     @GetMapping("/reporte/tiempoUso")
     public ResponseEntity<?> getReporteByTiempoUso(@RequestHeader("Authorization") String token){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -258,10 +254,9 @@ public class ScooterController {
     @Operation(summary = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)", description = "Obtengo un reporte de monopatines ordenados por tiempo total (En uso + En pausa)")
     @GetMapping("/reporte/tiempoTotal")
     public ResponseEntity<?> getReporteByTiempoTotal(@RequestHeader("Authorization") String token){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -279,10 +274,9 @@ public class ScooterController {
     @Operation(summary = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento", description = "Obtengo un reporte de cantidad de monopatines operativos vs en mantenimiento")
     @GetMapping("/reporte/cantidadOperativosMantenimiento")
     public ResponseEntity<?> getReporteOperativosMantenimiento(@RequestHeader("Authorization") String token){        
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{
@@ -304,10 +298,9 @@ public class ScooterController {
     @GetMapping("/{latitud}/{longitud}")
     public ResponseEntity<?> getAllCercanos(@RequestHeader("Authorization") String token,@PathVariable Double latitud, @PathVariable Double longitud){
         
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
 
         try{

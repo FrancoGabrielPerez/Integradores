@@ -1,5 +1,7 @@
 package com.microtravel.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +28,22 @@ public class TravelController {
     private TravelService travelService;
 
     // URL del servicio de validación de tokens
-    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
 
     /**
      * validarToken
      * Valida el token antes de realizar cualquier operación.
      * @param token
+     * p
      */
-    private ResponseEntity<String> validarToken(String token) {
-        // Realizar una llamada al servicio de validación de tokens
-        // System.out.println("Validando token: " + token);
+    private ResponseEntity<String> validarToken(String token, List<String> roles) {
         ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
-        // System.out.println("Respuesta: " + response);
+        if (response.getStatusCode() != HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+        if(!(roles.contains(response.getBody()))){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tipo de usuario no valido");
+        }
         return response;
     }
 
@@ -49,11 +55,10 @@ public class TravelController {
      */
     @Operation(summary = "Obtiene todos los viajes.", description = "Obtiene todos los viajes")
     @GetMapping("")
-    public ResponseEntity<?> getAll(@RequestHeader("Authorization") String token){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+    public ResponseEntity<?> getAll(@RequestHeader(value = "Authorization", required = false) String token){
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(travelService.findAll());
@@ -71,10 +76,9 @@ public class TravelController {
     @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje")
     @PostMapping("/alta/usuario/{idUsuario}/scooter/{idScooter}")
     public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @PathVariable long idUsuario, @PathVariable long idScooter) {
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(travelService.save(idUsuario, idScooter));
@@ -92,10 +96,9 @@ public class TravelController {
     @Operation(summary = "Obtiene una estacion viaje por su id.", description = "Obtiene un viaje por su travelId")
     @GetMapping("/buscar/{travelId}")
     public ResponseEntity<?> getById(@RequestHeader("Authorization") String token, @PathVariable long travelId) {
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(travelService.findById(travelId));
@@ -113,10 +116,9 @@ public class TravelController {
     @Operation(summary = "Eliminia un viaje por su id.", description = "Elimina un viaje por su travelId")
     @DeleteMapping("/eliminar/{travelId}")
     public ResponseEntity<?> delete(@RequestHeader("Authorization") String token, @PathVariable long travelId){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             travelService.delete(travelId);
@@ -136,10 +138,9 @@ public class TravelController {
     @Operation(summary = "Actualiza los datos de un viaje por su id.", description = "Actualiza los datos de un viaje por su travelId")
     @PutMapping("/actualizar/{travelId}")
     public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @PathVariable long travelId, @RequestBody TravelDTO entity){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             travelService.update(travelId, entity);
@@ -158,10 +159,9 @@ public class TravelController {
     @Operation(summary = "Finaliza un viaje por su id.", description = "Finaliza un viaje por su travelId")
     @PutMapping("/finalizar/{travelId}")
     public ResponseEntity<?> travelEnd(@RequestHeader("Authorization") String token, @PathVariable long travelId){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             travelService.travelEnd(travelId);
@@ -180,10 +180,9 @@ public class TravelController {
     @Operation(summary = "Guarda una tarifa nueva a aplicar desde la fecha dada.", description = "Guarda una tarifa nueva a aplicar desde la fecha dada")   
     @PostMapping("/tarifas/alta")
     public ResponseEntity<?> saveFare(@RequestHeader("Authorization") String token, @RequestBody FareDTO entity) {
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(travelService.saveFare(entity));

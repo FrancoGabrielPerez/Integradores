@@ -1,7 +1,5 @@
 package com.microapigateway.config;
 
-import com.microapigateway.services.JwtUtils;
-
 import io.netty.handler.codec.http.HttpMethod;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,9 @@ public class AuthenticationFilter implements GatewayFilter {
 
     @Autowired
     private RouterValidator validator;
-    @Autowired
-    private JwtUtils jwtUtils;
+
+    // URL del servicio de validación de tokens
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
     
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -70,9 +69,9 @@ public class AuthenticationFilter implements GatewayFilter {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> entity = new HttpEntity<>(token, headers); 
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8082/auth/validar", entity, String.class);        
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(TOKEN_VALIDATION_URL, entity, String.class);        
            
-            System.out.println("Token: " + token);
+            //System.out.println("Token: " + token);
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }

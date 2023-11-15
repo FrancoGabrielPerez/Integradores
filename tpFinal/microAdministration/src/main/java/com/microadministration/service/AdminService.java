@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.microadministration.dto.FareDTO;
-import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.dto.ScooterDTO;
 import com.microadministration.dto.ScooterReporteKilometrosDTO;
 import com.microadministration.dto.ScooterReporteTiempoTotalDTO;
-import com.microadministration.dto.StationDTO;
 import com.microadministration.dto.TravelDTO;
+import com.microadministration.dto.FareDTO;
+import com.microadministration.dto.NewScooterDTO;
+import com.microadministration.dto.StationDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

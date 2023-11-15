@@ -1,5 +1,7 @@
 package com.microadministration.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +25,23 @@ public class MaintenanceAppController {
     private MaintenanceService maintenanceService;
 
     // URL del servicio de validación de tokens
-    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
 
     /**
      * validarToken
      * Valida el token antes de realizar cualquier operación.
      * @param token
+     * @param roles Lista de roles validos para el endpoint
+     * @return ResponseEntity<String>
      */
-    private ResponseEntity<String> validarToken(String token) {
-        // Realizar una llamada al servicio de validación de tokens
-        // System.out.println("Validando token: " + token);
+    private ResponseEntity<String> validarToken(String token, List<String> roles) {
         ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
-        // System.out.println("Respuesta: " + response);
+        if (response.getStatusCode() != HttpStatus.OK){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        }
+        if(!(roles.contains(response.getBody()))){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Tipo de usuario no valido");
+        }
         return response;
     }
     
@@ -47,10 +54,9 @@ public class MaintenanceAppController {
      */
     @PutMapping("/monopatines/actualizarEstado/{id}/estado/{estado}")
     public ResponseEntity<?> actualizarEstado(@RequestHeader("Authorization") String token, @PathVariable long id, @PathVariable String estado){
-        ResponseEntity<String> response = validarToken(token);
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no válido");
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "MAINTENER"));
+        if(response.getStatusCode() != HttpStatus.OK){
+            return response;
         }
         try{
             maintenanceService.updateScooterState(id, estado);
