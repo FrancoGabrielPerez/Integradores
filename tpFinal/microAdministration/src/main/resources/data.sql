@@ -1,8 +1,3 @@
-insert into staff (admin_id, rol, nombre, apellido, nro_celular, email, password) values (1, 'admin', 'Lindi', 'Naulty', '7024445922', 'lnaulty0@spotify.com', 'sG3>G2uZKLtPi');
-insert into staff (admin_id, rol, nombre, apellido, nro_celular, email, password) values (2, 'admin', 'Cymbre', 'Jaquest', '6425184989', 'cjaquest1@altervista.org', 'gA4}AmQWB3n');
-insert into staff (admin_id, rol, nombre, apellido, nro_celular, email, password) values (3, 'manteiner', 'Devin', 'Newlyn', '6621400847', 'dnewlyn2@google.cn', 'xD4''9ZjS#R');
-insert into staff (admin_id, rol, nombre, apellido, nro_celular, email, password) values (4, 'maintener', 'Gwenni', 'Lebrun', '8997834545', 'glebrun3@cbslocal.com', 'vQ8{mB{(');
-insert into staff (admin_id, rol, nombre, apellido, nro_celular, email, password) values (5, 'admin', 'Marlin', 'Wattins', '8965694621', 'mwattins4@xrea.com', 'fE4''MVM()y8Wz');
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (1, '2022-11-15 01:39:57', 'mus etiam vel augue vestibulum rutrum rutrum neque aenean', 1848.71);
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (2, '2022-12-13 08:04:10', 'leo odio porttitor id consequat in consequat ut nulla', 2853.78);
 insert into factura (factura_id, fecha_factura, descripcion, monto) values (3, '2023-02-01 02:34:57', 'sit amet eros suspendisse accumsan tortor quis', 1309.55);

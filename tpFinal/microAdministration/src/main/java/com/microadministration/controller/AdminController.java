@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpHeaders;
 
 import com.microadministration.dto.FareDTO;
 import com.microadministration.dto.StationDTO;
@@ -17,6 +18,7 @@ import com.microadministration.dto.NewScooterDTO;
 import com.microadministration.service.AdminService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * AdminController
@@ -64,13 +66,16 @@ public class AdminController {
      */
     @Operation(summary = "Da de alta un nuevo monopatin.", description = "Se comunica con el microservicios de monopatines para dar de alta un nuevo monopatin.")
     @PostMapping("monopatines/nuevo")
-    public ResponseEntity<?> saveScooter(@RequestHeader("Authorization") String token, @RequestBody NewScooterDTO scooterDTO, ServletServerHttpRequest request) {
+    public ResponseEntity<?> saveScooter(@RequestHeader("Authorization") String token, @RequestBody NewScooterDTO scooterDTO, HttpServletRequest request) {
         ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
         try {
-            return restTemplate.exchange("http://localhost:8002/monopatines/alta", HttpMethod.POST, new HttpEntity<>(scooterDTO, request.getHeaders()), Void.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", request.getHeader("Authorization"));
+             ResponseEntity<Void> res = restTemplate.exchange("http://localhost:8002/monopatines/alta", HttpMethod.POST, new HttpEntity<>(scooterDTO, headers), Void.class);
+            return res;
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
