@@ -1,5 +1,0 @@
-com\microapigateway\services\JwtUtils.class
-com\microapigateway\config\AuthenticationFilter.class
-com\microapigateway\config\ApiGatewayConfig.class
-com\microapigateway\MicroApiGatewayApp.class
-com\microapigateway\config\RouterValidator.class

@@ -44,6 +44,12 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }  
     
+    /**
+     * validar
+     * Comprueba la validez de un token.
+     * @param token
+     * @return
+     */
     @PostMapping(value = "/validar")
     public ResponseEntity<?> validar(@RequestBody String token) {
         String response;
