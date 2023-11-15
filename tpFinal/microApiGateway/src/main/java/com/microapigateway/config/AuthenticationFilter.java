@@ -70,7 +70,7 @@ public class AuthenticationFilter implements GatewayFilter {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> entity = new HttpEntity<>(token, headers); 
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8081/auth/validar", entity, String.class);        
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8082/auth/validar", entity, String.class);        
            
             System.out.println("Token: " + token);
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
