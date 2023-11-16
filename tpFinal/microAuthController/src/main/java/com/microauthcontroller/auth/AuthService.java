@@ -15,6 +15,7 @@ import com.microauthcontroller.user.Role;
 import com.microauthcontroller.user.User;
 import com.microauthcontroller.user.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -55,12 +56,17 @@ public class AuthService {
      * @param request
      * @return AuthResponse
      */
-    public AuthResponse register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request, String token){
+        //System.out.println("Auth RegisterRequest: " +request.getId()+ " " + request.getEmail() + " " + request.getPassword() + ", ROLE:" + request.getRole() + " " + request.getNombre() + " " + request.getApellido());
         if (request.getRole() == null){
-            request.setRole(Role.ADMIN);
+            request.setRole(Role.USER);
         } 
+        if (request.getRole() != Role.USER && validar(token) != "ADMIN") {
+            throw new RuntimeException("No tiene permisos para registrar un usuario con ese rol");
+        }
         User user = userRepository.findByEmail(request.getEmail()).orElse(
             User.builder().email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).build());
+        
         user.setNombre(request.getNombre());
         user.setApellido(request.getApellido());
         user.setRole(request.getRole());
@@ -71,6 +77,26 @@ public class AuthService {
             .build();
     }
 
+    @Transactional
+    public void deleteUser(String email, String token) {
+        if (token == null) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        String authorities = validar(token);
+        if (!authorities.contains("ADMIN")) {
+            throw new IllegalArgumentException("Insufficient permissions");
+        }
+        UserDetails user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        userRepository.deleteByEmail(user.getUsername());
+    }
+
+    /**
+     * validar
+     * Valida el token recibido.
+     * @param token
+     * @return String
+     */
 	public String validar(String token) {
         if (token.startsWith("Bearer ")) {
             token = token.replaceFirst("Bearer ", "");

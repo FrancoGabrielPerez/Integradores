@@ -28,7 +28,9 @@ public class User {
 	private long nroCelular;
 	@Column(name="email", nullable = false, unique = true)
 	private String email;
-	@Column(name="password", nullable = false)
+
+	@Column(name="password")
+	@Transient
 	private String password;
 	
 	@Id

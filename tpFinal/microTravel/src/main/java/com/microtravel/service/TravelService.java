@@ -1,7 +1,10 @@
 package com.microtravel.service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -51,6 +54,8 @@ public class TravelService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();
 
+	private static final String LOGIN_URL = "http://localhost:8082/auth/login";
+
 	/**
 	 * findAll
 	 * Devuelve una lista de todos los viajes.
@@ -73,6 +78,18 @@ public class TravelService{
 			() -> new IllegalArgumentException("ID de viaje invalido: " + id));
 	}
 	
+	private String getSystemToken(){
+		Map<String, String> body = new HashMap<>();
+		body.put("username", "SuperArchiRecontraPowerAdmin");
+		body.put("password", "hardcodedPassword");
+		
+		ResponseEntity<String> response = restTemplate.postForEntity(LOGIN_URL, body, String.class);
+		if (response.getStatusCode() != HttpStatus.OK) {
+			throw new IllegalArgumentException("Error al obtener el token");
+		}
+		return response.getBody();
+	}
+
 	/**
 	 * save
 	 * Agrega un nuevo viaje.
@@ -82,12 +99,17 @@ public class TravelService{
 	 */
 	@Transactional
 	public TravelDTO save(long idUsuario, long idScooter) throws IllegalArgumentException, RestClientException {
-		ResponseEntity<UserDTO> user = restTemplate.getForEntity("http://localhost:8004/usuarios/buscar/" + idUsuario, UserDTO.class);
+		String token = getSystemToken();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+		ResponseEntity<UserDTO> user = restTemplate.exchange("http://localhost:8004/usuarios/buscar/" + idUsuario, HttpMethod.GET, entity, UserDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario invalido: " + idUsuario);
 		}
-		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8004/cuentas/usuario/" + idUsuario, 
-											HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountDTO>>() {});
+		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8004/cuentas/usuario/" + idUsuario, HttpMethod.GET, entity, new ParameterizedTypeReference<List<AccountDTO>>() {});
 		if (accounts.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
 		}
@@ -99,7 +121,7 @@ public class TravelService{
 		if (!hasCredit) {
 			throw new IllegalArgumentException("El usuario no tiene saldo suficiente para realizar un viaje");
 		}
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
+		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange("http://localhost:8002/monopatines/" + idScooter, HttpMethod.GET, entity, ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
 		}
@@ -173,12 +195,24 @@ public class TravelService{
 	 */
 	@Transactional
 	public void travelEnd(Long id) throws Exception {
+		String token = getSystemToken();
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<String> entity = new HttpEntity<>(headers);
 		Travel travel = travelRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("No se encuentra el viaje con id: " + id));
 		if (travel.getEndTime() != null) {
 			throw new IllegalArgumentException("El viaje ya esta finalizado");
 		}
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + travel.getScooterId(), ScooterDTO.class);
+
+		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(
+			"http://localhost:8002/monopatines/" + travel.getScooterId(),
+			HttpMethod.GET,
+			entity,
+			ScooterDTO.class
+		);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + travel.getScooterId());
 		}
@@ -194,7 +228,13 @@ public class TravelService{
 		}
 		Double scooterLatitud = Double.parseDouble(scooterLatitudStr);
 		Double scooterLongitud = Double.parseDouble(scooterLongitudStr);
-		ResponseEntity<StationDTO> station = restTemplate.getForEntity("http://localhost:8001/estaciones/verificar/latitud/" + scooterLatitud + "/longitud/" + scooterLongitud, StationDTO.class);
+
+		ResponseEntity<StationDTO> station = restTemplate.exchange(
+			"http://localhost:8001/estaciones/verificar/latitud/" + scooterLatitud + "/longitud/" + scooterLongitud,
+			HttpMethod.GET,
+			entity,
+			StationDTO.class
+		);
 		if (station.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("No se encuentra una estacion valida para el monopatin: " + travel.getScooterId());
 		}
@@ -217,8 +257,8 @@ public class TravelService{
 			
 		travelRepository.save(travel);
 		updateScooterState(travel.getScooterId(), scooter.getBody(), "disponible");
-		updateUserAccount(travel.getUserId(), travel.getFare());
-		sendBill(travel);
+		updateUserAccount(travel.getUserId(), travel.getFare(), token);
+		sendBill(travel, token);
 	}
 
 	/**
@@ -239,7 +279,7 @@ public class TravelService{
 	 * @throws Exception
 	 */
 	@Transactional
-	public void sendBill(Travel travel) throws Exception {
+	private void sendBill(Travel travel, String token) throws Exception {
 		String accountUrl = "http://localhost:8005/administracion/facturacion/nueva";
 		
 		String billDescription = "Viaje realizado el " + travel.getEndTime() + " en el monopatin " + travel.getScooterId() + " por el usuario " + travel.getUserId();
@@ -247,6 +287,7 @@ public class TravelService{
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", token);
 
         HttpEntity<NewBillDTO> requestEntity = new HttpEntity<>(bill, headers);
 
@@ -264,15 +305,15 @@ public class TravelService{
 	 * @throws Exception
 	 */	
 	@Transactional
-	public void updateUserAccount(long userId, double fare) throws Exception {
-		List<AccountDTO> accounts = getUserAccounts(userId);
+	public void updateUserAccount(long userId, double fare, String token) throws Exception {
+		List<AccountDTO> accounts = getUserAccounts(userId, token);
 		AccountDTO account = accounts.stream().filter(a -> a.getSaldo() > 0).findFirst().orElse(null);
 		if (Objects.isNull(account)) {
 			 account = accounts.get(0);
 		}
 		account.setSaldo(account.getSaldo() - fare);
 		try {
-			updateAccountBalance(account);
+			updateAccountBalance(account, token);
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error al actualizar la cuenta del usuario: " + userId);
 		}
@@ -286,14 +327,18 @@ public class TravelService{
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AccountDTO> getUserAccounts(long userId) throws Exception {
-		String url = "http://localhost:8004/cuentas/usuario/" + userId;
+	public List<AccountDTO> getUserAccounts(long userId, String token) throws Exception {
 
+		String url = "http://localhost:8004/cuentas/usuario/" + userId;
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<>(headers);
 		try {
 			ResponseEntity<List<AccountDTO>> response = restTemplate.exchange(
 				url,
 				HttpMethod.GET,
-				null,
+				entity,
 				new ParameterizedTypeReference<List<AccountDTO>>() {}
 			);
 
@@ -323,12 +368,12 @@ public class TravelService{
 	 * @throws Exception
 	 */
 	@Transactional
-	public void updateAccountBalance(AccountDTO account) throws Exception {
+	public void updateAccountBalance(AccountDTO account, String token) throws Exception {
         String accountUrl = "http://localhost:8004/usuarios/actualizar/" + account.getAccountId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
+		headers.set("Authorization", token);
         HttpEntity<AccountDTO> requestEntity = new HttpEntity<>(account, headers);
 
         ResponseEntity<Void> response = restTemplate.exchange(accountUrl, HttpMethod.PUT, requestEntity, Void.class);

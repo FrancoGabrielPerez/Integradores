@@ -74,11 +74,7 @@ public class UserController {
      */
     @Operation(summary = "Agrega un nuevo usuario.", description = "Crea un usuario")
     @PostMapping("/alta")
-    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody UserDTO entity){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
-        if(response.getStatusCode() != HttpStatus.OK){
-            return response;
-        }
+    public ResponseEntity<?> save(@RequestBody UserDTO entity){
         try{            
             return ResponseEntity.status(HttpStatus.OK).body(userService.save(entity));
         }catch (Exception e){
@@ -115,12 +111,12 @@ public class UserController {
     @Operation(summary = "Elimina un usuario por su id.", description = "Elimina un usuario por su userId")
     @DeleteMapping("/eliminar/{userId}")
     public ResponseEntity<?> delete(@RequestHeader("Authorization") String token, @PathVariable long userId){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
-        try{
-            userService.delete(userId);
+        try{            
+            userService.delete(userId, token);
             return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente al usuario con userId: " + userId);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo eliminar el usuario, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
@@ -137,7 +133,7 @@ public class UserController {
     @Operation(summary = "Actualiza los datos de un usuario por su id.", description = "Actualiza un usuario por su userId")
     @PutMapping("/actualizar/{userId}")
     public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @PathVariable long userId, @RequestBody UserDTO entity){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
@@ -159,7 +155,7 @@ public class UserController {
     @Operation(summary = "Vincula una cuenta a un usuario.", description = "Vincula una cuenta a un usuario")
     @PutMapping("/vincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> asociarCuenta(@RequestHeader("Authorization") String token, @PathVariable long userId, @PathVariable long accountId){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
@@ -181,7 +177,7 @@ public class UserController {
     @Operation(summary = "Desvincula una cuenta de un usuario.", description = "Desvincula una cuenta de un usuario")
     @DeleteMapping("/desvincular/usuario/{userId}/cuenta/{accountId}")
     public ResponseEntity<?> desvincularCuenta(@RequestHeader("Authorization") String token, @PathVariable long userId, @PathVariable long accountId){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }

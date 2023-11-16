@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.microuseraccount.dto.UserDTO;
 import com.microuseraccount.model.Account;
@@ -21,6 +22,10 @@ import com.microuseraccount.repository.UserRepository;
  * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  */
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 @Service("userService")
 public class UserService{
 	@Autowired
@@ -32,6 +37,10 @@ public class UserService{
 	@Autowired
 	private UserAccountRepository userAccountRepository;
 		
+	RestTemplate restTemplate = new RestTemplate();
+
+	private static final String AUTH_VALIDATION_URL = "http://localhost:8082/auth";
+
 	/**
 	 * findAll
 	 * Devuelve todos los usuarios.
@@ -62,7 +71,10 @@ public class UserService{
 	 */
 	@Transactional
 	public UserDTO save(UserDTO entity) {
-		
+		ResponseEntity<String> response = restTemplate.postForEntity(AUTH_VALIDATION_URL + "/registrar", entity, String.class);
+		if (response.getStatusCode().isError()) {
+			throw new IllegalArgumentException("Error al registrar usuario");
+		}
 		return new UserDTO(this.userRepository.save(new User(entity)));
 	}
 
@@ -73,7 +85,12 @@ public class UserService{
 	 * @param id
 	 */
 	@Transactional
-	public void delete(Long id) {
+	public void delete(Long id, String token) {
+		UserDTO user = findById(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+		restTemplate.exchange(AUTH_VALIDATION_URL + "/eliminar/" + user.getEmail(), HttpMethod.DELETE, entity, String.class);
 		userRepository.delete(userRepository.findById(id).orElseThrow(
 			() -> new IllegalArgumentException("ID de Usuario invalido: " + id)));
 	}

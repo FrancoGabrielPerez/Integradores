@@ -5,5 +5,5 @@ package com.microauthcontroller.user;
  * @Authors Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  */
 public enum Role {
-    ADMIN, MAINTENER;
+    ADMIN, MAINTENER, USER;
 }

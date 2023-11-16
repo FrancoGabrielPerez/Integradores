@@ -30,6 +30,8 @@ public class TravelController {
     // URL del servicio de validación de tokens
     private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
 
+    
+
     /**
      * validarToken
      * Valida el token antes de realizar cualquier operación.
