@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
@@ -74,12 +73,12 @@ public class AdminController {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
-             ResponseEntity<Void> res = restTemplate.exchange("http://localhost:8002/monopatines/alta", HttpMethod.POST, new HttpEntity<>(scooterDTO, headers), Void.class);
-            return res;
+            return restTemplate.exchange("http://localhost:8002/monopatines/alta", HttpMethod.POST, new HttpEntity<>(scooterDTO, headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
     }
+
 
     /**
      * delete
