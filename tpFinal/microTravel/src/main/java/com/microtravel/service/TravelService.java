@@ -56,6 +56,16 @@ public class TravelService{
 
 	private static final String LOGIN_URL = "http://localhost:8082/auth/login";
 
+	private static final String ACCOUNTS_URL = "http://localhost:8004/cuentas";
+
+	private static final String USERS_URL = "http://localhost:8004/usuarios";
+
+	private static final String SCOOTERS_URL = "http://localhost:8002/monopatines";
+
+	private static final String STATIONS_URL = "http://localhost:8001/estaciones";
+
+	private static final String ADMINISTRATION_URL = "http://localhost:8005/administracion";
+
 	/**
 	 * findAll
 	 * Devuelve una lista de todos los viajes.
@@ -80,7 +90,7 @@ public class TravelService{
 	
 	private String getSystemToken(){
 		Map<String, String> body = new HashMap<>();
-		body.put("username", "SuperArchiRecontraPowerAdmin");
+		body.put("username", "Super@ArchiRecontraPowerAdmin");
 		body.put("password", "hardcodedPassword");
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(LOGIN_URL, body, String.class);
@@ -105,11 +115,11 @@ public class TravelService{
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		HttpEntity<String> entity = new HttpEntity<>(headers);
-		ResponseEntity<UserDTO> user = restTemplate.exchange("http://localhost:8004/usuarios/buscar/" + idUsuario, HttpMethod.GET, entity, UserDTO.class);
+		ResponseEntity<UserDTO> user = restTemplate.exchange(USERS_URL + "/buscar/" + idUsuario, HttpMethod.GET, entity, UserDTO.class);
 		if (user.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de usuario invalido: " + idUsuario);
 		}
-		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange("http://localhost:8004/cuentas/usuario/" + idUsuario, HttpMethod.GET, entity, new ParameterizedTypeReference<List<AccountDTO>>() {});
+		ResponseEntity<List<AccountDTO>> accounts = restTemplate.exchange(ACCOUNTS_URL + "/usuario/" + idUsuario, HttpMethod.GET, entity, new ParameterizedTypeReference<List<AccountDTO>>() {});
 		if (accounts.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener las cuentas del usuario: " + idUsuario);
 		}
@@ -121,7 +131,7 @@ public class TravelService{
 		if (!hasCredit) {
 			throw new IllegalArgumentException("El usuario no tiene saldo suficiente para realizar un viaje");
 		}
-		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange("http://localhost:8002/monopatines/" + idScooter, HttpMethod.GET, entity, ScooterDTO.class);
+		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(SCOOTERS_URL + idScooter, HttpMethod.GET, entity, ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
 		}
@@ -152,7 +162,7 @@ public class TravelService{
 	 * @return
 	 */
 	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado) {
-		String scooterUpdateUrl = "http://localhost:8002/monopatines/actualizar/" + idScooter;
+		String scooterUpdateUrl = SCOOTERS_URL + "/actualizar/" + idScooter;
 		scooter.setEstado(estado);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -208,7 +218,7 @@ public class TravelService{
 		}
 
 		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(
-			"http://localhost:8002/monopatines/" + travel.getScooterId(),
+			SCOOTERS_URL + travel.getScooterId(),
 			HttpMethod.GET,
 			entity,
 			ScooterDTO.class
@@ -230,7 +240,7 @@ public class TravelService{
 		Double scooterLongitud = Double.parseDouble(scooterLongitudStr);
 
 		ResponseEntity<StationDTO> station = restTemplate.exchange(
-			"http://localhost:8001/estaciones/verificar/latitud/" + scooterLatitud + "/longitud/" + scooterLongitud,
+			STATIONS_URL + "/verificar/latitud/" + scooterLatitud + "/longitud/" + scooterLongitud,
 			HttpMethod.GET,
 			entity,
 			StationDTO.class
@@ -280,7 +290,7 @@ public class TravelService{
 	 */
 	@Transactional
 	private void sendBill(Travel travel, String token) throws Exception {
-		String accountUrl = "http://localhost:8005/administracion/facturacion/nueva";
+		String accountUrl = ADMINISTRATION_URL + "/facturacion/nueva";
 		
 		String billDescription = "Viaje realizado el " + travel.getEndTime() + " en el monopatin " + travel.getScooterId() + " por el usuario " + travel.getUserId();
 		NewBillDTO bill = new NewBillDTO(travel.getEndTime(), travel.getFare(), billDescription);
@@ -329,7 +339,7 @@ public class TravelService{
 	@Transactional(readOnly = true)
 	public List<AccountDTO> getUserAccounts(long userId, String token) throws Exception {
 
-		String url = "http://localhost:8004/cuentas/usuario/" + userId;
+		String url = ACCOUNTS_URL + "/usuario/" + userId;
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", token);
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -369,7 +379,7 @@ public class TravelService{
 	 */
 	@Transactional
 	public void updateAccountBalance(AccountDTO account, String token) throws Exception {
-        String accountUrl = "http://localhost:8004/usuarios/actualizar/" + account.getAccountId();
+        String accountUrl = USERS_URL + "/actualizar/" + account.getAccountId();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

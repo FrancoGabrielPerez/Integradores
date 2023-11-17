@@ -37,6 +37,8 @@ public class ScooterService{
 	@Autowired
 	RestTemplate restTemplate = new RestTemplate();
 
+	private static final String STATIONS_URL = "http://localhost:8001/estaciones";
+
 	/**
 	 * findAll
 	 * Devuelve una lista de monopatines.
@@ -173,7 +175,7 @@ public class ScooterService{
 	 */
 	public StationDTO scooterEnEstacion(long scooterId) throws Exception {
 		ScooterDTO scooter = this.findById(scooterId);
-		String estacionUrl = "http://localhost:8001/estaciones/verificar/latitud/" + scooter.getLatitud() +  "/longitud/" + scooter.getLongitud();
+		String estacionUrl = STATIONS_URL + "/verificar/latitud/" + scooter.getLatitud() +  "/longitud/" + scooter.getLongitud();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 		HttpEntity<StationDTO> requestEntity = new HttpEntity<>(headers);

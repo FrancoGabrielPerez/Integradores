@@ -26,6 +26,8 @@ public class MaintenanceService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();	
 
+	private static final String SCOOTERS_URL = "http://localhost:8002/monopatines";
+
 	/**
 	 * updateScooterState
 	 * Actualiza el estado de un monopatin.
@@ -34,8 +36,7 @@ public class MaintenanceService{
 	 */
 	@Transactional
 	public void updateScooterState(long idScooter, String estado) {
-		System.out.println("hola!");
-		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity("http://localhost:8002/monopatines/" + idScooter, ScooterDTO.class);
+		ResponseEntity<ScooterDTO> scooter = restTemplate.getForEntity(SCOOTERS_URL + idScooter, ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de scooter invalido: " + idScooter);
 		}
@@ -55,7 +56,7 @@ public class MaintenanceService{
 		}
 
 		try {
-			ResponseEntity<Void> response = restTemplate.exchange("http://localhost:8002/monopatines/actualizar/" + idScooter, HttpMethod.PUT, requestEntity, Void.class);
+			ResponseEntity<Void> response = restTemplate.exchange(SCOOTERS_URL + idScooter, HttpMethod.PUT, requestEntity, Void.class);
 			if (response.getStatusCode() != HttpStatus.OK) {
 				throw new Exception("Error al actualizar el estado del monopatin" + idScooter);
 			}
