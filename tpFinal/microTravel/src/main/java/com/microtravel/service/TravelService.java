@@ -90,8 +90,8 @@ public class TravelService{
 	
 	private String getSystemToken(){
 		Map<String, String> body = new HashMap<>();
-		body.put("username", "Super@ArchiRecontraPowerAdmin");
-		body.put("password", "hardcodedPassword");
+		body.put("email", "System@system");
+		body.put("password", "System");
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(LOGIN_URL, body, String.class);
 		if (response.getStatusCode() != HttpStatus.OK) {

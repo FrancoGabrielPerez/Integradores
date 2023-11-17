@@ -66,10 +66,10 @@ public class AuthenticationFilter implements GatewayFilter {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            List<String> authorizationHeaders = responseEntity.getHeaders().get("Authorization");
-            if (authorizationHeaders != null && !authorizationHeaders.isEmpty()) {
-                exchange = exchange.mutate().request(request.mutate().header("Authorization", authorizationHeaders.get(0)).build()).build();
-            }
+            // List<String> authorizationHeaders = responseEntity.getHeaders().get("Authorization");
+            // if (authorizationHeaders != null && !authorizationHeaders.isEmpty()) {
+            //     exchange = exchange.mutate().request(request.mutate().header("Authorization", authorizationHeaders.get(0)).build()).build();
+            // }
         }
         return chain.filter(exchange);
     }

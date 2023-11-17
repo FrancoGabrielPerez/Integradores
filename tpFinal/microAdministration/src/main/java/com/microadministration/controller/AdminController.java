@@ -180,7 +180,6 @@ public class AdminController {
             HttpHeaders headers = new HttpHeaders();
             System.out.println("Request: " );
             headers.set("Authorization", request.getHeader("Authorization"));
-            headers.set("Token", request.getHeader("Token"));
             headers.setContentType(MediaType.APPLICATION_JSON);
             System.out.println("HEADERS: " + headers);
             return restTemplate.exchange(SCOOTERS_URL + "/reporte/tiempoTotal", HttpMethod.GET, new HttpEntity<>(headers), String.class);           
