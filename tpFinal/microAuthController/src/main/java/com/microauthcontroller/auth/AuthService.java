@@ -40,7 +40,6 @@ public class AuthService {
      * @return AuthResponse
      */
     public AuthResponse login(LoginRequest request) {
-        //System.out.println("LoginRequest: " + request.getEmail() + " " + request.getPassword());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -57,7 +56,6 @@ public class AuthService {
      * @return AuthResponse
      */
     public AuthResponse register(RegisterRequest request, String token){
-        //System.out.println("Auth RegisterRequest: " +request.getId()+ " " + request.getEmail() + " " + request.getPassword() + ", ROLE:" + request.getRole() + " " + request.getNombre() + " " + request.getApellido());
         if (request.getRole() == null){
             request.setRole(Role.USER);
         }
@@ -77,6 +75,12 @@ public class AuthService {
             .build();
     }
 
+    /**
+     * deleteUser
+     * Procesa los pedidos de borrado de usuarios.
+     * @param email
+     * @param token
+     */
     @Transactional
     public void deleteUser(String email, String token) {
         if (token == null) {

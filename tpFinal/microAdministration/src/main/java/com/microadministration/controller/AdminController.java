@@ -72,7 +72,7 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Da de alta un nuevo monopatin.", description = "Se comunica con el microservicios de monopatines para dar de alta un nuevo monopatin.")
-    @PostMapping("monopatines/nuevo")
+    @PostMapping("/monopatines/nuevo")
     public ResponseEntity<?> saveScooter(@RequestHeader("Authorization") String token, @RequestBody NewScooterDTO scooterDTO, HttpServletRequest request) {
         ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
@@ -96,13 +96,13 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Da de baja un monopatin.", description = "Se comunica con el microservicios de monopatines para dar de baja un monopatin.")
-    @DeleteMapping("monopatines/eliminar/{id}")
+    @DeleteMapping("/monopatines/eliminar/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(SCOOTERS_URL + "/eliminar/" + id, HttpMethod.POST, new HttpEntity<>(headers), String.class);
+            return restTemplate.exchange(SCOOTERS_URL + "/eliminar/" + id, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -115,16 +115,14 @@ public class AdminController {
      */
     @Operation(summary = "Obtiene un informe de lo kilometros recorridos por todos los monopatines", 
                 description = "Se comunica con el microservicio de monopatines para obtener un informe de los kilometros recorridos por todos los monopatines.")
-    @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/sinTiempoDeUso")
+    @GetMapping("/informes/reporteDeMonopatinesPor/KilometrosRecorridos/sinTiempoDeUso")
     public ResponseEntity<?> getKilometros(HttpServletRequest request) {
         
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(SCOOTERS_URL + "/getReporteByKilometros", HttpMethod.POST, new HttpEntity<>(headers), String.class);
-
-            
+            return restTemplate.exchange(SCOOTERS_URL + "/getReporteByKilometros", HttpMethod.GET, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -136,14 +134,14 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Obtiene un informe con los kilometros recorridos y tiempo de uso de cada monopatin.", description = "Se comunica con el microservicio de monopatines para obtener un informe con los kilometros recorridos y tiempo de uso de cada monopatin.")   
-    @GetMapping("informes/reporteDeMonopatinesPor/KilometrosRecorridos/conTiempoDeUso")
+    @GetMapping("/informes/reporteDeMonopatinesPor/KilometrosRecorridos/conTiempoDeUso")
     public ResponseEntity<?> getKilometrosTiempoUso(HttpServletRequest request) {
         
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(SCOOTERS_URL + "reporte/kilometros/conTiempoDeUso", HttpMethod.POST, new HttpEntity<>(headers), String.class);
+            return restTemplate.exchange(SCOOTERS_URL + "/reporte/kilometros/conTiempoDeUso", HttpMethod.GET, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -157,7 +155,7 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Obtiene un informe de los monopatines que hicieron X cantidad de viajes en determinado año", description = "Se comunica con el microservicio de monopatines para obtener un informe de los monopatines que hicieron X cantidad de viajes en determinado año.")    
-    @GetMapping("informes/reporteDeMonopatinesPor/cantidadDeViajes/{travelsQuantity}/enElAnio/{year}")
+    @GetMapping("/informes/reporteDeMonopatinesPor/cantidadDeViajes/{travelsQuantity}/enElAnio/{year}")
     public ResponseEntity<?> getReportScootersByTrips(@RequestHeader("Authorization") String token, @PathVariable Long travelsQuantity, @PathVariable Integer year) {
        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
@@ -176,14 +174,16 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Obtiene un informe de los monopatines ordenasdos por tiempo de uso", description = "Se comunica con el microservicio de monopatines para obtener un informe de los monopatines ordenasdos por tiempo de uso.")
-    @GetMapping("informes/reporteDeMonopatinesPor/tiempoTotalDeUso")
+    @GetMapping("/informes/reporteDeMonopatinesPor/tiempoTotalDeUso")
     public ResponseEntity<?> getReportScootersByUseTime(HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
+            System.out.println("Request: " );
             headers.set("Authorization", request.getHeader("Authorization"));
+            headers.set("Token", request.getHeader("Token"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(SCOOTERS_URL + "reporte/tiempoTotal", HttpMethod.POST, new HttpEntity<>(headers), String.class);
-           
+            System.out.println("HEADERS: " + headers);
+            return restTemplate.exchange(SCOOTERS_URL + "/reporte/tiempoTotal", HttpMethod.GET, new HttpEntity<>(headers), String.class);           
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");
         }
@@ -195,14 +195,13 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Agrega una nueva parada.", description = "Se comunica con el microservicios de estaciones para dar de alta una nueva parada.")
-    @PostMapping("paradas/nueva")
+    @PostMapping("/paradas/nueva")
     public ResponseEntity<?> saveStation(@RequestBody StationDTO stationDTO, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(STATIONS_URL + "/alta", HttpMethod.POST, new HttpEntity<>(stationDTO, headers), String.class);
-           
+            return restTemplate.exchange(STATIONS_URL + "/alta", HttpMethod.POST, new HttpEntity<>(stationDTO, headers), String.class);           
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -215,14 +214,13 @@ public class AdminController {
      * @return
      */
     @Operation(summary = "Elimina una parada", description = "Se comunica con el microservicios de estaciones para eliminar una parada.")
-    @DeleteMapping("paradas/eliminar/{id}")
+    @DeleteMapping("/paradas/eliminar/{id}")
     public ResponseEntity<?> deleteStation(@PathVariable Long id, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(STATIONS_URL + "/eliminar/" + id, HttpMethod.POST, new HttpEntity<>(headers), String.class);
-           
+            return restTemplate.exchange(STATIONS_URL + "/eliminar/" + id, HttpMethod.DELETE, new HttpEntity<>(headers), String.class);           
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -235,15 +233,13 @@ public class AdminController {
      * @return
      */
     @Operation(summary = "Suspende temporalmente una cuenta.", description = "Se comunica con el microservicios de cuentas para suspender temporalmente una cuenta.")
-    @PutMapping("cuentas/suspender/{id}")
+    @PutMapping("/cuentas/suspender/{id}")
     public ResponseEntity<?> suspendAccount(@PathVariable Long id, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(ACCOUNTS_URL + "/suspender/" + id, HttpMethod.POST, new HttpEntity<>(headers), String.class);
-           
-          
+            return restTemplate.exchange(ACCOUNTS_URL + "/suspender/" + id, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -256,14 +252,13 @@ public class AdminController {
      * @return
      */
     @Operation(summary = "Activa una cuenta que estaba previamente desactivada.", description = "Se comunica con el microservicios de cuentas para activar una cuenta que estaba previamente desactivada.")
-    @PutMapping("cuentas/activar/{id}")
+    @PutMapping("/cuentas/activar/{id}")
     public ResponseEntity<?> activateAccount(@PathVariable Long id, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(ACCOUNTS_URL + "/activar/" + id, HttpMethod.POST, new HttpEntity<>(headers), String.class);
-            
+            return restTemplate.exchange(ACCOUNTS_URL + "/activar/" + id, HttpMethod.PUT, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
@@ -276,13 +271,12 @@ public class AdminController {
      * @return ResponseEntity<?>
      */
     @Operation(summary = "Agrega una nueva tarifa a aplicar desde la fecha dada.", description = "Se comunica con el microservicios de tarifas para agregar una nueva tarifa a aplicar desde la fecha dada.")  
-    @PostMapping("tarifas/nueva")
+    @PostMapping("/tarifas/nueva")
     public ResponseEntity<?> saveNewFare(@RequestBody FareDTO fareDTO, HttpServletRequest request) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            
             return restTemplate.exchange(TRAVELS_URL + "/tarifas/alta", HttpMethod.POST, new HttpEntity<>(fareDTO ,headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage() + "\"}");

@@ -1,12 +1,11 @@
 package com.microapigateway.config;
 
-import io.netty.handler.codec.http.HttpMethod;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,15 +44,7 @@ public class AuthenticationFilter implements GatewayFilter {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-       
-        // For testing purposes        
-        System.out.println("Request Path: " + request.getPath());
-        System.out.println("Request: " + request);
-        System.out.println("Request Headers: " + request.getHeaders());
-        System.out.println("Is secured: " + validator.isSecured.test(request));
-        // End testing purposes
-
+        ServerHttpRequest request = exchange.getRequest();  
         if (validator.isSecured.test(request)) {
             if (authMissing(request)) {
 
@@ -61,24 +52,24 @@ public class AuthenticationFilter implements GatewayFilter {
             }
 
             final String tokenRequest = request.getHeaders().getOrEmpty("Authorization").get(0);
-            // System.out.println("Token: " + tokenRequest);
             String token = null;
             if (tokenRequest != null && tokenRequest.startsWith("Bearer ")) {
                 token = tokenRequest.substring(7);
             }  
-            
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> entity = new HttpEntity<>(token, headers); 
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(TOKEN_VALIDATION_URL, entity, String.class);        
-           
-            //System.out.println("Token: " + token);
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(TOKEN_VALIDATION_URL, entity, String.class);
+
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
-            exchange = responseEntity.getHeaders().get("Authorization") != null ? 
-                                    exchange.mutate().request(request.mutate().header("Authorization", 
-                                    responseEntity.getHeaders().get("Authorization").get(0)).build()).build() : exchange;
+
+            List<String> authorizationHeaders = responseEntity.getHeaders().get("Authorization");
+            if (authorizationHeaders != null && !authorizationHeaders.isEmpty()) {
+                exchange = exchange.mutate().request(request.mutate().header("Authorization", authorizationHeaders.get(0)).build()).build();
+            }
         }
         return chain.filter(exchange);
     }
