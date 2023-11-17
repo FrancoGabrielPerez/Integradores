@@ -107,7 +107,7 @@ public class AuthService {
         }
         String username = jwtService.getUsernameFromToken(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        System.out.println("UserDetails: " + userDetails);
+        //System.out.println("UserDetails: " + userDetails);
 		if (jwtService.validateToken(token, userDetails)){
             return userDetails.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)

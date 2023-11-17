@@ -30,7 +30,7 @@ public class ScooterController {
     private ScooterService scooterService;
 
     // URL del servicio de validación de tokens
-    private static final String TOKEN_VALIDATION_URL = "http://localhost:8082/auth/validar";
+    private static final String TOKEN_VALIDATION_URL = "http://localhost:8081/auth/validar";
 
     /**
      * validarToken
