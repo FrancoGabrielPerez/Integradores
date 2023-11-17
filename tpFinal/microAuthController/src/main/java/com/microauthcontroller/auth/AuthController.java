@@ -43,12 +43,12 @@ public class AuthController {
      * @return
      */
     @PostMapping(value = "/registrar")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request, @RequestHeader(value = "Authorization", required = false) String token) {
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(authService.register(request, token));
     }
 
     @DeleteMapping(value = "/eliminar/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email, @RequestHeader(value = "Authorization", required = false) String token) {
+    public ResponseEntity<?> deleteUser(@PathVariable String email, @RequestHeader("Authorization") String token) {
         // Call the service method to delete the user
         authService.deleteUser(email, token);
         return ResponseEntity.ok("User deleted successfully");

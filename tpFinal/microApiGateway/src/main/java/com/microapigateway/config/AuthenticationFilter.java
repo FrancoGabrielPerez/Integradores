@@ -48,14 +48,15 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
        
         // For testing purposes        
-        // System.out.println("Request Path: " + request.getPath());
-        // System.out.println("Request: " + request);
-        // System.out.println("Request Headers: " + request.getHeaders());
-        // System.out.println(validator.isSecured.test(request));
+        System.out.println("Request Path: " + request.getPath());
+        System.out.println("Request: " + request);
+        System.out.println("Request Headers: " + request.getHeaders());
+        System.out.println("Is secured: " + validator.isSecured.test(request));
         // End testing purposes
 
         if (validator.isSecured.test(request)) {
             if (authMissing(request)) {
+
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 

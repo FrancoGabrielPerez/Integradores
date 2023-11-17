@@ -60,8 +60,8 @@ public class AuthService {
         //System.out.println("Auth RegisterRequest: " +request.getId()+ " " + request.getEmail() + " " + request.getPassword() + ", ROLE:" + request.getRole() + " " + request.getNombre() + " " + request.getApellido());
         if (request.getRole() == null){
             request.setRole(Role.USER);
-        } 
-        if (request.getRole() == Role.USER && validar(token) == "ADMIN") {
+        }
+        if (request.getRole() != Role.USER && !validar(token).equals("ADMIN")) {
             throw new RuntimeException("No tiene permisos para registrar un usuario con ese rol");
         }
         User user = userRepository.findByEmail(request.getEmail()).orElse(
