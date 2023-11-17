@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "fdff5cbd-19df-4a33-9592-476ed1418894",
+		"name": "Grupo 6 - TPFinal 2",
+		"description": "# 🚀 Coleccion de endpoints de prueba\n\nAntes de acceder a los distintos servicios, se debe registrar o loguear en el sistema.\n\n- _**Autenticacion:**_ sistema de registro y logueo para usuarios administradores y de mantenimiento.\n    \n    - _**Acceder:**_ se debe suministrar un mail y usuario valido para poder ingresar al sistema. El mail y clave deben corresponderse con los de un usuario previamente registrado. (En el body del request ya estan los datos de un tipo de usuario ADMIN ya cargado).\n        \n    - _**Registrar:**_ para registrarse, deben enviarse los datos en formato JSON. Por defecto el sistema crea el usuario con rol de ADMIN. (En el body del request ya se encuentran datos de prueba cargados)\n        \n\nEste servicio no requiere autenticacion previa.\n\n- _**User:**_ microservicio de control de usuarios.\n    \n    - _**Alta nuevo usuario:**_ se puede dar de alta un nuevo usuario, se deben ingresar en el body del request los datos necesarios.\n        \n\nPara poder acceder a los siguientes servicios, se debe obtener un token valido de un usuario de tipo _ADMIN_ o _MAINTENER_.\n\n- _**Administration:**_ se encarga de responder a las solicitudes de reportes y administracion en general de cuentas y usuarios.\n    \n    - _**Reporte por tiempo total de uso:**_ suministra un reporte de todos los monopatines ordenados por tiempo de uso.\n    - _**Reporte cantidad de viajes en año:**_ reporta los monopatines que hicieron cierta cantidad de viajes en un año determinado.\n    - _**Reporte por kms recorridos (sin tiempo de uso):**_ informe de monopatines ordenados por kilometraje recorrido.\n    - _**Reporte por kms recorridos (con tiempo de uso):**_ similar al anterior pero proporciona, ademas, el tiempo de uso.\n    - _**Suspender cuenta:**_ suspende temporalmente la cuenta de un usuario.\n    - _**Informe facturacion entre fechas**_**:** devuelve el total facturado entre dos fechas dadas.\n        \n    - _**Nueva tarifa:**_ agrega una nueva tarifa al microservicio de viajes, esta tarifa estara disponible despues de determinada fecha.\n- _**Monopatines:**_ microservicio de administracion de monopatines.\n    \n    - _**Reporte monopatines operativos:**_ devuelve un reporte donde se muestran cuales monopatines estan operativos y cuales no.\n    - _**Monopatines cercanos:**_ informa que monopatines se encuentran mas cerca de una ubicacion dada.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29962488"
+	},
+	"item": [
+		{
+			"name": "Autenticacion",
+			"item": [
+				{
+					"name": "Acceder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"juana@dearco.com\",\r\n    \"password\":\"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8081/auth/acceder",
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nombre\":\"Pedro\",\n    \"apellido\":\"Rico\",\n\t\"email\":\"pedro@rico.com\",\n\t\"password\":\"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8081/auth/registrar",
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Alta nuevo usuario comun",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"nombre\":\"Usuario\",\r\n    \"apellido\":\"Nuevo\",\r\n\t\"email\":\"usuario@nuevo.com\",\r\n\t\"password\":\"1234\",\r\n    \"nroCelular\":555555\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8081/usuarios/alta"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administracion",
+			"item": [
+				{
+					"name": "Reporte por tiempo total de uso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/administracion/informes/reporteDeMonopatinesPor/tiempoTotalDeUso"
+					},
+					"response": []
+				},
+				{
+					"name": "Reporte cantidad de viajes por año",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/administracion/informes/reporteDeMonopatinesPor/cantidadDeViajes/2/enElAnio/2022"
+					},
+					"response": []
+				},
+				{
+					"name": "Reporte por kms recorridos (sin tiempo de uso)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/administracion/informes/reporteDeMonopatinesPor/KilometrosRecorridos/sinTiempoDeUso"
+					},
+					"response": []
+				},
+				{
+					"name": "Reporte por kms recorridos (con tiempo de uso)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/administracion/informes/reporteDeMonopatinesPor/KilometrosRecorridos/conTiempoDeUso"
+					},
+					"response": []
+				},
+				{
+					"name": "Suspender cuenta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": "localhost:8081/administracion/cuentas/suspender/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Informe facturacion entre fechas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/administracion/facturacion/fechaDesde/2022-03-01/fechaHasta/2023-12-05"
+					},
+					"response": []
+				},
+				{
+					"name": "Nueva tarifa",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-01-13T20:27:39.578Z\",\r\n  \"flatRate\": 15000,\r\n  \"fullRate\": 55000\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8081/administracion/tarifas/nueva"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monopatines",
+			"item": [
+				{
+					"name": "Reporte monopatines operativos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/monopatines/reporte/cantidadOperativosMantenimiento"
+					},
+					"response": []
+				},
+				{
+					"name": "Monopatines cercanos:",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmliYWxAdHJvaWxvLmNvbSIsImlhdCI6MTcwMDE3NjEyOCwiZXhwIjoxNzAxNjQ3MzU3fQ.4gQwC3n8wI5xVqTjMgE9cJMCLIeZKb6O2X95PKODFsI"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8081/monopatines/-37.327754/-59.138998"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
