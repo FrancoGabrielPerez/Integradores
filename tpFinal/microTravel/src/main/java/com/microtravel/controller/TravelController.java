@@ -75,7 +75,7 @@ public class TravelController {
      * @param entity
      * @return
      */
-    @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje")
+    @Operation(summary = "Agrega un viaje.", description = "Agrega un viaje, deben estar iniciados los microservicios de autenticacion, usuario y scooter")
     @PostMapping("/alta/usuario/{idUsuario}/scooter/{idScooter}")
     public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @PathVariable long idUsuario, @PathVariable long idScooter) {
         ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));

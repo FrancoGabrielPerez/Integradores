@@ -54,7 +54,7 @@ public class TravelService{
 	@Autowired
 	private RestTemplate restTemplate = new RestTemplate();
 
-	private static final String LOGIN_URL = "http://localhost:8082/auth/login";
+	private static final String LOGIN_URL = "http://localhost:8082/auth/acceder";
 
 	private static final String ACCOUNTS_URL = "http://localhost:8004/cuentas";
 
@@ -97,7 +97,12 @@ public class TravelService{
 		if (response.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("Error al obtener el token");
 		}
-		return response.getBody();
+		String res = response.getBody();
+		if (res != null) {
+			return res.replace("{\"token\":\"", "").replace("\"}", "");
+        } else {
+			throw new IllegalStateException("Response body is null");
+        }
 	}
 
 	/**
@@ -131,7 +136,7 @@ public class TravelService{
 		if (!hasCredit) {
 			throw new IllegalArgumentException("El usuario no tiene saldo suficiente para realizar un viaje");
 		}
-		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(SCOOTERS_URL + idScooter, HttpMethod.GET, entity, ScooterDTO.class);
+		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(SCOOTERS_URL + "/" + idScooter, HttpMethod.GET, entity, ScooterDTO.class);
 		if (scooter.getStatusCode() != HttpStatus.OK) {
 			throw new IllegalArgumentException("ID de monopatin invalido: " + idScooter);
 		}
@@ -142,7 +147,7 @@ public class TravelService{
 		if (scooterBody.getEstado().equals("ocupado")) {
 			throw new IllegalArgumentException("El monopatin ya se encuentra en uso");
 		}
-		if (!updateScooterState(idScooter, scooterBody, "ocupado")) {
+		if (!updateScooterState(idScooter, scooterBody, "ocupado", token)) {
 			throw new IllegalArgumentException("El estado del monopatin no se pudo actualizar");
 		}
 		Integer scooterTiempoDeUso = scooterBody.getTiempoDeUso();
@@ -161,12 +166,13 @@ public class TravelService{
 	 * @param estado
 	 * @return
 	 */
-	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado) {
+	private boolean updateScooterState(long idScooter, ScooterDTO scooter, String estado, String token) {
 		String scooterUpdateUrl = SCOOTERS_URL + "/actualizar/" + idScooter;
 		scooter.setEstado(estado);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", token);
 		HttpEntity<ScooterDTO> requestEntity = new HttpEntity<>(scooter, headers);
 		ResponseEntity<?> scooterResponse = restTemplate.exchange(
 			scooterUpdateUrl,
@@ -218,7 +224,7 @@ public class TravelService{
 		}
 
 		ResponseEntity<ScooterDTO> scooter = restTemplate.exchange(
-			SCOOTERS_URL + travel.getScooterId(),
+			SCOOTERS_URL + "/" +  travel.getScooterId(),
 			HttpMethod.GET,
 			entity,
 			ScooterDTO.class
@@ -266,7 +272,7 @@ public class TravelService{
 		}	
 			
 		travelRepository.save(travel);
-		updateScooterState(travel.getScooterId(), scooter.getBody(), "disponible");
+		updateScooterState(travel.getScooterId(), scooter.getBody(), "disponible", token);
 		updateUserAccount(travel.getUserId(), travel.getFare(), token);
 		sendBill(travel, token);
 	}
