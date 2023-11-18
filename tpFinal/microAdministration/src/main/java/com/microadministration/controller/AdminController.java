@@ -122,7 +122,7 @@ public class AdminController {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", request.getHeader("Authorization"));
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return restTemplate.exchange(SCOOTERS_URL + "/getReporteByKilometros", HttpMethod.GET, new HttpEntity<>(headers), String.class);
+            return restTemplate.exchange(SCOOTERS_URL + "/reporte/kilometros/sinTiempoDeUso", HttpMethod.GET, new HttpEntity<>(headers), String.class);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }

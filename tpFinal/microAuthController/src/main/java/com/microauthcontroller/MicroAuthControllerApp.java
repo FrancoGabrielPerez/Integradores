@@ -9,8 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * Spring Boot application starter class
  * @Author Luciano Melluso, Franco Perez, Lautaro Liuzzi, Ruben Marchiori
  */
-@SpringBootApplication
-@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class MicroAuthControllerApp {
     public static void main(String[] args) {
         SpringApplication.run(MicroAuthControllerApp.class, args);

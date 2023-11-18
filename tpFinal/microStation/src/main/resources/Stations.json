@@ -1,0 +1,182 @@
+[
+  {
+    "station_id": 1,
+    "name": "Dostoevsky Station",
+    "latitud": 56.1389673,
+    "longitud": 13.4016403
+  },
+  {
+    "station_id": 2,
+    "name": "Tolstoy Station",
+    "latitud": -34.6821989,
+    "longitud": -58.3298681
+  },
+  {
+    "station_id": 3,
+    "name": "Chekhov Station",
+    "latitud": -8.605273,
+    "longitud": 116.128038
+  },
+  {
+    "station_id": 4,
+    "name": "Pushkin Station",
+    "latitud": 49.0149775,
+    "longitud": 31.0539028
+  },
+  {
+    "station_id": 5,
+    "name": "Gogol Station",
+    "latitud": 57.716,
+    "longitud": 60.6484
+  },
+  {
+    "station_id": 6,
+    "name": "Dostoevsky Square Station",
+    "latitud": 44.026332,
+    "longitud": 125.88298
+  },
+  {
+    "station_id": 7,
+    "name": "Tolstoy Plaza Station",
+    "latitud": 37.858628,
+    "longitud": 112.558133
+  },
+  {
+    "station_id": 8,
+    "name": "Chekhov Central Station",
+    "latitud": 36.9549975,
+    "longitud": 65.1254488
+  },
+  {
+    "station_id": 9,
+    "name": "Pushkin Junction Station",
+    "latitud": -7.3743397,
+    "longitud": 110.2648159
+  },
+  {
+    "station_id": 10,
+    "name": "Gogol Square Station",
+    "latitud": 56.4482379,
+    "longitud": 21.5989599
+  },
+  {
+    "station_id": 11,
+    "name": "Dostoevsky Crossing Station",
+    "latitud": 22.937244,
+    "longitud": 113.384129
+  },
+  {
+    "station_id": 12,
+    "name": "Tolstoy Circle Station",
+    "latitud": 28.6909216,
+    "longitud": 113.5978392
+  },
+  {
+    "station_id": 13,
+    "name": "Chekhov Square Station",
+    "latitud": -1.5697615,
+    "longitud": 110.5215459
+  },
+  {
+    "station_id": 14,
+    "name": "Pushkin Park Station",
+    "latitud": 14.92653,
+    "longitud": 45.507141
+  },
+  {
+    "station_id": 15,
+    "name": "Gogol Plaza Station",
+    "latitud": 31.263629,
+    "longitud": 121.58448
+  },
+  {
+    "station_id": 16,
+    "name": "Dostoevsky Square West Station",
+    "latitud": -7.5519782,
+    "longitud": 110.7867474
+  },
+  {
+    "station_id": 17,
+    "name": "Tolstoy Square Station",
+    "latitud": 14.0790439,
+    "longitud": 5.956825
+  },
+  {
+    "station_id": 18,
+    "name": "Chekhov Avenue Station",
+    "latitud": 40.3472281,
+    "longitud": 19.982437
+  },
+  {
+    "station_id": 19,
+    "name": "Pushkin Square Station",
+    "latitud": 15.43333,
+    "longitud": -91.63333
+  },
+  {
+    "station_id": 20,
+    "name": "Gogol Street Station",
+    "latitud": 13.9008751,
+    "longitud": 121.486094
+  },
+  {
+    "station_id": 21,
+    "name": "Dostoevsky Avenue Station",
+    "latitud": 11.379367,
+    "longitud": 7.5599321
+  },
+  {
+    "station_id": 22,
+    "name": "Tolstoy Square East Station",
+    "latitud": 22.5505556,
+    "longitud": 114.4913889
+  },
+  {
+    "station_id": 23,
+    "name": "Chekhov Park Station",
+    "latitud": 57.2287633,
+    "longitud": 59.3184961
+  },
+  {
+    "station_id": 24,
+    "name": "Pushkin Street Station",
+    "latitud": 28.8395155,
+    "longitud": 52.5638794
+  },
+  {
+    "station_id": 25,
+    "name": "Gogol Avenue Station",
+    "latitud": 43.0429124,
+    "longitud": 1.9038837
+  },
+  {
+    "station_id": 26,
+    "name": "Dostoevsky Square South Station",
+    "latitud": 17.8579334,
+    "longitud": -93.1548091
+  },
+  {
+    "station_id": 27,
+    "name": "Tolstoy Boulevard Station",
+    "latitud": 23.101153,
+    "longitud": 113.228291
+  },
+  {
+    "station_id": 28,
+    "name": "Chekhov Street Station",
+    "latitud": -6.4712737,
+    "longitud": 110.8171082
+  },
+  {
+    "station_id": 29,
+    "name": "Pushkin Avenue Station",
+    "latitud": 45.4651444,
+    "longitud": -74.0798679
+  },
+  {
+    "station_id": 30,
+    "name": "Gogol Square North Station",
+    "latitud": 50.88758,
+    "longitud": 21.66654
+  }
+]

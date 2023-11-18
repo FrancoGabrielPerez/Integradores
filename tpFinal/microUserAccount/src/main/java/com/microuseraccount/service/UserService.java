@@ -39,7 +39,9 @@ public class UserService{
 		
 	RestTemplate restTemplate = new RestTemplate();
 
-	private static final String AUTH_VALIDATION_URL = "http://localhost:8082/auth";
+	private static final String AUTH_VALIDATION_URL = "http://localhost:8081/auth";
+
+
 
 	/**
 	 * findAll
@@ -66,16 +68,19 @@ public class UserService{
 	/**
 	 * save
 	 * Crea un nuevo usuario.
-	 * @param entity
+	 * @param user
 	 * @return UserDTO
 	 */
 	@Transactional
-	public UserDTO save(UserDTO entity) {
+	public UserDTO save(UserDTO user, String token) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+		HttpEntity<UserDTO> entity = new HttpEntity<>(user, headers);
 		ResponseEntity<String> response = restTemplate.postForEntity(AUTH_VALIDATION_URL + "/registrar", entity, String.class);
 		if (response.getStatusCode().isError()) {
 			throw new IllegalArgumentException("Error al registrar usuario");
 		}
-		return new UserDTO(this.userRepository.save(new User(entity)));
+		return new UserDTO(this.userRepository.save(new User(user)));
 	}
 
 
