@@ -7,14 +7,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="microUserAccount" />
+        <module name="microScooter" />
+        <module name="microTravel" />
+        <module name="microApiGateway" />
+        <module name="microStation" />
         <module name="microAdministration" />
+        <module name="microAuthController" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="microAdministration" options="-parameters" />
-      <module name="tpFinal" options="--add-modules java.sql" />
+      <module name="microApiGateway" options="-parameters" />
+      <module name="microAuthController" options="-parameters" />
+      <module name="microScooter" options="-parameters" />
+      <module name="microStation" options="-parameters" />
+      <module name="microTravel" options="-parameters" />
+      <module name="microUserAccount" options="-parameters" />
     </option>
   </component>
 </project>

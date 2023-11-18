@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroAdministrationApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroApiGatewayApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroAuthControllerApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroScooterApplication.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroStationApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroTravelApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/MicroUserAccountApp.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/service/ScooterServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microStation/src/main/java/com/microstation/config/DataLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microStation/src/main/java/com/microstation/config/JsonLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microStation/src/main/resources/Stations.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tpFinal.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tpFinal.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microAdministration/src/main/java/com/microadministration/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microAdministration/src/main/java/com/microadministration/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/MicroApiGatewayApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/MicroApiGatewayApp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/ApiGatewayConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/ApiGatewayConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/AuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/AuthenticationFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/RouterValidator.class" beforeDir="false" afterPath="$PROJECT_DIR$/microApiGateway/target/classes/com/microapigateway/config/RouterValidator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microAuthController/src/main/java/com/microauthcontroller/MicroAuthControllerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/microAuthController/src/main/java/com/microauthcontroller/MicroAuthControllerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microScooter/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microScooter/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/controller/ScooterControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/controller/ScooterControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/MOCK_DATA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/account.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/travel.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tpFinal/userAccount.sql" beforeDir="false" />
+    </list>
+    <list id="ae924027-ea40-434c-a491-54d0f4340dbd" name="Changes by lucianomelluso" comment="">
+      <change beforePath="$PROJECT_DIR$/microAdministration/src/main/java/com/microadministration/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/microAdministration/src/main/java/com/microadministration/service/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/controller/ScooterControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/controller/ScooterControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microStation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/microStation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microStation/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/microStation/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/service/UserService.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="package.json" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/microUserAccount/src/main/java/com/microuseraccount/service/UserService.java">
+      <ranges>
+        <range start1="41" end1="42" start2="41" end2="44" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+        <range start1="68" end1="69" start2="70" end2="71" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+        <range start1="72" end1="73" start2="74" end2="78" changelist="ae924027-ea40-434c-a491-54d0f4340dbd" />
+        <range start1="77" end1="78" start2="82" end2="83" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/microScooter/src/test/java/com/microscooter/controller/ScooterControllerTest.java">
+      <ranges>
+        <range start1="30" end1="44" start2="30" end2="31" changelist="ae924027-ea40-434c-a491-54d0f4340dbd" />
+        <range start1="73" end1="77" start2="60" end2="61" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+        <range start1="79" end1="80" start2="63" end2="64" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+        <range start1="84" end1="113" start2="68" end2="68" changelist="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" />
+      </ranges>
+    </file>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2YKW4FH2KUPSh80zVhbBzz4hPfq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "2daEntrega",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.microscooter.service" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.MicroStationApp">
+    <configuration name="All in microScooter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="microScooter" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScooterControllerTest.testMicroservicio" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="microScooter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.microscooter.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.microscooter.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.microscooter.controller.ScooterControllerTest" />
+      <option name="METHOD_NAME" value="testMicroservicio" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScooterServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="microScooter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.microscooter.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.microscooter.service" />
+      <option name="MAIN_CLASS_NAME" value="com.microscooter.service.ScooterServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScooterServiceTest.getScootersCercanos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="microScooter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.microscooter.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.microscooter.service" />
+      <option name="MAIN_CLASS_NAME" value="com.microscooter.service.ScooterServiceTest" />
+      <option name="METHOD_NAME" value="getScootersCercanos" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.All in microScooter" />
+      <item itemvalue="JUnit.ScooterControllerTest.testMicroservicio" />
+      <item itemvalue="JUnit.ScooterServiceTest" />
+      <item itemvalue="JUnit.ScooterServiceTest.getScootersCercanos" />
+      <item itemvalue="Spring Boot.MicroAdministrationApp" />
+      <item itemvalue="Spring Boot.MicroApiGatewayApp" />
+      <item itemvalue="Spring Boot.MicroScooterApplication" />
+      <item itemvalue="Spring Boot.MicroStationApp" />
+      <item itemvalue="Spring Boot.MicroTravelApp" />
+      <item itemvalue="Spring Boot.MicroUserAccountApp" />
+      <item itemvalue="Spring Boot.MicroAuthControllerApp" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ScooterServiceTest" />
+        <item itemvalue="JUnit.ScooterServiceTest.getScootersCercanos" />
+        <item itemvalue="JUnit.ScooterControllerTest.testMicroservicio" />
+        <item itemvalue="JUnit.All in microScooter" />
+        <item itemvalue="Spring Boot.MicroAuthControllerApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5c79e0c0-9c42-4690-a9f0-ff0e3039509d" name="Changes" comment="" />
+      <created>1700274561750</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700274561750</updated>
+      <workItem from="1700274563885" duration="757000" />
+      <workItem from="1700275347896" duration="235000" />
+      <workItem from="1700275591498" duration="10208000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

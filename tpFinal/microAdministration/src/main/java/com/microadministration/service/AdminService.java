@@ -73,7 +73,7 @@ public class AdminService{
 		.entrySet().stream()
 		.filter(entry -> entry.getValue() > travelQuantity)
 		.map(entry -> {
-			String scooterUrl = SCOOTERS_URL + entry.getKey();
+			String scooterUrl = SCOOTERS_URL + "/" + entry.getKey();
 			HttpEntity<ScooterDTO> requestEntity2 = new HttpEntity<>(headers);
 			ResponseEntity<ScooterDTO> response2 = restTemplate.exchange(scooterUrl,
 					HttpMethod.GET,

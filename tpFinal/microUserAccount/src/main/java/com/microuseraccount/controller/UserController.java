@@ -33,7 +33,8 @@ public class UserController {
      * validarToken
      * Valida el token antes de realizar cualquier operación.
      * @param token
-     * @param List<String>
+     * @param roles Lista de roles validos para el endpoint
+     * @return ResponseEntity<String>
      */
     private ResponseEntity<String> validarToken(String token, List<String> roles) {
         ResponseEntity<String> response = new RestTemplate().postForEntity(TOKEN_VALIDATION_URL, token, String.class);
@@ -74,9 +75,9 @@ public class UserController {
      */
     @Operation(summary = "Agrega un nuevo usuario.", description = "Crea un usuario")
     @PostMapping("/alta")
-    public ResponseEntity<?> save(@RequestBody UserDTO entity){
+    public ResponseEntity<?> save(@RequestHeader("Authorization") String token, @RequestBody UserDTO entity){
         try{            
-            return ResponseEntity.status(HttpStatus.OK).body(userService.save(entity));
+            return ResponseEntity.status(HttpStatus.OK).body(userService.save(entity, token));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"\n\"error\":\"" + e.getMessage()+"\"}");
         }
