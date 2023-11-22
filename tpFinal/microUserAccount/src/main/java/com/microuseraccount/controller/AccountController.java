@@ -155,7 +155,7 @@ public class AccountController {
     @Operation(summary = "Desactiva una cuenta por su id.", description = "Desactiva una cuenta por su accountId")
     @PutMapping("/suspender/{accountId}")
     public ResponseEntity<?> suspend(@RequestHeader("Authorization") String token, @PathVariable long accountId){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
@@ -176,7 +176,7 @@ public class AccountController {
     @Operation(summary = "Activa una cuenta por su id.", description = "Activa una cuenta por su accountId")
     @PutMapping("/activar/{accountId}")
     public ResponseEntity<?> activate(@RequestHeader("Authorization") String token, @PathVariable long accountId){
-        ResponseEntity<String> response = validarToken(token, List.of("ADMIN", "USER", "MAINTENER"));
+        ResponseEntity<String> response = validarToken(token, List.of("ADMIN"));
         if(response.getStatusCode() != HttpStatus.OK){
             return response;
         }
