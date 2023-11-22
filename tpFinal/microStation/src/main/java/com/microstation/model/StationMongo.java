@@ -17,7 +17,7 @@ import org.springframework.data.annotation.Id;
  * @Author Franco Perez, Luciano Melluso, Lautaro Liuzzi, Ruben Marchiori
  * 
  */
-@Document(collection = "station")
+@Document(collection = "stations")
 @Data
 public class StationMongo {
     @Id

@@ -84,6 +84,8 @@ public class StationService{
 	@Transactional(readOnly = true)
 	public StationDTO findByLatitudAndLongitud(String latitud, String longitud) throws Exception{
 		StationMongo station = this.stationMongoRepository.findByLatitudAndLongitud(latitud, longitud);
+		System.out.println("llego aca");
+		System.out.println(station);
 		StationDTO stationDTO = new StationDTO(station);
 	 // Copia los atributos de Station a StationDTOBeanUtils.copyProperties(station, stationDTO); // Copia los atributos de Station a StationDTO
 		return stationDTO;

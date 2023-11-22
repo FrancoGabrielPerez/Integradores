@@ -23,8 +23,6 @@ public class StationMongoRepositoryCustomImpl implements StationMongoRepositoryC
     public StationMongo findByLatitudAndLongitud(String latitud, String longitud){
         Query query = new Query();
         query.addCriteria(Criteria.where("latitud").is(latitud).and("longitud").is(longitud));
-        return mongoTemplate.findOne(query, StationMongo.class, "station");
-        // Query query = new Query(Criteria.where("field").is("value"));
-        // List<DocumentType> result = mongoTemplate.find(query, DocumentType.class, "collectionName");
+        return mongoTemplate.findOne(query, StationMongo.class, "stations");
     };
 }
